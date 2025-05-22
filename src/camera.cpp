@@ -5,10 +5,10 @@ float degToRad(float deg) {
 }
 
 Vector2 Frustum::planePos(Vector3 point) {
-    float x2 = (nearZ * point.x) / point.z;
-    float y2 = (point.z * point.y) / point.z;
+    float x2 = point.x / point.z;
+    float y2 = point.y / point.z;
 
-    float width = nearZ * std::tan(degToRad(fov / 2));
+    float width = std::tan(degToRad(fov / 2));
     float height = width / aspect;
 
     float normalX = (x2 + width) / (2 * width);
