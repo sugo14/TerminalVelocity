@@ -1,11 +1,10 @@
 COMP = g++
 CFLAGS = -Wall -Wextra -Iinclude
 
-SRCS = src/main.cpp src/camera.cpp src/tui.cpp
-OBJS = $(SRCS:.cpp=.o)
+SRCS = src/main.cpp src/camera.cpp src/tui.cpp src/screendata.cpp
 
 main: $(SRCS)
-	g++ -o main $(SRCS) $(CFLAGS)
+	$(COMP) -o main $(SRCS) $(CFLAGS)
 
 clean:
 	rm src/*.o main

@@ -25,11 +25,25 @@ void Camera::draw(ScreenData& screenData) {
         }
     }
 
-    for (Vector3 point : points) {
-        Vector2 pos = frustum.planePos(point);
-        int x = pos.x * ScreenData::WIDTH;
-        int y = pos.y * ScreenData::HEIGHT;
-        int color = 0xFFFFFF;
-        screenData.setPixel(x, y, color);
+    for (Triangle& triangle : triangles) {
+        int screenX[3], screenY[3];
+
+        for (int i = 0; i < 3; i++) {
+            Vector3 point = triangle.vertices[i];
+            Vector2 pos = frustum.planePos(point);
+            int x = pos.x * ScreenData::WIDTH;
+            int y = pos.y * ScreenData::HEIGHT;
+            screenData.setPixel(x, y, triangle.color);
+            screenX[i] = x;
+            screenY[i] = y;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            int x1 = screenX[i];
+            int y1 = screenY[i];
+            int x2 = screenX[(i + 1) % 3];
+            int y2 = screenY[(i + 1) % 3];
+            screenData.drawLine(x1, y1, x2, y2, triangle.color);
+        }
     }
 }

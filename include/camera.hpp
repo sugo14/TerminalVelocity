@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <vector>
 #include "geometry.hpp"
 #include "screendata.hpp"
 
@@ -15,7 +16,7 @@ struct Frustum {
 
 struct Camera {
     Frustum frustum;
-    Vector3 points[1];
+    std::vector<Triangle> triangles;
 
     void draw(ScreenData& screenData);
 };

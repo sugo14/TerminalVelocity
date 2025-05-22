@@ -1,9 +1,5 @@
 #pragma once
 
-struct Vector2I {
-    int x, y;
-};
-
 struct Vector2 {
     float x, y;
 };

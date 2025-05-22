@@ -40,13 +40,13 @@ ConsoleScreen::ConsoleScreen() {
     screenData = ScreenData();
 
     std::cout << TUI::CLEAR_SCREEN
-              << TUI::ALTERNATE_SCREEN_BUFFER 
+            //   << TUI::ALTERNATE_SCREEN_BUFFER 
               << TUI::HIDE_CURSOR;
 }
 
 void ConsoleScreen::draw() {
     std::string output = TUI::HOME;
-    output.reserve(ScreenData::WIDTH * ScreenData::HEIGHT * 20);
+    output.reserve(ScreenData::WIDTH * ScreenData::HEIGHT * 42 + 1);
 
     for (int i = 0; i < ScreenData::HEIGHT; i += 2) {
         for (int j = 0; j < ScreenData::WIDTH; j++) {
