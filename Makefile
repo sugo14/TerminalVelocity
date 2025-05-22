@@ -1,5 +1,11 @@
-main: main.cpp
-	g++ -o main main.cpp
+COMP = g++
+CFLAGS = -Wall -Wextra -Iinclude
+
+SRCS = src/main.cpp src/camera.cpp src/tui.cpp
+OBJS = $(SRCS:.cpp=.o)
+
+main: $(SRCS)
+	g++ -o main $(SRCS) $(CFLAGS)
 
 clean:
-	rm main
+	rm src/*.o main

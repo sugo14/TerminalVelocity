@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include "include/tui.hpp"
+#include "../include/tui.hpp"
 
 namespace TUI {
     const std::string ESC = "\033";
@@ -40,8 +40,8 @@ ConsoleScreen::ConsoleScreen() {
     screenData = ScreenData();
 
     std::cout << TUI::CLEAR_SCREEN
-                << TUI::ALTERNATE_SCREEN_BUFFER 
-                << TUI::HIDE_CURSOR;
+              << TUI::ALTERNATE_SCREEN_BUFFER 
+              << TUI::HIDE_CURSOR;
 }
 
 void ConsoleScreen::draw() {
