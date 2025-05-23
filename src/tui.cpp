@@ -12,8 +12,10 @@ namespace TUI {
     const std::string HOME = ESC + "[H";
 
     const std::string ALTERNATE_SCREEN_BUFFER = ESC + "[?1049h"; // this is funny
+    const std::string ALTERNATE_SCREEN_BUFFER_OFF = ESC + "[?1049l";
 
     const std::string HIDE_CURSOR = ESC + "[?25l";
+    const std::string SHOW_CURSOR = ESC + "[?25h";
 
     const std::string RESET = ESC + "[0m";
 
@@ -40,7 +42,7 @@ ConsoleScreen::ConsoleScreen() {
     screenData = ScreenData();
 
     std::cout << TUI::CLEAR_SCREEN
-            //   << TUI::ALTERNATE_SCREEN_BUFFER 
+              << TUI::ALTERNATE_SCREEN_BUFFER 
               << TUI::HIDE_CURSOR;
 }
 

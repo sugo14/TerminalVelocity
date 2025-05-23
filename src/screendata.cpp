@@ -1,27 +1,31 @@
-#pragma once
-
 #include "../include/screendata.hpp"
 
 ScreenData::ScreenData() {
+    refresh();
+}
+
+void ScreenData::refresh() {
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
-            screen[i][j] = 0;
+            pixels[i][j] = 0;
+            depthBuffer[i][j] = 0;
         }
     }
 }
 
 int ScreenData::getPixel(int x, int y) {
     if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) { return 0; }
-    return screen[y][x];
+    return pixels[y][x];
 }
 
-bool ScreenData::setPixel(int x, int y, int color) {
+bool ScreenData::setPixel(int x, int y, float z, int color) {
     if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) { return false; }
-    screen[y][x] = color;
+    if (z < depthBuffer[y][x]) { return false; }
+    pixels[y][x] = color;
     return true;
 }
 
-void ScreenData::drawLine(int x1, int y1, int x2, int y2, int color) {
+void ScreenData::drawLine(int x1, int y1, int x2, int y2, int color, float z) {
     int dx = abs(x2 - x1);
     int dy = abs(y2 - y1);
     int sx = (x1 < x2) ? 1 : -1;
@@ -29,7 +33,7 @@ void ScreenData::drawLine(int x1, int y1, int x2, int y2, int color) {
     int err = dx - dy;
 
     while (true) {
-        setPixel(x1, y1, color);
+        setPixel(x1, y1, z, color);
         if (x1 == x2 && y1 == y2) { break; }
         int err2 = err * 2;
         if (err2 > -dy) {

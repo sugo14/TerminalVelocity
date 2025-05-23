@@ -1,5 +1,6 @@
 #include "../include/camera.hpp"
 #include "../include/tui.hpp"
+#include <iostream>
 
 int main() {
     ConsoleScreen screen;
@@ -17,4 +18,14 @@ int main() {
 
     camera.draw(screen.screenData);
     screen.draw();
+
+    while (true) {
+        char c = getchar();
+        if (c == 'q') {
+            std::cout << TUI::ALTERNATE_SCREEN_BUFFER_OFF
+                      << TUI::RESET
+                      << TUI::SHOW_CURSOR;
+            break;
+        }
+    }
 }

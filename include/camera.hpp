@@ -9,9 +9,9 @@ float degToRad(float deg);
 
 struct Frustum {
     float fov, aspect;
-    float nearZ, farZ;
+    float nearZ, farZ; // TODO: implement
 
-    Vector2 planePos(Vector3 point);
+    Vector3 ndcSpace(Vector3 point);
 };
 
 struct Camera {

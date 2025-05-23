@@ -9,7 +9,9 @@ namespace TUI {
     extern const std::string CLEAR_SCREEN;
     extern const std::string HOME;
     extern const std::string ALTERNATE_SCREEN_BUFFER;
+    extern const std::string ALTERNATE_SCREEN_BUFFER_OFF;
     extern const std::string HIDE_CURSOR;
+    extern const std::string SHOW_CURSOR;
     extern const std::string RESET;
 
     std::string foregroundColor(int color);

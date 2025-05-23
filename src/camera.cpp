@@ -4,36 +4,45 @@ float degToRad(float deg) {
     return deg * M_PI / 180.0f;
 }
 
-Vector2 Frustum::planePos(Vector3 point) {
+/// @brief Converts a point in world space to normalized device coordinates (NDC) space.
+/// X and Y values are in the range [-1, 1], and Z is in the range [0, 1].
+/// @param point The point in world space to convert.
+/// @return The point in NDC space.
+Vector3 Frustum::ndcSpace(Vector3 point) {
     float x2 = point.x / point.z;
     float y2 = point.y / point.z;
+    float z2 = -point.z;
 
     float width = std::tan(degToRad(fov / 2));
     float height = width / aspect;
+    float length = farZ - nearZ;
 
     float normalX = (x2 + width) / (2 * width);
     float normalY = (y2 + height) / (2 * height);
+    float normalZ = (z2 + length) / (2 * length);
 
-    return Vector2{normalX, normalY};
+    float ndcX = (normalX * 2) - 1;
+    float ndcY = (normalY * 2) - 1;
+
+    return Vector3{ndcX, ndcY, normalZ};
 }
 
 void Camera::draw(ScreenData& screenData) {
-    for (int i = 0; i < screenData.HEIGHT; i++) {
-        for (int j = 0; j < screenData.WIDTH; j++) {
-            int color = 0x000000;
-            screenData.setPixel(j, i, color);
-        }
-    }
+    screenData.refresh();
 
     for (Triangle& triangle : triangles) {
         int screenX[3], screenY[3];
 
         for (int i = 0; i < 3; i++) {
             Vector3 point = triangle.vertices[i];
-            Vector2 pos = frustum.planePos(point);
-            int x = pos.x * ScreenData::WIDTH;
-            int y = pos.y * ScreenData::HEIGHT;
-            screenData.setPixel(x, y, triangle.color);
+            Vector3 pos = frustum.ndcSpace(point);
+            Vector3 normalizedPos = {pos.x * 0.5f + 0.5f, pos.y * 0.5f + 0.5f, pos.z};
+
+            int x = normalizedPos.x * ScreenData::WIDTH;
+            int y = normalizedPos.y * ScreenData::HEIGHT;
+            int z = normalizedPos.z;
+
+            screenData.setPixel(x, y, z, triangle.color);
             screenX[i] = x;
             screenY[i] = y;
         }
