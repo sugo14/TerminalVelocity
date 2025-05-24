@@ -11,8 +11,11 @@ namespace TUI {
 
     const std::string HOME = ESC + "[H";
 
-    const std::string ALTERNATE_SCREEN_BUFFER = ESC + "[?1049h"; // this is funny
-    const std::string ALTERNATE_SCREEN_BUFFER_OFF = ESC + "[?1049l";
+    // const std::string ALTERNATE_SCREEN_BUFFER = ESC + "[?1049h"; // this is funny
+    // const std::string ALTERNATE_SCREEN_BUFFER_OFF = ESC + "[?1049l";
+
+    const std::string ALTERNATE_SCREEN_BUFFER = ""; // TODO: fix this
+    const std::string ALTERNATE_SCREEN_BUFFER_OFF = "";
 
     const std::string HIDE_CURSOR = ESC + "[?25l";
     const std::string SHOW_CURSOR = ESC + "[?25h";

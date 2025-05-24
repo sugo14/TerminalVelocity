@@ -4,27 +4,33 @@ float degToRad(float deg) {
     return deg * M_PI / 180.0f;
 }
 
-/// @brief Converts a point in world space to normalized device coordinates (NDC) space.
-/// X and Y values are in the range [-1, 1], and Z is in the range [0, 1].
-/// @param point The point in world space to convert.
-/// @return The point in NDC space.
+Frustum::Frustum() : fovY(90.0f), aspect(16.0f / 9.0f), nearZ(0.1f), farZ(100.0f)
+{ initProjMatrix(); }
+
+Frustum::Frustum(float fovY, float aspect, float nearZ, float farZ)
+    : fovY(fovY), aspect(aspect), nearZ(nearZ), farZ(farZ)
+{ initProjMatrix(); }
+
+void Frustum::initProjMatrix() {
+    projMatrix = Matrix44();
+    float tanFovY = std::tan(degToRad(fovY / 2));
+    
+    // -1 to 1
+    projMatrix.m[0][0] = 1.0f / (aspect * tanFovY);
+    projMatrix.m[1][1] = 1.0f / tanFovY;
+
+    // 0 to 1
+    projMatrix.m[2][2] = farZ / (farZ - nearZ);
+    projMatrix.m[2][3] = -(nearZ * farZ) / (farZ - nearZ);
+
+    // look towards -Z
+    projMatrix.m[3][2] = -1;
+}
+
 Vector3 Frustum::ndcSpace(Vector3 point) {
-    float x2 = point.x / point.z;
-    float y2 = point.y / point.z;
-    float z2 = -point.z;
-
-    float width = std::tan(degToRad(fov / 2));
-    float height = width / aspect;
-    float length = farZ - nearZ;
-
-    float normalX = (x2 + width) / (2 * width);
-    float normalY = (y2 + height) / (2 * height);
-    float normalZ = (z2 + length) / (2 * length);
-
-    float ndcX = (normalX * 2) - 1;
-    float ndcY = (normalY * 2) - 1;
-
-    return Vector3{ndcX, ndcY, normalZ};
+    Vector4 vec = projMatrix * point.to4();
+    Vector3 perspective = {vec.x / vec.w, vec.y / vec.w, vec.z / vec.w};
+    return perspective;
 }
 
 void Camera::draw(ScreenData& screenData) {
@@ -36,7 +42,7 @@ void Camera::draw(ScreenData& screenData) {
         for (int i = 0; i < 3; i++) {
             Vector3 point = triangle.vertices[i];
             Vector3 pos = frustum.ndcSpace(point);
-            Vector3 normalizedPos = {pos.x * 0.5f + 0.5f, pos.y * 0.5f + 0.5f, pos.z};
+            Vector3 normalizedPos = {pos.x * 0.5f + 0.5f, -pos.y * 0.5f + 0.5f, pos.z};
 
             int x = normalizedPos.x * ScreenData::WIDTH;
             int y = normalizedPos.y * ScreenData::HEIGHT;
