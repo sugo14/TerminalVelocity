@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cmath>
 #include "geometry.hpp"
 #include "screendata.hpp"
 
@@ -12,6 +11,7 @@ struct Frustum {
     Matrix44 projMatrix;
 
     Frustum();
+    
     Frustum(float fovY, float aspect, float nearZ, float farZ);
 
     /// @brief Initializes the projection matrix based on the frustum parameters.
@@ -26,7 +26,7 @@ struct Frustum {
 
 struct Camera {
     Frustum frustum;
-    std::vector<Triangle> triangles;
+    std::vector<Object> objects;
 
     /// @brief Draws the current triangles to a screen.
     /// @param screenData The screen to draw to.
