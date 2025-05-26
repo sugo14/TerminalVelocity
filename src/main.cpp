@@ -12,27 +12,32 @@ int main() {
     camera.frustum.nearZ = 0.1f;
     camera.frustum.farZ = 100.0f;
 
-    float h = std::sqrt(3.0f);
-    camera.objects.push_back(Object{
-        {
-            {
-                { // equilateral
-                    {0.0f, h / 2.0f, 0.0f},
-                    {-1.0f, -h / 2.0f, 0.0f},
-                    {1.0f, -h / 2.0f, 0.0f}
-                },
-                0xFF0000
-            }
-        },
-        {0, 0, -2},
-        {0, 0, 0}
-    });
+    // float h = std::sqrt(3.0f);
+    // camera.meshes.push_back(Mesh{
+    //     { // equilateral
+    //         {0.0f, h / 2.0f, 0.0f},
+    //         {-1.0f, -h / 2.0f, 0.0f},
+    //         {1.0f, -h / 2.0f, 0.0f}
+    //     },
+    //     {
+    //         {
+    //             {0, 1, 2},
+    //             0xFFFFFF
+    //         }
+    //     },
+    //     {0, 0, -15},
+    //     {0, 0, 0},
+    //     {10, 10, 10}
+    // });
+
+    camera.meshes.push_back(Mesh::loadFile("cube"));
+    camera.meshes[0].position = {0, 0, -5};
+    camera.meshes[0].scale = {2, 2, 2};
 
     while (true) {
         camera.draw(screen.screenData);
         screen.draw();
-        camera.objects[0].rotation.x += 0.2;
-        camera.objects[0].rotation.y += 0.1;
+        camera.meshes[0].rotation.y += 0.2;
         usleep(0.05 * 1000000);
     }
 }

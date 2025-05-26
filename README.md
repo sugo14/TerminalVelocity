@@ -1,4 +1,4 @@
-My attempt at a 3D rendering engine that outputs to the console.
+My attempt at a software renderer that outputs to the console.
 
 **Current state**: rendering and rotating wireframe triangles.
 

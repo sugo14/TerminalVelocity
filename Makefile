@@ -1,7 +1,7 @@
 COMP = g++
 CFLAGS = -Wall -Wextra -Iinclude
 
-SRCS = src/main.cpp src/camera.cpp src/tui.cpp src/screendata.cpp src/geometry.cpp
+SRCS = src/main.cpp src/camera.cpp src/tui.cpp src/screendata.cpp src/geometry.cpp src/mesh.cpp
 
 main: $(SRCS)
 	$(COMP) -o main $(SRCS) $(CFLAGS)

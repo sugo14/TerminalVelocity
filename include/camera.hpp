@@ -1,6 +1,6 @@
 #pragma once
 
-#include "geometry.hpp"
+#include "mesh.hpp"
 #include "screendata.hpp"
 
 float degToRad(float deg);
@@ -26,7 +26,7 @@ struct Frustum {
 
 struct Camera {
     Frustum frustum;
-    std::vector<Object> objects;
+    std::vector<Mesh> meshes;
 
     /// @brief Draws the current triangles to a screen.
     /// @param screenData The screen to draw to.

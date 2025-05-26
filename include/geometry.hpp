@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <cmath>
 
 // don't love this forward declaration
@@ -29,23 +28,4 @@ struct Matrix44 {
     Vector4 operator*(const Vector4& v) const;
 
     Matrix44 operator*(const Matrix44& v) const; // TODO: ordering...
-};
-
-struct Triangle {
-    Vector3 vertices[3];
-    int color;
-};
-
-struct Object {
-    std::vector<Triangle> triangles;
-    Vector3 position;
-    Vector3 rotation;
-
-    /// @brief Produces the matrix used to convert points in the object to world space coordinates.
-    /// @return The matrix used for the transformation.
-    Matrix44 toWorldMatrix() const;
-    
-    /// @brief Produces the triangles in world space rather than object space.
-    /// @return The triangles in world space.
-    std::vector<Triangle> worldTriangles() const;
 };

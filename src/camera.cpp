@@ -4,7 +4,8 @@ float degToRad(float deg) {
     return deg * M_PI / 180.0f;
 }
 
-Frustum::Frustum() : fovY(90.0f), aspect(16.0f / 9.0f), nearZ(0.1f), farZ(100.0f)
+Frustum::Frustum()
+    : fovY(90.0f), aspect(16.0f / 9.0f), nearZ(0.1f), farZ(100.0f)
 { initProjMatrix(); }
 
 Frustum::Frustum(float fovY, float aspect, float nearZ, float farZ)
@@ -33,14 +34,14 @@ Vector3 Frustum::ndcSpace(Vector3 point) {
 void Camera::draw(ScreenData& screenData) {
     screenData.refresh();
 
-    for (Object& object : objects) {
-        std::vector<Triangle> triangles = object.worldTriangles();
+    for (Mesh& mesh : meshes) {
+        Matrix44 toWorld = mesh.toWorldMatrix();
 
-        for (Triangle& triangle : triangles) {
+        for (Triangle& triangle : mesh.triangles) {
             int screenX[3], screenY[3];
 
             for (int i = 0; i < 3; i++) {
-                Vector3 point = triangle.vertices[i];
+                Vector3 point = (toWorld * mesh.vertices[triangle.vertexIndices[i]].to4()).to3();
                 Vector3 pos = frustum.ndcSpace(point);
                 Vector3 normalizedPos = {
                     pos.x * 0.5f + 0.5f,
