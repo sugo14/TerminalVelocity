@@ -1,8 +1,8 @@
 My attempt at a software renderer that outputs to the console.
 
-**Current state**: rendering and rotating wireframe triangles.
+**Current state**: rendering mesh files.
 
-![Triangle rotating on screen](github/triangle-rotate.gif)
+![Cube rotating on screen](github/5-26-2025-cube.gif)
 
 My goals:
 - Learn some basic linear algebra
