@@ -21,7 +21,7 @@ struct Frustum {
     /// X and Y values are in the range [-1, 1] and Z is in the range [0, 1].
     /// @param point The point in world space to convert.
     /// @return The point in NDC space.
-    Vector3 ndcSpace(Vector3 point);
+    Vector3 ndcSpace(Vector3 point) const;
 };
 
 struct Camera {
@@ -30,5 +30,5 @@ struct Camera {
 
     /// @brief Draws the current triangles to a screen.
     /// @param screenData The screen to draw to.
-    void draw(ScreenData& screenData);
+    void draw(ScreenData& screenData) const;
 };

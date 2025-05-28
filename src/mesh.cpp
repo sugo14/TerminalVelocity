@@ -1,10 +1,11 @@
 #include "../include/mesh.hpp"
 
-#include <iostream> // TODO: temp
+#include <fstream>
 #include <sstream>
+#include <cmath>
 
 Mesh Mesh::loadFile(std::string meshName) {
-    std::string filepath = "models/" + meshName + ".model";
+    std::string filepath = "meshes/" + meshName + ".mesh";
     std::ifstream in(filepath);
     if (!in.is_open()) {
         throw -100; // ??????

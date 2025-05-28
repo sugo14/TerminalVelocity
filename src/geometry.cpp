@@ -4,6 +4,10 @@ Vector4 Vector3::to4(float w) const {
     return {x, y, z, w};
 }
 
+float Vector3::dot(const Vector3& v) const {
+    return x * v.x + y * v.y + z * v.z;
+}
+
 Vector3 Vector4::to3() const {
     return {x, y, z};
 }

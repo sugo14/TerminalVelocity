@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cmath>
-
 // don't love this forward declaration
 struct Vector4;
 
@@ -9,9 +7,14 @@ struct Vector3 {
     float x, y, z;
 
     /// @brief Adds a dimension to this vector.
-    /// @param w The additional value.
+    /// @param w The additional value, defaulting to 1.
     /// @return This vector as a Vector4.
     Vector4 to4(float w = 1) const;
+
+    /// @brief Calculates the dot product of this and another vector.
+    /// @param other The other vector.
+    /// @return The dot product.
+    float dot(const Vector3& other) const;
 };
 
 struct Vector4 {
@@ -25,7 +28,13 @@ struct Vector4 {
 struct Matrix44 {
     float m[4][4];
 
+    /// @brief Performs matrix multiplication with a Vector4.
+    /// @param v The vector to multiply with.
+    /// @return The resultant Vector4 after multiplication.
     Vector4 operator*(const Vector4& v) const;
 
-    Matrix44 operator*(const Matrix44& v) const; // TODO: ordering...
+    /// @brief Performs matrix multiplication with another Matrix44.
+    /// @param other The matrix to multiply with.
+    /// @return The resultant Matrix44 after multiplication.
+    Matrix44 operator*(const Matrix44& other) const; // TODO: ordering...
 };

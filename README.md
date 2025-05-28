@@ -1,8 +1,8 @@
-My attempt at a software renderer that outputs to the console.
+My attempt at a software renderer that outputs to the console, entirely from scratch.
 
-**Current state**: rendering mesh files.
+**Current state**: rendering wireframe mesh files.
 
-![Cube rotating on screen](github/5-26-2025-cube.gif)
+![Cube rotating on screen](github/5-28-2025-cube.gif)
 
 My goals:
 - Learn some basic linear algebra
