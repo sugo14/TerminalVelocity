@@ -31,4 +31,6 @@ struct Camera {
     /// @brief Draws the current triangles to a screen.
     /// @param screenData The screen to draw to.
     void draw(ScreenData& screenData) const;
+
+    void drawWireframe(ScreenData& screenData) const;
 };

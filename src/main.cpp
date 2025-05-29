@@ -1,6 +1,7 @@
 #include "../include/camera.hpp"
 #include "../include/tui.hpp"
 #include "../include/timer.hpp"
+
 #include <iostream>
 #include <unistd.h>
 
@@ -8,7 +9,7 @@ int main() {
     ConsoleScreen screen;
     Camera camera;
 
-    camera.frustum.fovY = degToRad(60.0f);
+    camera.frustum.fovY = degToRad(50.0f);
     camera.frustum.aspect = ((float)ScreenData::WIDTH) / ScreenData::HEIGHT;
     camera.frustum.nearZ = 0.1f;
     camera.frustum.farZ = 100.0f;
@@ -32,8 +33,8 @@ int main() {
     timer.tock();
 
     // print fps
-    int time = timer.duration().count() / 1000;
+    float time = timer.duration().count() / 1000.0;
     std::cout << "Time taken: " << time << " s" << std::endl;
-    float fps = 1000 / time;
+    float fps = 1000.0 / time;
     std::cout << "FPS: " << fps << std::endl;
 }

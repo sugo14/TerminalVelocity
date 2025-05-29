@@ -1,6 +1,7 @@
+#include "../include/tui.hpp"
+
 #include <iostream>
 #include <unistd.h>
-#include "../include/tui.hpp"
 
 namespace TUI {
     const std::string ESC = "\033";

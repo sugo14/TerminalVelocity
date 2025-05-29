@@ -1,5 +1,23 @@
 #pragma once
 
+struct Vector2 {
+    float x, y;
+
+    Vector2 operator-(const Vector2& other) const {
+        return {x - other.x, y - other.y};
+    }
+    Vector2 operator+(const Vector2& other) const {
+        return {x + other.x, y + other.y};
+    }
+
+    float dot(const Vector2& other) const {
+        return x * other.x + y * other.y;
+    }
+    float cross(const Vector2& other) const {
+        return x * other.y - y * other.x;
+    }
+};
+
 // don't love this forward declaration
 struct Vector4;
 
@@ -15,6 +33,10 @@ struct Vector3 {
     /// @param other The other vector.
     /// @return The dot product.
     float dot(const Vector3& other) const;
+
+    Vector3 operator-(const Vector3& other) const;
+
+    Vector3 operator+(const Vector3& other) const;
 };
 
 struct Vector4 {
