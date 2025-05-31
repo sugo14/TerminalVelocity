@@ -5,17 +5,37 @@
 #include <iostream>
 #include <unistd.h>
 
+int x() {
+    ConsoleScreen screen;
+    Camera camera;
+
+    camera.frustum.fovY = degToRad(50.0f);
+    camera.frustum.aspect = ((float)ScreenData::WIDTH) / ScreenData::HEIGHT;
+    camera.frustum.nearZ = -0.1f;
+    camera.frustum.farZ = -15.0f;
+    camera.frustum.initProjMatrix();
+
+    camera.meshes.push_back(Mesh::loadObjFile("cube"));
+    camera.meshes[0].position = {0, 0, -4};
+    camera.meshes[0].scale = {1, 1, 1};
+
+    camera.meshes[0].rotation.y = 0.755;
+
+    camera.draw(screen.screenData);
+    screen.draw();
+}
+
 int main() {
     ConsoleScreen screen;
     Camera camera;
 
     camera.frustum.fovY = degToRad(50.0f);
     camera.frustum.aspect = ((float)ScreenData::WIDTH) / ScreenData::HEIGHT;
-    camera.frustum.nearZ = 0.1f;
-    camera.frustum.farZ = 100.0f;
+    camera.frustum.nearZ = -1.5f;
+    camera.frustum.farZ = -7.5f;
     camera.frustum.initProjMatrix();
 
-    camera.meshes.push_back(Mesh::loadFile("cube"));
+    camera.meshes.push_back(Mesh::loadObjFile("cube2"));
     camera.meshes[0].position = {0, 0, -4};
     camera.meshes[0].scale = {1, 1, 1};
 
@@ -23,18 +43,21 @@ int main() {
     Timer timer;
     timer.tick();
 
-    for (int i = 0; i < 1000; i++) {
+    int n = 5000;
+
+    for (int i = 0; i < n; i++) {
         camera.draw(screen.screenData);
         screen.draw();
-        camera.meshes[0].rotation.y += 0.025;
+        camera.meshes[0].rotation.y += 0.025f;
+        camera.meshes[0].rotation.x += 0.0173874329f;
         usleep(0.02 * 1000000);
     }
 
     timer.tock();
 
     // print fps
-    float time = timer.duration().count() / 1000.0;
+    float time = timer.duration().count() / (float)n;
     std::cout << "Time taken: " << time << " s" << std::endl;
-    float fps = 1000.0 / time;
+    float fps = (float)n / time;
     std::cout << "FPS: " << fps << std::endl;
 }

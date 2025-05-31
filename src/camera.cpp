@@ -8,7 +8,7 @@ float degToRad(float deg) {
 }
 
 Frustum::Frustum()
-    : fovY(90.0f), aspect(16.0f / 9.0f), nearZ(0.1f), farZ(100.0f)
+    : fovY(90.0f), aspect(16.0f / 9.0f), nearZ(0.1f), farZ(15.0f)
 { initProjMatrix(); }
 
 Frustum::Frustum(float fovY, float aspect, float nearZ, float farZ)
@@ -17,7 +17,12 @@ Frustum::Frustum(float fovY, float aspect, float nearZ, float farZ)
 
 void Frustum::initProjMatrix() {
     projMatrix = Matrix44();
-    float tanFovY = std::tan(fovY / 2);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            projMatrix.m[i][j] = 0.0f;
+        }
+    }
+    float tanFovY = std::tan(fovY / 2.0);
     // -1 to 1
     projMatrix.m[0][0] = 1.0f / (aspect * tanFovY);
     projMatrix.m[1][1] = 1.0f / tanFovY;
@@ -30,7 +35,7 @@ void Frustum::initProjMatrix() {
 
 Vector3 Frustum::ndcSpace(Vector3 point) const {
     Vector4 vec = projMatrix * point.to4();
-    Vector3 perspective = {vec.x / vec.w, vec.y / vec.w, vec.z / vec.w};
+    Vector3 perspective = {vec.x / vec.w, vec.y / vec.w, vec.z}; // !TEMP
     return perspective;
 }
 
@@ -46,7 +51,11 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
             // set vertex pixels
             for (int i = 0; i < 3; i++) {
                 Vector3 point = (toWorld * mesh.vertices[triangle.vertexIndices[i]].to4()).to3();
+                // z ranges from like -3 to -5 roughly
                 Vector3 pos = frustum.ndcSpace(point);
+                // ! The pos.z gets converted to very close to -1: why?
+                // std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
+                // usleep(100000);
                 Vector3 normalizedPos = {
                     pos.x * 0.5f + 0.5f,
                     -pos.y * 0.5f + 0.5f, // + is up in NDC, so invert
@@ -97,15 +106,19 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
 
                     // compute z coordinate of pixel
                     float z = u * screen[0].z + v * screen[1].z + w * screen[2].z;
-                    int r = u * 255.0;
-                    int g = v * 255.0;
-                    int b = w * 255.0;
-                    int color = (r << 16) | (g << 8) | b; // combine RGB into hex color
 
-                    // std::cout << x << " " << y << " " << z << std::endl;
-                    // usleep(100000); // ! TEMP: slow down to see barycentric coordinates
+                    // calculate color in gradient
+                    // int r = u * 255.0;
+                    // int g = v * 255.0;
+                    // int b = w * 255.0;
+                    int r = -1.2 * z / (frustum.farZ - frustum.nearZ) * 255.0f, g = 0, b = 0; // !TEMP
+                    int color = (r << 16) | (g << 8) | b;
+                    // int color = triangle.color; // !TEMP
 
-                    screenData.setPixel(x, y, -1-z, color);
+                    screenData.setPixel(x, y, z, color);
+                    
+                    // std::cout << u << " " << v << " " << w << " " << z << std::endl;
+                    // usleep(100000);
                 }
             }
         }

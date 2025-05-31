@@ -8,7 +8,7 @@ void ScreenData::refresh() {
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
             pixels[i][j] = 0;
-            depthBuffer[i][j] = 0;
+            depthBuffer[i][j] = -100000;
         }
     }
 }
@@ -22,6 +22,7 @@ bool ScreenData::setPixel(int x, int y, float z, int color) {
     if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) { return false; }
     if (z < depthBuffer[y][x]) { return false; }
     pixels[y][x] = color;
+    depthBuffer[y][x] = z;
     return true;
 }
 
