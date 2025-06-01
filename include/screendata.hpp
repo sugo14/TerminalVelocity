@@ -3,8 +3,9 @@
 #include <cmath>
 
 struct ScreenData {
-    static const int WIDTH = 96;
-    static const int HEIGHT = 54;
+    static const int FAC = 8;
+    static const int WIDTH = 16 * FAC;
+    static const int HEIGHT = 9 * FAC;
 
     int pixels[HEIGHT][WIDTH];
     float depthBuffer[HEIGHT][WIDTH];

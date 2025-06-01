@@ -48,9 +48,11 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
         for (const Triangle& triangle : mesh.triangles) {
             // set vertex pixels
             Vector3 screen[3];
+            Vector3 world[3];
+
             for (int i = 0; i < 3; i++) {
-                Vector3 point = (toWorld * mesh.vertices[triangle.vertexIndices[i]].to4()).to3();
-                Vector3 pos = frustum.ndcSpace(point);
+                world[i] = (toWorld * mesh.vertices[triangle.vertexIndices[i]].to4()).to3();
+                Vector3 pos = frustum.ndcSpace(world[i]);
                 Vector3 normalizedPos = {
                     pos.x * 0.5f + 0.5f,
                     -pos.y * 0.5f + 0.5f, // + is up in NDC, so invert
@@ -84,6 +86,14 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
             float d11 = v1.dot(v1);
             float denom = d00 * d11 - d01 * d01;
 
+            // -- shading coloring -- // pretty slow
+            Vector3 triN = ((world[1] - world[0]).cross(world[2] - world[0])).normalized(); // triangle normal
+            Vector3 cent = (world[0] + world[1] + world[2]) / 3.0f;
+            Vector3 view = (cent * -1).normalized();
+            float brightness = std::fabs(triN.dot(view));
+            if (brightness < 0) { brightness = 0; } // backface culling?
+            if (brightness > 1) { brightness = 1; } // ??
+
             for (int y = minY; y <= maxY; y++) {
                 for (int x = minX; x <= maxX; x++) {
                     Vector2 p = {x, y};
@@ -99,18 +109,25 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                     float z = u * screen[0].z + v * screen[1].z + w * screen[2].z;
 
                     // -- barycentric coloring -- //
-                    // int r = u * 255.0;
-                    // int g = v * 255.0;
-                    // int b = w * 255.0;
-                    // int color = (r << 16) | (g << 8) | b;
+                    // int rI = u * 255.0;
+                    // int gI = v * 255.0;
+                    // int bI = w * 255.0;
+                    // int color = (rI << 16) | (gI << 8) | bI;
 
                     // -- Z coloring -- //
                     // int r = (z / (-frustum.farZ - frustum.nearZ)) * 255.0f; // this is maybe wrong
                     // if (r < 0) { r = 0; } if (r > 255) { r = 255; }
-                    // int color == r << 16;
+                    // int color = r << 16;
 
                     // -- random coloring -- //
-                    int color = triangle.color;
+                    // int color = triangle.color;
+
+                    // -- solid coloring -- //
+                    int color = 0xFFFFFF;
+
+                    int r = color >> 16, g = (color >> 8) & 0xFF, b = color & 0xFF;
+                    r *= brightness; g *= brightness; b *= brightness;
+                    color = (r << 16) | (g << 8) | b;
 
                     screenData.setPixel(x, y, z, color);
                 }

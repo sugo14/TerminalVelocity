@@ -29,6 +29,8 @@ namespace TUI {
     /// in exchange for performance.
     /// @param str The string to print.
     void fastPrint(const std::string& str);
+
+    std::pair<int, int> getTerminalSize();
 }
 
 struct ConsoleScreen {
