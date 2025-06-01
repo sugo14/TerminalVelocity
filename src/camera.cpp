@@ -8,7 +8,7 @@ float degToRad(float deg) {
 }
 
 Frustum::Frustum()
-    : fovY(90.0f), aspect(16.0f / 9.0f), nearZ(0.1f), farZ(15.0f)
+    : fovY(50.0f), aspect(16.0f / 9.0f), nearZ(0.1f), farZ(15.0f)
 { initProjMatrix(); }
 
 Frustum::Frustum(float fovY, float aspect, float nearZ, float farZ)
@@ -111,7 +111,8 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                     // int r = u * 255.0;
                     // int g = v * 255.0;
                     // int b = w * 255.0;
-                    int r = -1.2 * z / (frustum.farZ - frustum.nearZ) * 255.0f, g = 0, b = 0; // !TEMP
+                    int r = 255 - z / ((-frustum.farZ) - (-frustum.nearZ)) * 255.0f, g = 0, b = 0; // !TEMP
+                    // int r = 255 * -z, g = 0, b = 0; // !TEMP
                     int color = (r << 16) | (g << 8) | b;
                     // int color = triangle.color; // !TEMP
 
@@ -125,7 +126,7 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
     }
 }
 
-void Camera::drawWireframe(ScreenData& screenData) const { // TODO: this function is way too big
+void Camera::drawWireframe(ScreenData& screenData) const {
     screenData.refresh();
 
     for (const Mesh& mesh : meshes) {

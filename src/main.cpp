@@ -31,15 +31,14 @@ int main() {
 
     camera.frustum.fovY = degToRad(50.0f);
     camera.frustum.aspect = ((float)ScreenData::WIDTH) / ScreenData::HEIGHT;
-    camera.frustum.nearZ = -1.5f;
-    camera.frustum.farZ = -7.5f;
+    camera.frustum.nearZ = 1.5f;
+    camera.frustum.farZ = 6.5f;
     camera.frustum.initProjMatrix();
 
-    camera.meshes.push_back(Mesh::loadObjFile("cube2"));
+    camera.meshes.push_back(Mesh::loadObjFile("cube"));
     camera.meshes[0].position = {0, 0, -4};
     camera.meshes[0].scale = {1, 1, 1};
 
-    // get time
     Timer timer;
     timer.tick();
 
