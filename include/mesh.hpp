@@ -13,6 +13,7 @@ struct Triangle {
 struct Mesh {
     std::vector<Vector3> vertices;
     std::vector<Triangle> triangles;
+    std::vector<int> vertexColors;
     Vector3 position;
     Vector3 rotation;
     Vector3 scale;

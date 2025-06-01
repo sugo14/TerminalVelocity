@@ -35,13 +35,13 @@ int main(int argc, const char* argv[]) {
     camera.frustum.farZ = 11.0f;
     camera.frustum.initProjMatrix();
 
-    std::string objName = "teapot";
+    std::string objName = "rock_1";
     if (argc > 1) {
         objName = argv[1];
     }
 
-    camera.meshes.push_back(Mesh::loadObjFile("teapot"));
-    camera.meshes[0].position = {0, -2, -7};
+    camera.meshes.push_back(Mesh::loadObjFile(objName));
+    camera.meshes[0].position = {0, -0, -10};
     camera.meshes[0].scale = Vector3{1, 1, 1}; //* 20.0f;
 
     Timer timer;

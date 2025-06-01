@@ -3,6 +3,13 @@
 #include <iostream>
 #include <unistd.h>
 
+int interpolateColor(int c1, int c2, int c3, float u, float v, float w) {
+    int r = (u * ((c1 >> 16) & 0xFF) + v * ((c2 >> 16) & 0xFF) + w * ((c3 >> 16) & 0xFF));
+    int g = (u * ((c1 >> 8) & 0xFF) + v * ((c2 >> 8) & 0xFF) + w * ((c3 >> 8) & 0xFF));
+    int b = (u * (c1 & 0xFF) + v * (c2 & 0xFF) + w * (c3 & 0xFF));
+    return (r << 16) | (g << 8) | b;
+}
+
 float degToRad(float deg) {
     return deg * M_PI / 180.0f;
 }
@@ -90,7 +97,7 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
             Vector3 triN = ((world[1] - world[0]).cross(world[2] - world[0])).normalized(); // triangle normal
             Vector3 cent = (world[0] + world[1] + world[2]) / 3.0f;
             Vector3 view = (cent * -1).normalized();
-            float brightness = std::fabs(triN.dot(view));
+            float brightness = triN.dot(view);
             if (brightness < 0) { brightness = 0; } // backface culling?
             if (brightness > 1) { brightness = 1; } // ??
 
@@ -109,10 +116,12 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                     float z = u * screen[0].z + v * screen[1].z + w * screen[2].z;
 
                     // -- barycentric coloring -- //
-                    // int rI = u * 255.0;
-                    // int gI = v * 255.0;
-                    // int bI = w * 255.0;
-                    // int color = (rI << 16) | (gI << 8) | bI;
+                    int color = interpolateColor(
+                        mesh.vertexColors[triangle.vertexIndices[0]],
+                        mesh.vertexColors[triangle.vertexIndices[1]],
+                        mesh.vertexColors[triangle.vertexIndices[2]],
+                        u, v, w
+                    );
 
                     // -- Z coloring -- //
                     // int r = (z / (-frustum.farZ - frustum.nearZ)) * 255.0f; // this is maybe wrong
@@ -123,7 +132,7 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                     // int color = triangle.color;
 
                     // -- solid coloring -- //
-                    int color = 0xFFFFFF;
+                    // int color = 0x93928C;
 
                     int r = color >> 16, g = (color >> 8) & 0xFF, b = color & 0xFF;
                     r *= brightness; g *= brightness; b *= brightness;
