@@ -7,7 +7,7 @@ struct ScreenData {
     static const int HEIGHT = 54;
 
     int pixels[HEIGHT][WIDTH];
-    float depthBuffer[HEIGHT][WIDTH]; // TODO: implement
+    float depthBuffer[HEIGHT][WIDTH];
 
     ScreenData();
 

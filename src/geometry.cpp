@@ -1,18 +1,14 @@
 #include "../include/geometry.hpp"
 
+Vector2 Vector2::operator-(const Vector2& other) const {
+    return {x - other.x, y - other.y};
+}
+float Vector2::dot(const Vector2& other) const {
+    return x * other.x + y * other.y;
+}
+
 Vector4 Vector3::to4(float w) const {
     return {x, y, z, w};
-}
-
-float Vector3::dot(const Vector3& v) const {
-    return x * v.x + y * v.y + z * v.z;
-}
-
-Vector3 Vector3::operator-(const Vector3& other) const {
-    return {x - other.x, y - other.y, z - other.z};
-}
-Vector3 Vector3::operator+(const Vector3& other) const {
-    return {x + other.x, y + other.y, z + other.z};
 }
 
 Vector3 Vector4::to3() const {
@@ -27,7 +23,6 @@ Vector4 Matrix44::operator*(const Vector4& v) const {
         m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w
     };
 }
-
 Matrix44 Matrix44::operator*(const Matrix44& other) const {
     Matrix44 res;
     for (int i = 0; i < 4; i++) {

@@ -46,9 +46,8 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
         Matrix44 toWorld = mesh.toWorldMatrix();
 
         for (const Triangle& triangle : mesh.triangles) {
-            Vector3 screen[3];
-
             // set vertex pixels
+            Vector3 screen[3];
             for (int i = 0; i < 3; i++) {
                 Vector3 point = (toWorld * mesh.vertices[triangle.vertexIndices[i]].to4()).to3();
                 Vector3 pos = frustum.ndcSpace(point);
@@ -64,7 +63,7 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                 };
             }
 
-            // calculate screen bounding box
+            // calculate triangle pixel bounds
             int minX = std::min(screen[0].x, std::min(screen[1].x, screen[2].x));
             int maxX = std::max(screen[0].x, std::max(screen[1].x, screen[2].x));
             int minY = std::min(screen[0].y, std::min(screen[1].y, screen[2].y));
@@ -74,12 +73,12 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
             minY = std::max(minY, 0);
             maxY = std::min(maxY, ScreenData::HEIGHT - 1);
 
+            // precalculate for barycentric
             Vector2 a = {screen[0].x, screen[0].y};
             Vector2 b = {screen[1].x, screen[1].y};
             Vector2 c = {screen[2].x, screen[2].y};
             Vector2 v0 = b - a;
             Vector2 v1 = c - a;
-
             float d00 = v0.dot(v0);
             float d01 = v0.dot(v1);
             float d11 = v1.dot(v1);
@@ -89,34 +88,29 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                 for (int x = minX; x <= maxX; x++) {
                     Vector2 p = {x, y};
                     Vector2 v2 = p - a;
-
                     float d20 = v2.dot(v0);
                     float d21 = v2.dot(v1);
 
+                    // barycentric coordinates
                     float v = (d11 * d20 - d01 * d21) / denom;
                     float w = (d00 * d21 - d01 * d20) / denom;
                     float u = 1.0f - v - w;
-                    
-                    // check if pixel is inside triangle
                     if (u < 0 || v < 0 || w < 0) { continue; }
-
                     float z = u * screen[0].z + v * screen[1].z + w * screen[2].z;
 
-                    int r = 0, g = 0, b = 0;
-
-                    // barycentric coloring
+                    // -- barycentric coloring -- //
                     // int r = u * 255.0;
                     // int g = v * 255.0;
                     // int b = w * 255.0;
+                    // int color = (r << 16) | (g << 8) | b;
 
-                    // Z coloring
-                    // int r = (z / (-frustum.farZ - frustum.nearZ)) * 255.0f;
+                    // -- Z coloring -- //
+                    // int r = (z / (-frustum.farZ - frustum.nearZ)) * 255.0f; // this is maybe wrong
                     // if (r < 0) { r = 0; } if (r > 255) { r = 255; }
+                    // int color == r << 16;
 
-                    int color = (r << 16) | (g << 8) | b;
-
-                    // random coloring
-                    color = triangle.color;
+                    // -- random coloring -- //
+                    int color = triangle.color;
 
                     screenData.setPixel(x, y, z, color);
                 }

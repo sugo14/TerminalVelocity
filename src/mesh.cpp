@@ -2,7 +2,6 @@
 
 #include <fstream>
 #include <sstream>
-#include <cmath>
 #include <random>
 
 Mesh Mesh::loadObjFile(const std::string& objName) {
@@ -12,8 +11,6 @@ Mesh Mesh::loadObjFile(const std::string& objName) {
         throw std::runtime_error(filepath + " could not be opened successfully.");
     }
     Mesh mesh;
-
-    std::ofstream out("debug.txt");
 
     std::string line;
     while (std::getline(in, line)) {
@@ -38,63 +35,22 @@ Mesh Mesh::loadObjFile(const std::string& objName) {
                 std::string v, vt, vn;
 
                 std::getline(tokenStream, v, '/');
-                // just ignore vt and vn its probably fine
+                // just ignore vt and vn for now its probably fine
 
                 int vertexIndex = std::stoi(v) - 1; // obj is 1-indexed
                 vertexIndices.push_back(vertexIndex);
             }
 
-            // fan triangulation to turn n-gon into triangles
+            // fan triangulation, not tested
             for (int i = 2; i < vertexIndices.size(); i++) {
                 Triangle tri;
                 tri.vertexIndices[0] = vertexIndices[0];
                 tri.vertexIndices[1] = vertexIndices[i - 1];
                 tri.vertexIndices[2] = vertexIndices[i];
-                tri.color = rand() % 0xFFFFFF; // ! temp
-
-                out << "Triangle: "
-                    << mesh.vertices[tri.vertexIndices[0]].x << " "
-                    << mesh.vertices[tri.vertexIndices[0]].y << " "
-                    << mesh.vertices[tri.vertexIndices[0]].z << " | "
-                    << mesh.vertices[tri.vertexIndices[1]].x << " "
-                    << mesh.vertices[tri.vertexIndices[1]].y << " "
-                    << mesh.vertices[tri.vertexIndices[1]].z << " | "
-                    << mesh.vertices[tri.vertexIndices[2]].x << " "
-                    << mesh.vertices[tri.vertexIndices[2]].y << " "
-                    << mesh.vertices[tri.vertexIndices[2]].z << std::endl;
+                tri.color = rand() % 0xFFFFFF; // ! Temporary random color
                 mesh.triangles.push_back(tri);
             }
         }
-    }
-
-    in.close();
-    return mesh;
-}
-
-Mesh Mesh::loadFile(const std::string& meshName) {
-    std::string filepath = "meshes/" + meshName + ".mesh";
-    std::ifstream in(filepath);
-    if (!in.is_open()) {
-        throw std::runtime_error(filepath + " could not be opened successfully.");
-    }
-    Mesh mesh;
-
-    std::string line;
-    while (std::getline(in, line)) {
-        if (line.size() == 0) { break; }
-        
-        std::istringstream iss(line);
-        Vector3 vert;
-        iss >> vert.x >> vert.y >> vert.z;
-        mesh.vertices.push_back(vert);
-    }
-
-    while (std::getline(in, line)) {
-        std::istringstream iss(line);
-        Triangle tri;
-        iss >> tri.vertexIndices[0] >> tri.vertexIndices[1] >> tri.vertexIndices[2];
-        tri.color = 0xFFFFFF;
-        mesh.triangles.push_back(tri);
     }
 
     in.close();

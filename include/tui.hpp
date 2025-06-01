@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
 #include "screendata.hpp"
+
+#include <string>
 
 namespace TUI {
     extern const std::string ESC;

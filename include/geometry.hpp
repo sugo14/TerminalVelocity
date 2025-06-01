@@ -3,19 +3,9 @@
 struct Vector2 {
     float x, y;
 
-    Vector2 operator-(const Vector2& other) const {
-        return {x - other.x, y - other.y};
-    }
-    Vector2 operator+(const Vector2& other) const {
-        return {x + other.x, y + other.y};
-    }
+    Vector2 operator-(const Vector2& other) const;
 
-    float dot(const Vector2& other) const {
-        return x * other.x + y * other.y;
-    }
-    float cross(const Vector2& other) const {
-        return x * other.y - y * other.x;
-    }
+    float dot(const Vector2& other) const;
 };
 
 // don't love this forward declaration
@@ -28,15 +18,6 @@ struct Vector3 {
     /// @param w The additional value, defaulting to 1.
     /// @return This vector as a Vector4.
     Vector4 to4(float w = 1) const;
-
-    /// @brief Calculates the dot product of this and another vector.
-    /// @param other The other vector.
-    /// @return The dot product.
-    float dot(const Vector3& other) const;
-
-    Vector3 operator-(const Vector3& other) const;
-
-    Vector3 operator+(const Vector3& other) const;
 };
 
 struct Vector4 {

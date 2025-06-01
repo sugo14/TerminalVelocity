@@ -1,8 +1,8 @@
 My attempt at a software renderer that outputs to the console, entirely from scratch.
 
-**Current state**: rendering wireframe mesh files.
+**Current state**: rendering rasterized obj files.
 
-![Cube rotating on screen](github/5-28-2025-cube.gif)
+![Cube rotating on screen](github/5-31-2025-raster.gif)
 
 My goals:
 - Learn some basic linear algebra

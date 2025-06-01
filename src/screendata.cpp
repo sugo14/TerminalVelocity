@@ -1,6 +1,5 @@
 #include "../include/screendata.hpp"
 
-
 ScreenData::ScreenData() {
     refresh();
 }

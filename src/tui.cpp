@@ -47,8 +47,8 @@ ConsoleScreen::ConsoleScreen() {
 
     std::cout << TUI::CLEAR_SCREEN
               << TUI::ALTERNATE_SCREEN_BUFFER 
-              << TUI::HIDE_CURSOR
-              << std::endl;
+              << TUI::HIDE_CURSOR;
+    std::cout.flush();
 }
 
 void ConsoleScreen::draw() {

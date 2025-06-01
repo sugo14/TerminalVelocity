@@ -5,7 +5,7 @@
 #include <iostream>
 #include <unistd.h>
 
-int x() {
+int testPosition() {
     ConsoleScreen screen;
     Camera camera;
 
