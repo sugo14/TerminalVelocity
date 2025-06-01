@@ -28,9 +28,11 @@ struct Camera {
     Frustum frustum;
     std::vector<Mesh> meshes;
 
-    /// @brief Draws the current triangles to a screen.
+    /// @brief Draws the current triangles to a screen using rasterization.
     /// @param screenData The screen to draw to.
     void draw(ScreenData& screenData) const;
 
+    /// @brief Draws the current triangles as wireframes to a screen.
+    /// @param screenData The screen to draw to.
     void drawWireframe(ScreenData& screenData) const;
 };

@@ -1,8 +1,6 @@
 #include "../include/screendata.hpp"
 
-ScreenData::ScreenData() {
-    refresh();
-}
+ScreenData::ScreenData() { refresh(); }
 
 void ScreenData::refresh() {
     for (int i = 0; i < HEIGHT; i++) {

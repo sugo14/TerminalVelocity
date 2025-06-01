@@ -3,8 +3,14 @@
 struct Vector2 {
     float x, y;
 
+    /// @brief Subtracts another Vector2 from this vector.
+    /// @param other The vector to subtract.
+    /// @return The resultant vector after subtraction.
     Vector2 operator-(const Vector2& other) const;
 
+    /// @brief Calculates the dot product of this vector with another Vector2.
+    /// @param other The vector to dot with.
+    /// @return The resultant dot product.
     float dot(const Vector2& other) const;
 };
 

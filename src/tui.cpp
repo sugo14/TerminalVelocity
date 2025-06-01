@@ -12,7 +12,7 @@ namespace TUI {
 
     const std::string HOME = ESC + "[H";
 
-    // const std::string ALTERNATE_SCREEN_BUFFER = ESC + "[?1049h"; // this is funny
+    // const std::string ALTERNATE_SCREEN_BUFFER = ESC + "[?1049h";
     // const std::string ALTERNATE_SCREEN_BUFFER_OFF = ESC + "[?1049l";
 
     const std::string ALTERNATE_SCREEN_BUFFER = ""; // TODO: fix this
@@ -21,7 +21,7 @@ namespace TUI {
     const std::string HIDE_CURSOR = ESC + "[?25l";
     const std::string SHOW_CURSOR = ESC + "[?25h";
 
-    const std::string RESET = ESC + "[0m";
+    const std::string RESET_COLORS = ESC + "[0m";
 
     std::string foregroundColor(int color) {
         int r = (color >> 16) & 0xFF;
@@ -64,11 +64,10 @@ void ConsoleScreen::draw() {
             output += TUI::backgroundColor(lowerColor);
             output += TUI::UPPER_HALF_BLOCK;
         }
-        output += TUI::ESC + "[0m"; // reset colors
-        output += " :\n";
+        output += TUI::RESET_COLORS;
+        output += ":\n";
     }
-    output += std::string(ScreenData::WIDTH, 'x');
-    output += TUI::RESET;
+    output += std::string(ScreenData::WIDTH, 'x') + "\n";
 
     TUI::fastPrint(output);
 }

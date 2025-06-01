@@ -17,13 +17,11 @@ struct Mesh {
     Vector3 rotation;
     Vector3 scale;
 
-    static Mesh loadObjFile(const std::string& objName);
-
-    /// @brief Loads a file into a Mesh object.
-    /// The file must follow the project's .mesh format, and be located in the "meshes" directory.
-    /// @param meshName The name of the file, not including the .mesh extension.
+    /// @brief Loads an .obj file into a Mesh object.
+    /// The file must be located in the "models" directory.
+    /// @param objName The name of the file, not including the .obj extension.
     /// @return The loaded Mesh object.
-    static Mesh loadFile(const std::string& meshName);
+    static Mesh loadObjFile(const std::string& objName);
 
     /// @brief Produces the matrix used to convert points in the object to world space coordinates.
     /// @return The matrix used for the transformation.
