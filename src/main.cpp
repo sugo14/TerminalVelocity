@@ -11,15 +11,15 @@ int x() {
 
     camera.frustum.fovY = degToRad(50.0f);
     camera.frustum.aspect = ((float)ScreenData::WIDTH) / ScreenData::HEIGHT;
-    camera.frustum.nearZ = -0.1f;
-    camera.frustum.farZ = -15.0f;
+    camera.frustum.nearZ = 1.0f;
+    camera.frustum.farZ = 7.0f;
     camera.frustum.initProjMatrix();
 
     camera.meshes.push_back(Mesh::loadObjFile("cube"));
     camera.meshes[0].position = {0, 0, -4};
     camera.meshes[0].scale = {1, 1, 1};
 
-    camera.meshes[0].rotation.y = 0.755;
+    camera.meshes[0].rotation.y = 0.4;
 
     camera.draw(screen.screenData);
     screen.draw();
@@ -31,12 +31,12 @@ int main() {
 
     camera.frustum.fovY = degToRad(50.0f);
     camera.frustum.aspect = ((float)ScreenData::WIDTH) / ScreenData::HEIGHT;
-    camera.frustum.nearZ = 1.5f;
-    camera.frustum.farZ = 6.5f;
+    camera.frustum.nearZ = 1.0f;
+    camera.frustum.farZ = 8.0f;
     camera.frustum.initProjMatrix();
 
     camera.meshes.push_back(Mesh::loadObjFile("cube"));
-    camera.meshes[0].position = {0, 0, -4};
+    camera.meshes[0].position = {0, 0, -5};
     camera.meshes[0].scale = {1, 1, 1};
 
     Timer timer;

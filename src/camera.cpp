@@ -35,7 +35,7 @@ void Frustum::initProjMatrix() {
 
 Vector3 Frustum::ndcSpace(Vector3 point) const {
     Vector4 vec = projMatrix * point.to4();
-    Vector3 perspective = {vec.x / vec.w, vec.y / vec.w, vec.z}; // !TEMP
+    Vector3 perspective = {vec.x / vec.w, vec.y / vec.w, vec.z}; // ! FIX THIS SOON !
     return perspective;
 }
 
@@ -51,11 +51,7 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
             // set vertex pixels
             for (int i = 0; i < 3; i++) {
                 Vector3 point = (toWorld * mesh.vertices[triangle.vertexIndices[i]].to4()).to3();
-                // z ranges from like -3 to -5 roughly
                 Vector3 pos = frustum.ndcSpace(point);
-                // ! The pos.z gets converted to very close to -1: why?
-                // std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
-                // usleep(100000);
                 Vector3 normalizedPos = {
                     pos.x * 0.5f + 0.5f,
                     -pos.y * 0.5f + 0.5f, // + is up in NDC, so invert
@@ -104,22 +100,25 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                     // check if pixel is inside triangle
                     if (u < 0 || v < 0 || w < 0) { continue; }
 
-                    // compute z coordinate of pixel
                     float z = u * screen[0].z + v * screen[1].z + w * screen[2].z;
 
-                    // calculate color in gradient
+                    int r = 0, g = 0, b = 0;
+
+                    // barycentric coloring
                     // int r = u * 255.0;
                     // int g = v * 255.0;
                     // int b = w * 255.0;
-                    int r = 255 - z / ((-frustum.farZ) - (-frustum.nearZ)) * 255.0f, g = 0, b = 0; // !TEMP
-                    // int r = 255 * -z, g = 0, b = 0; // !TEMP
+
+                    // Z coloring
+                    // int r = (z / (-frustum.farZ - frustum.nearZ)) * 255.0f;
+                    // if (r < 0) { r = 0; } if (r > 255) { r = 255; }
+
                     int color = (r << 16) | (g << 8) | b;
-                    // int color = triangle.color; // !TEMP
+
+                    // random coloring
+                    color = triangle.color;
 
                     screenData.setPixel(x, y, z, color);
-                    
-                    // std::cout << u << " " << v << " " << w << " " << z << std::endl;
-                    // usleep(100000);
                 }
             }
         }

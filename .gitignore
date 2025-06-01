@@ -1,6 +1,6 @@
 .old
 .vscode
-main
+/main
 
 # Prerequisites
 *.d
@@ -10,6 +10,9 @@ main
 *.lo
 *.o
 *.obj
+
+# Include wavefront obj files
+!models/*.obj
 
 # Precompiled Headers
 *.gch

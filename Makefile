@@ -1,5 +1,5 @@
 COMP = g++
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -Wall -Wextra -Iinclude -pedantic -Wconversion -Wshadow
 
 SRCS = src/main.cpp src/camera.cpp src/tui.cpp src/screendata.cpp src/geometry.cpp src/mesh.cpp
 

@@ -64,8 +64,10 @@ void ConsoleScreen::draw() {
             output += TUI::backgroundColor(lowerColor);
             output += TUI::UPPER_HALF_BLOCK;
         }
-        output += "\n";
+        output += TUI::ESC + "[0m"; // reset colors
+        output += " :\n";
     }
+    output += std::string(ScreenData::WIDTH, 'x');
     output += TUI::RESET;
 
     TUI::fastPrint(output);
