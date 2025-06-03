@@ -15,7 +15,7 @@ float degToRad(float deg) {
 }
 
 Frustum::Frustum()
-    : fovY(50.0f), aspect(16.0f / 9.0f), nearZ(0.1f), farZ(15.0f)
+    : fovY(50.0f), aspect(16.0f / 9.0f), nearZ(3.0f), farZ(80.0f)
 { initProjMatrix(); }
 
 Frustum::Frustum(float fovY, float aspect, float nearZ, float farZ)
@@ -50,7 +50,9 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
     screenData.refresh();
 
     for (const Mesh& mesh : meshes) {
-        Matrix44 toWorld = mesh.toWorldMatrix();
+        if (mesh.transform.position.z > -frustum.nearZ) { continue; } // skip meshes in front of the camera
+        if (mesh.transform.position.z < -frustum.farZ) { continue; } // skip meshes behind the camera
+        Matrix44 toWorld = mesh.transform.toWorldMatrix();
 
         for (const Triangle& triangle : mesh.triangles) {
             // set vertex pixels
@@ -71,6 +73,13 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                     normalizedPos.z
                 };
             }
+
+            // if (world[0].z < -frustum.farZ && world[1].z < -frustum.farZ && world[2].z < -frustum.farZ) {
+            //     continue;
+            // }
+            // if (world[0].z > -frustum.nearZ && world[1].z > -frustum.nearZ && world[2].z > -frustum.nearZ) {
+            //     continue;
+            // }
 
             // calculate triangle pixel bounds
             int minX = std::min(screen[0].x, std::min(screen[1].x, screen[2].x));
@@ -138,6 +147,7 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
                     r *= brightness; g *= brightness; b *= brightness;
                     color = (r << 16) | (g << 8) | b;
 
+                    if (z < -frustum.farZ || z > -frustum.nearZ) { continue; }
                     screenData.setPixel(x, y, z, color);
                 }
             }
@@ -149,7 +159,7 @@ void Camera::drawWireframe(ScreenData& screenData) const {
     screenData.refresh();
 
     for (const Mesh& mesh : meshes) {
-        Matrix44 toWorld = mesh.toWorldMatrix();
+        Matrix44 toWorld = mesh.transform.toWorldMatrix();
 
         for (const Triangle& triangle : mesh.triangles) {
             float screenX[3], screenY[3];

@@ -18,7 +18,7 @@ int randomRockColor() {
     float b = r;
 
     // 60% chance of brown
-    if (chance(gen) < 0.6f) {
+    if (chance(gen) < 0.3f) {
         r += redTint(gen);
         g += greenTint(gen);
     }
@@ -78,49 +78,33 @@ Mesh Mesh::loadObjFile(const std::string& objName) {
         }
     }
 
-    for (int i = 0; i < mesh.vertices.size(); i++) {
-        // Generate a random color for each vertex
+    for (int i = 0; i < mesh.vertices.size(); i++) { // ! Temporary for asteroids
         mesh.vertexColors.push_back(randomRockColor());
     }
     in.close();
+
+    mesh.centerSelf();
+    mesh.transform.position = {0, 0, 0};
+    mesh.transform.rotation = {0, 0, 0};
+    mesh.transform.scale = {1, 1, 1};
     return mesh;
 }
 
-Matrix44 Mesh::toWorldMatrix() const {
-    float cx = std::cos(rotation.x), sx = std::sin(rotation.x);
-    float cy = std::cos(rotation.y), sy = std::sin(rotation.y);
-    float cz = std::cos(rotation.z), sz = std::sin(rotation.z);
+void Mesh::centerSelf() {
+    Vector3 min = vertices[0];
+    Vector3 max = vertices[0];
 
-    Matrix44 scaling = {{
-        scale.x, 0, 0, 0,
-        0, scale.y, 0, 0,
-        0, 0, scale.z, 0,
-        0, 0, 0, 1
-    }};
-    Matrix44 xRot = {{
-        1, 0, 0, 0,
-        0, cx, -sx, 0,
-        0, sx, cx, 0,
-        0, 0, 0, 1
-    }};
-    Matrix44 yRot = {{
-        cy, 0, sy, 0,
-        0, 1, 0, 0,
-        -sy, 0, cy, 0,
-        0, 0, 0, 1
-    }};
-    Matrix44 zRot = {{
-        cz, -sz, 0, 0,
-        sz, cz, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-    }};
-    Matrix44 translation = {{
-        1, 0, 0, position.x,
-        0, 1, 0, position.y,
-        0, 0, 1, position.z,
-        0, 0, 0, 1
-    }};
+    for (const Vector3& v : vertices) {
+        if (v.x < min.x) min.x = v.x;
+        if (v.y < min.y) min.y = v.y;
+        if (v.z < min.z) min.z = v.z;
+        if (v.x > max.x) max.x = v.x;
+        if (v.y > max.y) max.y = v.y;
+        if (v.z > max.z) max.z = v.z;
+    }
 
-    return translation * zRot * yRot * xRot * scaling;
+    Vector3 center = (min + max) / 2.0f;;
+    for (Vector3& v : vertices) {
+        v = v - center;
+    }
 }

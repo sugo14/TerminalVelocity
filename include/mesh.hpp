@@ -14,9 +14,7 @@ struct Mesh {
     std::vector<Vector3> vertices;
     std::vector<Triangle> triangles;
     std::vector<int> vertexColors;
-    Vector3 position;
-    Vector3 rotation;
-    Vector3 scale;
+    Transform transform;
 
     /// @brief Loads an .obj file into a Mesh object.
     /// The file must be located in the "models" directory.
@@ -24,7 +22,6 @@ struct Mesh {
     /// @return The loaded Mesh object.
     static Mesh loadObjFile(const std::string& objName);
 
-    /// @brief Produces the matrix used to convert points in the object to world space coordinates.
-    /// @return The matrix used for the transformation.
-    Matrix44 toWorldMatrix() const;
+    /// @brief Centers the mesh so that it extends equally positively and negatively in all dimensions.
+    void centerSelf();
 };

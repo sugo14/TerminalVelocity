@@ -10,6 +10,34 @@ float Vector2::dot(const Vector2& other) const {
 Vector4 Vector3::to4(float w) const {
     return {x, y, z, w};
 }
+Vector3 Vector3::normalized() const {
+    float length = std::sqrt(x * x + y * y + z * z);
+    if (length == 0) { return {0, 0, 0}; } // avoid division by zero
+    return {x / length, y / length, z / length};
+}
+float Vector3::dot(const Vector3& other) const {
+    return x * other.x + y * other.y + z * other.z;
+}
+Vector3 Vector3::cross(const Vector3& other) const {
+    return {
+        y * other.z - z * other.y,
+        z * other.x - x * other.z,
+        x * other.y - y * other.x
+    };
+}
+Vector3 Vector3::operator+(const Vector3& other) const {
+    return {x + other.x, y + other.y, z + other.z};
+}
+Vector3 Vector3::operator-(const Vector3& other) const {
+    return {x - other.x, y - other.y, z - other.z};
+}
+Vector3 Vector3::operator*(float scalar) const {
+    return {x * scalar, y * scalar, z * scalar};
+}
+Vector3 Vector3::operator/(float scalar) const {
+    if (scalar == 0) { return {0, 0, 0}; } // avoid division by zero
+    return {x / scalar, y / scalar, z / scalar};
+}
 
 Vector3 Vector4::to3() const {
     return {x, y, z};
@@ -34,4 +62,43 @@ Matrix44 Matrix44::operator*(const Matrix44& other) const {
         }
     }
     return res;
+}
+
+Matrix44 Transform::toWorldMatrix() const {
+    float cx = std::cos(rotation.x), sx = std::sin(rotation.x);
+    float cy = std::cos(rotation.y), sy = std::sin(rotation.y);
+    float cz = std::cos(rotation.z), sz = std::sin(rotation.z);
+
+    Matrix44 scaling = {{
+        scale.x, 0, 0, 0,
+        0, scale.y, 0, 0,
+        0, 0, scale.z, 0,
+        0, 0, 0, 1
+    }};
+    Matrix44 xRot = {{
+        1, 0, 0, 0,
+        0, cx, -sx, 0,
+        0, sx, cx, 0,
+        0, 0, 0, 1
+    }};
+    Matrix44 yRot = {{
+        cy, 0, sy, 0,
+        0, 1, 0, 0,
+        -sy, 0, cy, 0,
+        0, 0, 0, 1
+    }};
+    Matrix44 zRot = {{
+        cz, -sz, 0, 0,
+        sz, cz, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    }};
+    Matrix44 translation = {{
+        1, 0, 0, position.x,
+        0, 1, 0, position.y,
+        0, 0, 1, position.z,
+        0, 0, 0, 1
+    }};
+
+    return translation * zRot * yRot * xRot * scaling;
 }
