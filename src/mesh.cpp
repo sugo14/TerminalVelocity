@@ -18,7 +18,7 @@ int randomRockColor() {
     float b = r;
 
     // 60% chance of brown
-    if (chance(gen) < 0.3f) {
+    if (chance(gen) < 0.6f) {
         r += redTint(gen);
         g += greenTint(gen);
     }
@@ -84,9 +84,6 @@ Mesh Mesh::loadObjFile(const std::string& objName) {
     in.close();
 
     mesh.centerSelf();
-    mesh.transform.position = {0, 0, 0};
-    mesh.transform.rotation = {0, 0, 0};
-    mesh.transform.scale = {1, 1, 1};
     return mesh;
 }
 

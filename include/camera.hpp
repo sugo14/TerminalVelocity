@@ -3,6 +3,8 @@
 #include "mesh.hpp"
 #include "screendata.hpp"
 
+struct GameObject;
+
 float degToRad(float deg);
 
 struct Frustum {
@@ -26,15 +28,14 @@ struct Frustum {
 
 struct Camera {
     Frustum frustum;
-    std::vector<Mesh> meshes;
 
     Camera() = default;
 
     /// @brief Draws the current triangles to a screen using rasterization.
     /// @param screenData The screen to draw to.
-    void draw(ScreenData& screenData) const;
+    void draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) const;
 
     /// @brief Draws the current triangles as wireframes to a screen.
     /// @param screenData The screen to draw to.
-    void drawWireframe(ScreenData& screenData) const;
+    void drawWireframe(std::vector<GameObject>& gameObjects, ScreenData& screenData) const;
 };

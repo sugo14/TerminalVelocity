@@ -1,13 +1,18 @@
 #include "../include/gameengine.hpp"
 
 #include <chrono>
+#include "../include/debug.hpp"
 
 void GameObject::start(GameEngine* engine) {
-    for (ObjectScript& script : scripts) { script.start(engine); }
+    debug("Starting object: " + name);
+    for (ObjectScript* script : scripts) {
+        debug("Starting script");
+        script->start(engine, this);
+    }
 }
 
 void GameObject::update(int deltaTime, GameEngine* engine) {
-    for (ObjectScript& script : scripts) { script.update(deltaTime, engine); }
+    for (ObjectScript* script : scripts) { script->update(deltaTime, engine, this); }
 }
 
 Input::Input() {
@@ -43,7 +48,7 @@ void GameEngine::run() {
         tick(lastDt);
 
         // camera loop
-        camera.draw(screen.screenData);
+        camera.draw(scene.gameObjects, screen.screenData);
         screen.draw();
 
         // frame end
@@ -54,7 +59,7 @@ void GameEngine::run() {
 
 void GameEngine::addObject(const GameObject& object) {
     scene.gameObjects.push_back(object);
-    camera.meshes.push_back(object.mesh); // ! NASTY
-    camera.meshes.back().transform = object.transform; // ! NASTY
     scene.gameObjects.back().start(this);
+    scene.gameObjects.back().transform.scale = {1, 1, 1};
+    scene.gameObjects.back().transform.rotation = {0, 0, 0};
 }

@@ -1,4 +1,5 @@
 #include "../include/camera.hpp"
+#include "../include/gameengine.hpp"
 
 #include <iostream>
 #include <unistd.h>
@@ -46,13 +47,14 @@ Vector3 Frustum::ndcSpace(Vector3 point) const {
     return perspective;
 }
 
-void Camera::draw(ScreenData& screenData) const { // TODO: this function is way too big
+void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) const { // TODO: this function is way too big
     screenData.refresh();
 
-    for (const Mesh& mesh : meshes) {
-        if (mesh.transform.position.z > -frustum.nearZ) { continue; } // skip meshes in front of the camera
-        if (mesh.transform.position.z < -frustum.farZ) { continue; } // skip meshes behind the camera
-        Matrix44 toWorld = mesh.transform.toWorldMatrix();
+    for (const GameObject& gameObject : gameObjects) {
+        const Mesh& mesh = gameObject.mesh;
+        if (gameObject.transform.position.z > -frustum.nearZ) { continue; } // skip meshes in front of the camera
+        if (gameObject.transform.position.z < -frustum.farZ) { continue; } // skip meshes behind the camera
+        Matrix44 toWorld = gameObject.transform.toWorldMatrix();
 
         for (const Triangle& triangle : mesh.triangles) {
             // set vertex pixels
@@ -155,11 +157,12 @@ void Camera::draw(ScreenData& screenData) const { // TODO: this function is way 
     }
 }
 
-void Camera::drawWireframe(ScreenData& screenData) const {
+void Camera::drawWireframe(std::vector<GameObject>& gameObjects, ScreenData& screenData) const {
     screenData.refresh();
 
-    for (const Mesh& mesh : meshes) {
-        Matrix44 toWorld = mesh.transform.toWorldMatrix();
+    for (const GameObject& gameObject : gameObjects) {
+        const Mesh& mesh = gameObject.mesh;
+        Matrix44 toWorld = gameObject.transform.toWorldMatrix();
 
         for (const Triangle& triangle : mesh.triangles) {
             float screenX[3], screenY[3];

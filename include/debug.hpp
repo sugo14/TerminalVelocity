@@ -1,8 +1,9 @@
 // from stackoverflow, for testing
 
 #pragma once
-
 #include <chrono>
+
+void debug(std::string msg);
 
 template <class DT = std::chrono::milliseconds,
           class ClockT = std::chrono::steady_clock>

@@ -5,6 +5,11 @@
 #include <vector>
 #include <string>
 
+enum class RenderMode {
+    VertexColors,
+    TriangleColors
+};
+
 struct Triangle {
     int vertexIndices[3];
     int color;
@@ -14,7 +19,6 @@ struct Mesh {
     std::vector<Vector3> vertices;
     std::vector<Triangle> triangles;
     std::vector<int> vertexColors;
-    Transform transform;
 
     /// @brief Loads an .obj file into a Mesh object.
     /// The file must be located in the "models" directory.

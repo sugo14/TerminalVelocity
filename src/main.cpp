@@ -1,7 +1,8 @@
 #include "../include/camera.hpp"
 #include "../include/tui.hpp"
-#include "../include/timer.hpp"
+#include "../include/debug.hpp"
 #include "../include/gameengine.hpp"
+#include "../include/scripts.hpp"
 
 #include <iostream>
 #include <unistd.h>
@@ -94,10 +95,13 @@
 
 int main() {
     GameEngine engine = GameEngine();
+    AsteroidScript asteroidScript = AsteroidScript();
     engine.addObject(GameObject{
-        .transform = Transform{.position = {0, 0, -8}, .scale = {1, 1, 1}},
+        .transform = Transform{.position = {0, 0, -32}, .rotation={0, 2, 0}, .scale = {1, 1, 1}},
         .mesh = Mesh::loadObjFile("rock_1"),
-        .scripts = {}
+        .scripts = { &asteroidScript },
+        .name = "Rock1",
+        .tags = {}
     });
     engine.run();
 }
