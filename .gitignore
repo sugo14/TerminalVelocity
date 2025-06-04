@@ -1,6 +1,7 @@
 .old
 .vscode
 /main
+debug.log
 
 # Prerequisites
 *.d

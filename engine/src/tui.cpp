@@ -1,4 +1,4 @@
-#include "../include/tui.hpp"
+#include "tui.hpp"
 
 #include <iostream>
 #include <unistd.h>

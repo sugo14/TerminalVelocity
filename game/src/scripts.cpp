@@ -1,4 +1,4 @@
-#include "../include/scripts.hpp"
+#include "scripts.hpp"
 
 void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidScript started");

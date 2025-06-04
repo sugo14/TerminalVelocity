@@ -1,18 +1,18 @@
-#include "../include/gameengine.hpp"
+#include "gameengine.hpp"
 
 #include <chrono>
-#include "../include/debug.hpp"
+#include "debug.hpp"
 
 void GameObject::start(GameEngine* engine) {
     debug("Starting object: " + name);
-    for (ObjectScript* script : scripts) {
+    for (std::unique_ptr<Script>& script : scripts) {
         debug("Starting script");
         script->start(engine, this);
     }
 }
 
 void GameObject::update(int deltaTime, GameEngine* engine) {
-    for (ObjectScript* script : scripts) { script->update(deltaTime, engine, this); }
+    for (auto& script : scripts) { script->update(deltaTime, engine, this); }
 }
 
 Input::Input() {
@@ -20,14 +20,10 @@ Input::Input() {
 }
 
 GameEngine::GameEngine() {
-    // initialize camera
     camera = Camera();
-
-    // initialize screen
     screen = ConsoleScreen();
-
-    // initialize input
     input = Input();
+    scene = Scene();
 }
 
 void GameEngine::tick(int deltaTime) {
@@ -37,6 +33,8 @@ void GameEngine::tick(int deltaTime) {
 }
 
 void GameEngine::run() {
+    for (GameObject& gameObject : scene.gameObjects) { gameObject.start(this); }
+
     std::chrono::high_resolution_clock clock;
     int lastDt = 10;
 
@@ -57,9 +55,9 @@ void GameEngine::run() {
     }
 }
 
-void GameEngine::addObject(const GameObject& object) {
-    scene.gameObjects.push_back(object);
-    scene.gameObjects.back().start(this);
-    scene.gameObjects.back().transform.scale = {1, 1, 1};
-    scene.gameObjects.back().transform.rotation = {0, 0, 0};
+void GameEngine::addObject(GameObject object) {
+    object.start(this);
+    object.transform.scale = {1, 1, 1};
+    object.transform.rotation = {0, 0, 0};
+    scene.gameObjects.push_back(std::move(object));
 }

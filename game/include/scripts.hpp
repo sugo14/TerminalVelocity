@@ -3,7 +3,7 @@
 #include <random>
 #include "debug.hpp"
 
-class AsteroidScript : public ObjectScript {
+class AsteroidScript : public Script {
     Vector3 rotationSpeed;
     Vector3 positionSpeed;
 public:

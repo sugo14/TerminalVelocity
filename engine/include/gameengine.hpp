@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "geometry.hpp"
 #include "mesh.hpp"
 #include "camera.hpp"
@@ -10,20 +12,21 @@
 class GameEngine;
 struct GameObject;
 
-class ObjectScript { // ! does virtual kill speed?
+class Script {
 public:
     virtual void start(GameEngine* engine, GameObject* gameObject) {
-        debug("ObjectScript started!!!! Should not happen");
+        debug("!ERROR! Base ObjectScript::start called.");
     }
-    virtual void update(int deltaTime, GameEngine* engine, GameObject* gameObject) { }
+    virtual void update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+        debug("!ERROR! Base ObjectScript::update called.");
+    }
 };
 
 struct GameObject {
     Transform transform;
     Mesh mesh;
     // pointers must be used to prevent object slicing
-    // TODO: switch to smart pointers?
-    std::vector<ObjectScript*> scripts;
+    std::vector<std::unique_ptr<Script>> scripts;
 
     // we'll see if we use this
     std::string name;
@@ -55,6 +58,6 @@ public:
     
     GameEngine();
 
-    void addObject(const GameObject& object);
+    void addObject(GameObject object);
     void run();
 };

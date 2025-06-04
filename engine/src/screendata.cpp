@@ -1,4 +1,4 @@
-#include "../include/screendata.hpp"
+#include "screendata.hpp"
 
 ScreenData::ScreenData() { refresh(); }
 

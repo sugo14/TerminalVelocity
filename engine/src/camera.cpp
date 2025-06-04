@@ -1,5 +1,5 @@
-#include "../include/camera.hpp"
-#include "../include/gameengine.hpp"
+#include "camera.hpp"
+#include "gameengine.hpp"
 
 #include <iostream>
 #include <unistd.h>
