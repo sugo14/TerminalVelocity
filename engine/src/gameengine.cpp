@@ -33,8 +33,6 @@ void GameEngine::tick(int deltaTime) {
 }
 
 void GameEngine::run() {
-    for (GameObject& gameObject : scene.gameObjects) { gameObject.start(this); }
-
     std::chrono::high_resolution_clock clock;
     int lastDt = 10;
 
