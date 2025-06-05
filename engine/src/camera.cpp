@@ -47,20 +47,29 @@ Vector3 Frustum::ndcSpace(Vector3 point) const {
     return perspective;
 }
 
+Camera::Camera() {
+    frustum = Frustum();
+    transform = Transform();
+    transform.position = {0, 0, 0};
+    debug(transform.toString());
+}
+
 void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) const { // TODO: this function is way too big
     screenData.refresh();
 
     for (const GameObject& gameObject : gameObjects) {
+        // skip meshes out of frustum
+        if (gameObject.transform.position.z > -frustum.nearZ) { continue; }
+        if (gameObject.transform.position.z < -frustum.farZ) { continue; }
+
         const Mesh& mesh = gameObject.mesh;
-        if (gameObject.transform.position.z > -frustum.nearZ) { continue; } // skip meshes in front of the camera
-        if (gameObject.transform.position.z < -frustum.farZ) { continue; } // skip meshes behind the camera
-        Matrix44 toWorld = gameObject.transform.toWorldMatrix();
+        Matrix44 toWorld = gameObject.transform.toWorldMatrix() * transform.toWorldMatrix().inverse();
 
         for (const Triangle& triangle : mesh.triangles) {
-            // set vertex pixels
             Vector3 screen[3];
             Vector3 world[3];
 
+            // set vertex pixels
             for (int i = 0; i < 3; i++) {
                 world[i] = (toWorld * mesh.vertices[triangle.vertexIndices[i]].to4()).to3();
                 Vector3 pos = frustum.ndcSpace(world[i]);
@@ -83,6 +92,14 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
             //     continue;
             // }
 
+            // -- shading coloring -- // slow?
+            Vector3 triN = ((world[1] - world[0]).cross(world[2] - world[0])).normalized(); // triangle normal
+            Vector3 cent = (world[0] + world[1] + world[2]) / 3.0f;
+            Vector3 view = (cent * -1).normalized();
+            float brightness = triN.dot(view);
+            if (brightness < 0) { continue; } // backface culling?
+            if (brightness > 1) { brightness = 1; } // ??
+
             // calculate triangle pixel bounds
             int minX = std::min(screen[0].x, std::min(screen[1].x, screen[2].x));
             int maxX = std::max(screen[0].x, std::max(screen[1].x, screen[2].x));
@@ -103,14 +120,6 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
             float d01 = v0.dot(v1);
             float d11 = v1.dot(v1);
             float denom = d00 * d11 - d01 * d01;
-
-            // -- shading coloring -- // pretty slow
-            Vector3 triN = ((world[1] - world[0]).cross(world[2] - world[0])).normalized(); // triangle normal
-            Vector3 cent = (world[0] + world[1] + world[2]) / 3.0f;
-            Vector3 view = (cent * -1).normalized();
-            float brightness = triN.dot(view);
-            if (brightness < 0) { brightness = 0; } // backface culling?
-            if (brightness > 1) { brightness = 1; } // ??
 
             for (int y = minY; y <= maxY; y++) {
                 for (int x = minX; x <= maxX; x++) {

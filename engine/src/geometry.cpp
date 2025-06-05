@@ -43,6 +43,153 @@ Vector3 Vector4::to3() const {
     return {x, y, z};
 }
 
+float Matrix44::determinant() const {
+    const Matrix44& a = *this;
+
+    float det;
+    det =
+        a.m[0][3] * a.m[1][2] * a.m[2][1] * a.m[3][0] - a.m[0][2] * a.m[1][3] * a.m[2][1] * a.m[3][0] -
+        a.m[0][3] * a.m[1][1] * a.m[2][2] * a.m[3][0] + a.m[0][1] * a.m[1][3] * a.m[2][2] * a.m[3][0] +
+        a.m[0][2] * a.m[1][1] * a.m[2][3] * a.m[3][0] - a.m[0][1] * a.m[1][2] * a.m[2][3] * a.m[3][0] -
+        a.m[0][3] * a.m[1][2] * a.m[2][0] * a.m[3][1] + a.m[0][2] * a.m[1][3] * a.m[2][0] * a.m[3][1] +
+        a.m[0][3] * a.m[1][0] * a.m[2][2] * a.m[3][1] - a.m[0][0] * a.m[1][3] * a.m[2][2] * a.m[3][1] -
+        a.m[0][2] * a.m[1][0] * a.m[2][3] * a.m[3][1] + a.m[0][0] * a.m[1][2] * a.m[2][3] * a.m[3][1] +
+        a.m[0][3] * a.m[1][1] * a.m[2][0] * a.m[3][2] - a.m[0][1] * a.m[1][3] * a.m[2][0] * a.m[3][2] -
+        a.m[0][3] * a.m[1][0] * a.m[2][1] * a.m[3][2] + a.m[0][0] * a.m[1][3] * a.m[2][1] * a.m[3][2] +
+        a.m[0][1] * a.m[1][0] * a.m[2][3] * a.m[3][2] - a.m[0][0] * a.m[1][1] * a.m[2][3] * a.m[3][2] -
+        a.m[0][2] * a.m[1][1] * a.m[2][0] * a.m[3][3] + a.m[0][1] * a.m[1][2] * a.m[2][0] * a.m[3][3] +
+        a.m[0][2] * a.m[1][0] * a.m[2][1] * a.m[3][3] - a.m[0][0] * a.m[1][2] * a.m[2][1] * a.m[3][3] -
+        a.m[0][1] * a.m[1][0] * a.m[2][2] * a.m[3][3] + a.m[0][0] * a.m[1][1] * a.m[2][2] * a.m[3][3];
+
+    return det;
+}
+Matrix44 Matrix44::inverse() const { // insanely long
+    Matrix44 inv;
+    const float* m = &this->m[0][0];
+    float* invOut = &inv.m[0][0];
+
+    invOut[0] = m[5]  * m[10] * m[15] -
+                m[5]  * m[11] * m[14] -
+                m[9]  * m[6]  * m[15] +
+                m[9]  * m[7]  * m[14] +
+                m[13] * m[6]  * m[11] -
+                m[13] * m[7]  * m[10];
+
+    invOut[4] = -m[4]  * m[10] * m[15] +
+                    m[4]  * m[11] * m[14] +
+                    m[8]  * m[6]  * m[15] -
+                    m[8]  * m[7]  * m[14] -
+                    m[12] * m[6]  * m[11] +
+                    m[12] * m[7]  * m[10];
+
+    invOut[8] = m[4]  * m[9] * m[15] -
+                m[4]  * m[11] * m[13] -
+                m[8]  * m[5] * m[15] +
+                m[8]  * m[7] * m[13] +
+                m[12] * m[5] * m[11] -
+                m[12] * m[7] * m[9];
+
+    invOut[12] = -m[4]  * m[9] * m[14] +
+                    m[4]  * m[10] * m[13] +
+                    m[8]  * m[5] * m[14] -
+                    m[8]  * m[6] * m[13] -
+                    m[12] * m[5] * m[10] +
+                    m[12] * m[6] * m[9];
+
+    invOut[1] = -m[1]  * m[10] * m[15] +
+                    m[1]  * m[11] * m[14] +
+                    m[9]  * m[2] * m[15] -
+                    m[9]  * m[3] * m[14] -
+                    m[13] * m[2] * m[11] +
+                    m[13] * m[3] * m[10];
+
+    invOut[5] = m[0]  * m[10] * m[15] -
+                m[0]  * m[11] * m[14] -
+                m[8]  * m[2] * m[15] +
+                m[8]  * m[3] * m[14] +
+                m[12] * m[2] * m[11] -
+                m[12] * m[3] * m[10];
+
+    invOut[9] = -m[0]  * m[9] * m[15] +
+                    m[0]  * m[11] * m[13] +
+                    m[8]  * m[1] * m[15] -
+                    m[8]  * m[3] * m[13] -
+                    m[12] * m[1] * m[11] +
+                    m[12] * m[3] * m[9];
+
+    invOut[13] = m[0]  * m[9] * m[14] -
+                    m[0]  * m[10] * m[13] -
+                    m[8]  * m[1] * m[14] +
+                    m[8]  * m[2] * m[13] +
+                    m[12] * m[1] * m[10] -
+                    m[12] * m[2] * m[9];
+
+    invOut[2] = m[1]  * m[6] * m[15] -
+                m[1]  * m[7] * m[14] -
+                m[5]  * m[2] * m[15] +
+                m[5]  * m[3] * m[14] +
+                m[13] * m[2] * m[7] -
+                m[13] * m[3] * m[6];
+
+    invOut[6] = -m[0]  * m[6] * m[15] +
+                    m[0]  * m[7] * m[14] +
+                    m[4]  * m[2] * m[15] -
+                    m[4]  * m[3] * m[14] -
+                    m[12] * m[2] * m[7] +
+                    m[12] * m[3] * m[6];
+
+    invOut[10] = m[0]  * m[5] * m[15] -
+                    m[0]  * m[7] * m[13] -
+                    m[4]  * m[1] * m[15] +
+                    m[4]  * m[3] * m[13] +
+                    m[12] * m[1] * m[7] -
+                    m[12] * m[3] * m[5];
+
+    invOut[14] = -m[0]  * m[5] * m[14] +
+                    m[0]  * m[6] * m[13] +
+                    m[4]  * m[1] * m[14] -
+                    m[4]  * m[2] * m[13] -
+                    m[12] * m[1] * m[6] +
+                    m[12] * m[2] * m[5];
+
+    invOut[3] = -m[1] * m[6] * m[11] +
+                    m[1] * m[7] * m[10] +
+                    m[5] * m[2] * m[11] -
+                    m[5] * m[3] * m[10] -
+                    m[9] * m[2] * m[7] +
+                    m[9] * m[3] * m[6];
+
+    invOut[7] = m[0] * m[6] * m[11] -
+                m[0] * m[7] * m[10] -
+                m[4] * m[2] * m[11] +
+                m[4] * m[3] * m[10] +
+                m[8] * m[2] * m[7] -
+                m[8] * m[3] * m[6];
+
+    invOut[11] = -m[0] * m[5] * m[11] +
+                    m[0] * m[7] * m[9] +
+                    m[4] * m[1] * m[11] -
+                    m[4] * m[3] * m[9] -
+                    m[8] * m[1] * m[7] +
+                    m[8] * m[3] * m[5];
+
+    invOut[15] = m[0] * m[5] * m[10] -
+                    m[0] * m[6] * m[9] -
+                    m[4] * m[1] * m[10] +
+                    m[4] * m[2] * m[9] +
+                    m[8] * m[1] * m[6] -
+                    m[8] * m[2] * m[5];
+
+    float det = m[0] * invOut[0] + m[1] * invOut[4] + m[2] * invOut[8] + m[3] * invOut[12];
+    if (std::fabs(det) < 1e-6f) { return Matrix44(); } // not invertible
+
+    float invDet = 1.0f / det;
+    for (int i = 0; i < 16; ++i)
+        invOut[i] *= invDet;
+
+    return inv;
+}
+
 Vector4 Matrix44::operator*(const Vector4& v) const {
     return {
         m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * v.w,
@@ -63,6 +210,12 @@ Matrix44 Matrix44::operator*(const Matrix44& other) const {
     }
     return res;
 }
+
+Transform::Transform()
+    : position{0, 0, 0}, rotation{0, 0, 0}, scale{1, 1, 1} { }
+
+Transform::Transform(Vector3 position, Vector3 rotation, Vector3 scale)
+    : position(position), rotation(rotation), scale(scale) { }
 
 Matrix44 Transform::toWorldMatrix() const {
     float cx = std::cos(rotation.x), sx = std::sin(rotation.x);
@@ -101,4 +254,10 @@ Matrix44 Transform::toWorldMatrix() const {
     }};
 
     return translation * zRot * yRot * xRot * scaling;
+}
+
+std::string Transform::toString() const {
+    return "Position(" + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(position.z) + ")" +
+          " Rotation(" + std::to_string(rotation.x) + ", " + std::to_string(rotation.y) + ", " + std::to_string(rotation.z) + ")" +
+          " Scale(" + std::to_string(scale.x) + ", " + std::to_string(scale.y) + ", " + std::to_string(scale.z) + ")";
 }

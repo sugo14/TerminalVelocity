@@ -10,7 +10,7 @@
 int main() {
     GameEngine engine = GameEngine();
     GameObject obj;
-    obj.transform = { {0, 0, -32}, {0, 2, 0}, {1, 1, 1} };
+    obj.transform = Transform({0, 0, -32}, {0, 2, 0}, {1, 1, 1});
     obj.mesh = Mesh::loadObjFile("rock_1");
     obj.name = "Rock1";
     obj.tags = {};

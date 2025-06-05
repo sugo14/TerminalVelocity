@@ -28,8 +28,9 @@ struct Frustum {
 
 struct Camera {
     Frustum frustum;
+    Transform transform;
 
-    Camera() = default;
+    Camera();
 
     /// @brief Draws the current triangles to a screen using rasterization.
     /// @param screenData The screen to draw to.

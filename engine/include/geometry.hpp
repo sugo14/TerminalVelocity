@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <string>
 
 struct Vector2 {
     float x, y;
@@ -49,6 +50,11 @@ struct Vector4 {
 struct Matrix44 {
     float m[4][4];
 
+    // !!!!!! IMPLEMENT THIS!!!!
+    float determinant() const;
+
+    Matrix44 inverse() const;
+
     /// @brief Performs matrix multiplication with a Vector4.
     /// @param v The vector to multiply with.
     /// @return The resultant Vector4 after multiplication.
@@ -65,7 +71,12 @@ struct Transform {
     Vector3 rotation;
     Vector3 scale;
 
+    Transform();
+    Transform(Vector3 position, Vector3 rotation, Vector3 scale);
+
     /// @brief Produces the matrix used to convert points in object space to world space coordinates.
     /// @return The matrix used for the transformation.
     Matrix44 toWorldMatrix() const;
+
+    std::string toString() const;
 };

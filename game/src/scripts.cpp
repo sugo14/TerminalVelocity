@@ -10,9 +10,9 @@ void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     std::uniform_real_distribution<float> dist3(-80.0f, -3.0f);
     std::uniform_real_distribution<float> dist4(2.0f, 8.0f);
     
-    rotationSpeed = {dist(gen), dist(gen), dist(gen)};
+    rotationSpeed = {0, 0, -2};
     // ! the above line doesn't produce the intended effect at all
-    // ! pitch roll and yaw arent constant directions here i think, not sure how to fix trivially
+    // ! pitch roll and yaw arent constant directions here i think, not sure how to fix
     gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
     gameObject->transform.rotation = {dist2(gen), dist2(gen), dist2(gen)};
     positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
