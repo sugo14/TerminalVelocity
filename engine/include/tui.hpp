@@ -40,4 +40,6 @@ struct ConsoleScreen {
     
     /// @brief Draws the current screen data to the console.
     void draw();
+    
+    void end();
 };

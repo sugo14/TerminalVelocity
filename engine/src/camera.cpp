@@ -50,7 +50,6 @@ Vector3 Frustum::ndcSpace(Vector3 point) const {
 Camera::Camera() {
     frustum = Frustum();
     transform = Transform();
-    transform.position = {0, 0, 0};
     debug(transform.toString());
 }
 
@@ -63,7 +62,7 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
         if (gameObject.transform.position.z < -frustum.farZ) { continue; }
 
         const Mesh& mesh = gameObject.mesh;
-        Matrix44 toWorld = gameObject.transform.toWorldMatrix() * transform.toWorldMatrix().inverse();
+        Matrix44 toWorld = transform.toWorldMatrix().inverse() * gameObject.transform.toWorldMatrix();
 
         for (const Triangle& triangle : mesh.triangles) {
             Vector3 screen[3];

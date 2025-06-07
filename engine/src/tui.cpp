@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <termios.h>
 
 namespace TUI {
     const std::string ESC = "\033";
@@ -49,6 +50,20 @@ namespace TUI {
         }
         return {w.ws_col, w.ws_row};
     }
+
+    void disableEcho() {
+        struct termios tty;
+        tcgetattr(STDIN_FILENO, &tty);
+        tty.c_lflag &= ~ECHO;
+        tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+    }
+
+    void enableEcho() {
+        struct termios tty;
+        tcgetattr(STDIN_FILENO, &tty);
+        tty.c_lflag |= ECHO;
+        tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+    }
 }
 
 ConsoleScreen::ConsoleScreen() {
@@ -58,6 +73,8 @@ ConsoleScreen::ConsoleScreen() {
               << TUI::ALTERNATE_SCREEN_BUFFER 
               << TUI::HIDE_CURSOR;
     std::cout.flush();
+
+    TUI::disableEcho();
 }
 
 void ConsoleScreen::draw() {
@@ -79,4 +96,12 @@ void ConsoleScreen::draw() {
     output += std::string(ScreenData::WIDTH, 'x') + "\n";
 
     TUI::fastPrint(output);
+}
+
+void ConsoleScreen::end() {
+    std::cout << TUI::ALTERNATE_SCREEN_BUFFER_OFF
+              << TUI::SHOW_CURSOR;
+    std::cout.flush();
+
+    TUI::enableEcho();
 }

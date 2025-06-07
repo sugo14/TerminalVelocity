@@ -7,6 +7,7 @@
 #include "camera.hpp"
 #include "tui.hpp"
 #include "debug.hpp"
+#include "input.hpp"
 
 // forward declarations :(
 class GameEngine;
@@ -40,15 +41,10 @@ struct Scene {
     std::vector<GameObject> gameObjects;
 };
 
-class Input {
-public:
-    Input();
-
-    bool isKeyDown(char key);
-};
-
 class GameEngine {
     void tick(int lastDt);
+
+    void end();
 
 public:
     Camera camera;

@@ -9,3 +9,6 @@ My goals:
 - Have the engine be reasonably fast and correct
 - Understand all of the code that I'm writing
     - I now realize that this was quite ambitious
+
+TODO:
+- Possibly switch from homemade geometry math to a library
