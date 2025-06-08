@@ -1,19 +1,22 @@
-enum class KeyStatus {
-    NOT_PRESSED = -1,
-    RELEASED = 0,
-    PRESSED = 1,
-    HELD = 2
-};
-
 class Input {
-    // not sure why this has to be both const and constexpr
-    static constexpr const char* INPUT_FILE = "/dev/input/event14";
-    int fd;
+    // TODO: with terminal input, only one key is pressed, arrays are overkill
+    // artifact of the old direct input system
+    static const int KEY_COUNT = 256;
+    static const int TIME_FIRST = 50;
+    static const int TIME_REPEAT = 25;
+
+    int timeouts[KEY_COUNT];
+    int pressCount[KEY_COUNT];
+    bool keyDown[KEY_COUNT];
+
+    char getch();
+
+    void toggleOffKey(int index);
 
 public:
-    KeyStatus keyStatus[100];
-
     Input();
 
-    void update();
+    bool isDown(char key) const;
+
+    void update(int deltaTime);
 };

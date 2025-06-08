@@ -44,8 +44,6 @@ struct Scene {
 class GameEngine {
     void tick(int lastDt);
 
-    void end();
-
 public:
     Camera camera;
     ConsoleScreen screen;

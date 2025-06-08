@@ -4,6 +4,8 @@
 
 #include <string>
 
+void startTerminalSession();
+
 namespace TUI {
     extern const std::string ESC;
     extern const std::string UPPER_HALF_BLOCK;
@@ -40,6 +42,4 @@ struct ConsoleScreen {
     
     /// @brief Draws the current screen data to the console.
     void draw();
-    
-    void end();
 };

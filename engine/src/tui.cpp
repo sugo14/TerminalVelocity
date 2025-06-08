@@ -1,9 +1,46 @@
 #include "tui.hpp"
 
 #include <iostream>
-#include <unistd.h>
 #include <sys/ioctl.h>
 #include <termios.h>
+#include <fcntl.h>
+#include <signal.h>
+
+static termios originalTermios;
+static int originalFlags;
+
+// restore terminal settings on ctrl-c
+static void endTerminalSession(int signum) {
+    // print ending ansi
+    std::cout << TUI::SHOW_CURSOR
+              << TUI::ALTERNATE_SCREEN_BUFFER_OFF;
+    std::cout.flush();
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &originalTermios);
+    // fcntl(STDIN_FILENO, F_SETFL, originalFlags);
+
+    exit(0); // exit the program
+}
+
+void startTerminalSession() {
+    // print starting ansi
+    std::cout << TUI::CLEAR_SCREEN
+              << TUI::ALTERNATE_SCREEN_BUFFER 
+              << TUI::HIDE_CURSOR;
+    std::cout.flush();
+
+    // no line buffering, no echo
+    tcgetattr(STDIN_FILENO, &originalTermios);
+    termios newT = originalTermios;
+    newT.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newT);
+
+    // non-blocking
+    // originalFlags = fcntl(STDIN_FILENO, F_GETFL, 0);
+    // fcntl(STDIN_FILENO, F_SETFL, originalFlags | O_NONBLOCK);
+
+    signal(SIGINT, endTerminalSession);
+}
 
 namespace TUI {
     const std::string ESC = "\033";
@@ -50,31 +87,10 @@ namespace TUI {
         }
         return {w.ws_col, w.ws_row};
     }
-
-    void disableEcho() {
-        struct termios tty;
-        tcgetattr(STDIN_FILENO, &tty);
-        tty.c_lflag &= ~ECHO;
-        tcsetattr(STDIN_FILENO, TCSANOW, &tty);
-    }
-
-    void enableEcho() {
-        struct termios tty;
-        tcgetattr(STDIN_FILENO, &tty);
-        tty.c_lflag |= ECHO;
-        tcsetattr(STDIN_FILENO, TCSANOW, &tty);
-    }
 }
 
 ConsoleScreen::ConsoleScreen() {
     screenData = ScreenData();
-
-    std::cout << TUI::CLEAR_SCREEN
-              << TUI::ALTERNATE_SCREEN_BUFFER 
-              << TUI::HIDE_CURSOR;
-    std::cout.flush();
-
-    TUI::disableEcho();
 }
 
 void ConsoleScreen::draw() {
@@ -96,12 +112,4 @@ void ConsoleScreen::draw() {
     output += std::string(ScreenData::WIDTH, 'x') + "\n";
 
     TUI::fastPrint(output);
-}
-
-void ConsoleScreen::end() {
-    std::cout << TUI::ALTERNATE_SCREEN_BUFFER_OFF
-              << TUI::SHOW_CURSOR;
-    std::cout.flush();
-
-    TUI::enableEcho();
 }

@@ -1,23 +1,71 @@
 #include "input.hpp"
 
-#include <iostream>
-#include <fcntl.h>
 #include <unistd.h>
-#include <linux/input.h>
 
-Input::Input() {
-    fd = open(INPUT_FILE, O_RDONLY);
-    if (fd == -1) { perror("Failed to open device (try running as root)"); }
-    for (int i = 0; i < 100; i++) { keyStatus[i] = KeyStatus::NOT_PRESSED; }
+// char Input::getch() {
+//     return '\0'; // !TEMP
+//     char c;
+//     int res = read(STDIN_FILENO, &c, 1);
+//     if (res == 1) { return c; }
+//     return '\0';
+// }
+
+#include <sys/select.h>
+
+char Input::getch() {
+    fd_set set;
+    FD_ZERO(&set);
+    FD_SET(STDIN_FILENO, &set);
+
+    struct timeval timeout = {0, 0}; // no timeout, non-blocking
+    int ret = select(STDIN_FILENO + 1, &set, nullptr, nullptr, &timeout);
+
+    if (ret > 0) {
+        char c;
+        int res = read(STDIN_FILENO, &c, 1);
+        if (res == 1) return c;
+    }
+
+    return '\0';  // no input available this frame
 }
 
-void Input::update() {
-    for (int i = 0; i < 100; i++) {
-        if (keyStatus[i] == KeyStatus::PRESSED) { keyStatus[i] = KeyStatus::HELD; }
-        else if (keyStatus[i] == KeyStatus::RELEASED) { keyStatus[i] = KeyStatus::NOT_PRESSED; }
+Input::Input() {
+    for (int i = 0; i < KEY_COUNT; i++) {
+        keyDown[i] = false;
+        timeouts[i] = 0;
+        pressCount[i] = 0;
     }
-    struct input_event ev;
-    fcntl(fd, F_SETFL, O_NONBLOCK);
-    ssize_t n = read(fd, &ev, sizeof(ev));
-    if (n == (ssize_t)sizeof(ev) && ev.type == EV_KEY) { keyStatus[ev.code] = (KeyStatus)ev.value; }
+}
+
+bool Input::isDown(char key) const {
+    int index = (int)key;
+    return keyDown[index];
+}
+
+void Input::toggleOffKey(int index) {
+    keyDown[index] = false;
+    timeouts[index] = 0;
+    pressCount[index] = 0;
+}
+
+void Input::update(int deltaTime) {
+    for (int i = 0; i < KEY_COUNT; i++) {
+        if (keyDown[i]) {
+            timeouts[i] += deltaTime;
+            if (pressCount[i] == 1 && timeouts[i] >= TIME_FIRST) { toggleOffKey(i); }
+            else if (pressCount[i] > 1 && timeouts[i] >= TIME_REPEAT) { toggleOffKey(i); }
+        }
+        else { toggleOffKey(i); }
+    }
+    while (true) {
+        char c = getch();
+        if (c == '\0') { break; }
+
+        int i = (int)c;
+        if (i < 0 || i >= KEY_COUNT) { continue; }
+
+        keyDown[i] = true;
+        timeouts[i] = 0;
+        pressCount[i]++;
+    }
 }
