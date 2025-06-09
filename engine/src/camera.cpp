@@ -84,12 +84,12 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
                 };
             }
 
-            // if (world[0].z < -frustum.farZ && world[1].z < -frustum.farZ && world[2].z < -frustum.farZ) {
-            //     continue;
-            // }
-            // if (world[0].z > -frustum.nearZ && world[1].z > -frustum.nearZ && world[2].z > -frustum.nearZ) {
-            //     continue;
-            // }
+            if (world[0].z < -frustum.farZ && world[1].z < -frustum.farZ && world[2].z < -frustum.farZ) {
+                continue;
+            }
+            if (world[0].z > -frustum.nearZ && world[1].z > -frustum.nearZ && world[2].z > -frustum.nearZ) {
+                continue;
+            }
 
             // -- shading coloring -- // slow?
             Vector3 triN = ((world[1] - world[0]).cross(world[2] - world[0])).normalized(); // triangle normal
@@ -97,7 +97,6 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
             Vector3 view = (cent * -1).normalized();
             float brightness = triN.dot(view);
             if (brightness < 0) { continue; } // backface culling?
-            if (brightness > 1) { brightness = 1; } // ??
 
             // calculate triangle pixel bounds
             int minX = std::min(screen[0].x, std::min(screen[1].x, screen[2].x));
@@ -134,24 +133,18 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
                     if (u < 0 || v < 0 || w < 0) { continue; }
                     float z = u * screen[0].z + v * screen[1].z + w * screen[2].z;
 
-                    // -- barycentric coloring -- //
-                    int color = interpolateColor(
-                        mesh.vertexColors[triangle.vertexIndices[0]],
-                        mesh.vertexColors[triangle.vertexIndices[1]],
-                        mesh.vertexColors[triangle.vertexIndices[2]],
-                        u, v, w
-                    );
-
-                    // -- Z coloring -- //
-                    // int r = (z / (-frustum.farZ - frustum.nearZ)) * 255.0f; // this is maybe wrong
-                    // if (r < 0) { r = 0; } if (r > 255) { r = 255; }
-                    // int color = r << 16;
-
-                    // -- random coloring -- //
-                    // int color = triangle.color;
-
-                    // -- solid coloring -- //
-                    // int color = 0x93928C;
+                    int color;
+                    if (mesh.renderMode == RenderMode::VertexColors) {
+                        color = interpolateColor(
+                            mesh.vertexColors[triangle.vertexIndices[0]],
+                            mesh.vertexColors[triangle.vertexIndices[1]],
+                            mesh.vertexColors[triangle.vertexIndices[2]],
+                            u, v, w
+                        );
+                    }
+                    else if (mesh.renderMode == RenderMode::TriangleColors) {
+                        color = triangle.color;
+                    }
 
                     int r = color >> 16, g = (color >> 8) & 0xFF, b = color & 0xFF;
                     r *= brightness; g *= brightness; b *= brightness;
@@ -165,6 +158,7 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
     }
 }
 
+// TODO: convert to a proper render mode
 void Camera::drawWireframe(std::vector<GameObject>& gameObjects, ScreenData& screenData) const {
     screenData.refresh();
 

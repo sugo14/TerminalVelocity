@@ -1,7 +1,6 @@
 My Computer Science 30 final project: an attempt at a terminal-based 3D game from scratch in C++. This includes both the software rasterization and the game engine itself.
 
-## ✨ Current State
-
+## 🟢 Current State
 - Renders and transforms meshes loaded from OBJ files
 - Colors based on vertex colors and barycentric weights
     - This can result in relatively good looking objects, such as the colored asteroid shown
@@ -28,3 +27,7 @@ My Computer Science 30 final project: an attempt at a terminal-based 3D game fro
 make
 ./main
 ```
+
+## 💬 Comments
+- Consider using a particularly fast terminal like kitty
+- Speed limitations are almost definitely a result of terminal throughput
