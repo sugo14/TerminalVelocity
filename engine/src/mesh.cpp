@@ -4,7 +4,7 @@
 #include <sstream>
 #include <random>
 
-Mesh Mesh::loadObjFile(const std::string& objName, RenderMode renderMode) {
+Mesh Mesh::loadObjFile(const std::string& objName, RenderMode renderMode, LightingMode lightingMode) {
     std::string filepath = "models/" + objName + ".obj";
     std::ifstream in(filepath);
     if (!in.is_open()) {
@@ -55,6 +55,7 @@ Mesh Mesh::loadObjFile(const std::string& objName, RenderMode renderMode) {
 
     mesh.centerSelf();
     mesh.renderMode = renderMode;
+    mesh.lightingMode = lightingMode;
     return mesh;
 }
 

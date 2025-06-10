@@ -3,12 +3,12 @@ My Computer Science 30 final project: an attempt at a terminal-based 3D game fro
 ## 🟢 Current State
 - Renders and transforms meshes loaded from OBJ files
 - Colors based on vertex colors and barycentric weights
-    - This can result in relatively good looking objects, such as the colored asteroid shown
+    - Can make decent looking objects, like the asteroid and crystal shown
 - Has basic shading, z-buffering, etc.
 - GameEngine handles GameObjects with Scripts (structure subject to change)
 - Can move the camera around in the world from input
 
-![Moving camera with asteroid on screen](github/6-7-2025-moving.gif)
+![Asteroid and crystal on screen](github/6-9-2025-crystal.gif)
 
 ## 🎯 Goals
 - Learn some basic linear algebra

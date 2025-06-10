@@ -4,6 +4,14 @@
 #include <iostream>
 #include <unistd.h>
 
+int interpolateColor(int c1, int c2, float u) {
+    if (u < 0.0f) { u = 0.0f; } if (u > 1.0f) { u = 1.0f; }
+    int r = (int)((1 - u) * ((c1 >> 16) & 0xFF) + u * ((c2 >> 16) & 0xFF));
+    int g = (int)((1 - u) * ((c1 >> 8) & 0xFF) + u * ((c2 >> 8) & 0xFF));
+    int b = (int)((1 - u) * (c1 & 0xFF) + u * (c2 & 0xFF));
+    return (r << 16) | (g << 8) | b;
+}
+
 int interpolateColor(int c1, int c2, int c3, float u, float v, float w) {
     int r = (u * ((c1 >> 16) & 0xFF) + v * ((c2 >> 16) & 0xFF) + w * ((c3 >> 16) & 0xFF));
     int g = (u * ((c1 >> 8) & 0xFF) + v * ((c2 >> 8) & 0xFF) + w * ((c3 >> 8) & 0xFF));
@@ -84,6 +92,7 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
                 };
             }
 
+            // cull triangles entirely outside of frustum
             if (world[0].z < -frustum.farZ && world[1].z < -frustum.farZ && world[2].z < -frustum.farZ) {
                 continue;
             }
@@ -149,6 +158,16 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
                     int r = color >> 16, g = (color >> 8) & 0xFF, b = color & 0xFF;
                     r *= brightness; g *= brightness; b *= brightness;
                     color = (r << 16) | (g << 8) | b;
+
+                    if (mesh.lightingMode == LightingMode::Crystal) {
+                        float edgeDistance = 1 - std::min(u, std::min(v, w));
+                        float whitenessIntensity = 0.03f;
+                        int edgeColor = interpolateColor(color, 0xFFFFFF, whitenessIntensity);
+                        float sharpeningFactor = 11;
+                        color = interpolateColor(
+                            color, edgeColor, pow(edgeDistance, sharpeningFactor)
+                        );
+                    }
 
                     if (z < -frustum.farZ || z > -frustum.nearZ) { continue; }
                     screenData.setPixel(x, y, z, color);

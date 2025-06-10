@@ -10,12 +10,18 @@
 int main() {
     GameEngine engine = GameEngine();
     GameObject obj;
-    obj.transform = Transform({0, 0, -32}, {0, 2, 0}, {1, 1, 1});
-    obj.mesh = Mesh::loadObjFile("rock_1");
-    obj.name = "Rock1";
+    obj.mesh = Mesh::loadObjFile("sharp-crystal-m");
+    obj.name = "Crystal";
     obj.tags = {};
-    obj.scripts.push_back(std::make_unique<AsteroidScript>());
+    obj.scripts.push_back(std::make_unique<CrystalScript>());
     engine.addObject(std::move(obj));
+
+    GameObject obj2;
+    obj2.mesh = Mesh::loadObjFile("rock_1");
+    obj2.name = "Asteroid";
+    obj2.tags = {};
+    obj2.scripts.push_back(std::make_unique<AsteroidScript>());
+    engine.addObject(std::move(obj2));
 
     engine.run();
 }
