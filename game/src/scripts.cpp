@@ -56,7 +56,8 @@ void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     
     rotationSpeed = {0, 0, -2};
     // ! how to set constant rotational direction?
-    gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
+    // gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
+    gameObject->transform.position = {0, 0, -30};
     gameObject->transform.rotation = {dist2(gen), dist2(gen), dist2(gen)};
     positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
 
@@ -105,7 +106,8 @@ void CrystalScript::start(GameEngine* engine, GameObject* gameObject) {
     std::uniform_real_distribution<float> dist4(2.0f, 8.0f);
 
     rotationSpeed = {-0.5, -1, -2};
-    gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
+    // gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
+    gameObject->transform.position = {0, 0, -30};
     gameObject->transform.rotation = {dist2(gen), dist2(gen), dist2(gen)};
     positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
 
@@ -141,5 +143,85 @@ void CrystalScript::update(int deltaTime, GameEngine* engine, GameObject* gameOb
 
     if (gameObject->transform.position.z > -3.0f) {
         gameObject->transform.position.z = -80.0f; // reset position
+    }
+}
+
+void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
+    debug("BulletScript started");
+    gameObject->transform.scale = {0.5, 0.5, 0.5};
+
+    rotationSpeed = {0, 0, -2};
+    gameObject->transform.position = engine->camera.transform.position - Vector3{0, 0, 4};
+    gameObject->transform.rotation = {0, 0, 0};
+    positionSpeed = {0, 0, -5};
+    gameObject->mesh.renderMode = RenderMode::VertexColors;
+    for (int i = 0; i < gameObject->mesh.vertices.size(); i++) {
+        gameObject->mesh.vertexColors.push_back(0xFFFFFF); // !TEMP: white
+    }
+}
+
+void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    float seconds = deltaTime / 1000.0f;
+    gameObject->transform.rotation = gameObject->transform.rotation + rotationSpeed * seconds;
+    gameObject->transform.position = gameObject->transform.position + positionSpeed * seconds;
+
+    SphereCollider* self = gameObject->getScriptByType<SphereCollider>();
+    if (!self) {
+        debug("BulletScript: SphereCollider not found!");
+        return;
+    }
+    for (GameObject& other : engine->scene.gameObjects) {
+        if (other.name == "Asteroid") {
+            SphereCollider* collider = other.getScriptByType<SphereCollider>();
+            if (collider && collider->isCollidingWith(*self)) {
+                debug(std::string("Bullet collided with Asteroid!") +
+                      " Position: " + gameObject->transform.toString() +
+                      " Self radius: " + std::to_string(self->radius) +
+                      " Other position: " + other.transform.toString() +
+                      " Other radius: " + std::to_string(collider->radius));
+            }
+            // destroy asteroid
+            if (collider && collider->isCollidingWith(*self)) {
+                // remove asteroid from scene
+                auto it = std::remove_if(engine->scene.gameObjects.begin(), engine->scene.gameObjects.end(),
+                                         [&other](const GameObject& obj) { return obj.name == "Asteroid"; });
+                if (it != engine->scene.gameObjects.end()) {
+                    engine->scene.gameObjects.erase(it, engine->scene.gameObjects.end());
+                    debug("Asteroid destroyed by bullet!");
+                }
+            }
+        }
+    }
+}
+
+void MoveHandlerScript::start(GameEngine* engine, GameObject* gameObject) {
+    debug("MoveHandlerScript started");
+}
+
+void MoveHandlerScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    if (engine->input.isDown('a')) { engine->camera.transform.position.x += 0.01f * deltaTime; }
+    if (engine->input.isDown('d')) { engine->camera.transform.position.x -= 0.01f * deltaTime; }
+    if (engine->input.isDown('w')) { engine->camera.transform.position.y -= 0.01f * deltaTime; }
+    if (engine->input.isDown('s')) { engine->camera.transform.position.y += 0.01f * deltaTime; }
+    if (engine->input.isDown('q')) { engine->camera.transform.position.z += 0.01f * deltaTime; }
+    if (engine->input.isDown('e')) { engine->camera.transform.position.z -= 0.01f * deltaTime; }
+}
+
+void BulletHandlerScript::start(GameEngine* engine, GameObject* gameObject) {
+    debug("BulletHandlerScript started");
+}
+
+void BulletHandlerScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    if (engine->input.isDown(' ')) {
+        GameObject bullet;
+        bullet.mesh = Mesh::loadObjFile("cube");
+        bullet.name = "Bullet";
+        bullet.tags = {};
+        bullet.transform.scale = {0.5f, 0.5f, 0.5f};
+        bullet.scripts.push_back(std::make_unique<SphereCollider>(0.5f));
+        bullet.scripts.push_back(std::make_unique<BulletScript>());
+        bullet.transform.position = engine->camera.transform.position;
+        bullet.transform.rotation = engine->camera.transform.rotation;
+        engine->addObject(std::move(bullet));
     }
 }

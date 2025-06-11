@@ -1,6 +1,8 @@
 #include "gameengine.hpp"
 #include "debug.hpp"
 
+#include "scripts.hpp" // ! TEMP!!!!
+
 #include <chrono>
 
 void GameObject::start(GameEngine* engine) {
@@ -30,12 +32,6 @@ void GameEngine::tick(int deltaTime) {
     for (GameObject& gameObject : scene.gameObjects) {
         gameObject.update(deltaTime, this);
     }
-
-    // ! move this to a gameobject
-    if (input.isDown('a')) { camera.transform.position.x += 0.01f * deltaTime; }
-    if (input.isDown('d')) { camera.transform.position.x -= 0.01f * deltaTime; }
-    if (input.isDown('w')) { camera.transform.position.y -= 0.01f * deltaTime; }
-    if (input.isDown('s')) { camera.transform.position.y += 0.01f * deltaTime; }
 }
 
 GameEngine::GameEngine() {
