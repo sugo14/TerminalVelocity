@@ -60,8 +60,22 @@ Mesh Mesh::loadObjFile(const std::string& objName, RenderMode renderMode, Lighti
 }
 
 void Mesh::centerSelf() {
+    // center based on centroid
     Vector3 sum = {0, 0, 0};
     for (const Vector3& v : vertices) { sum = sum + v; }
     Vector3 centroid = sum / (float)vertices.size();
     for (Vector3& v : vertices) { v = v - centroid; }
+
+    // fit into unit cube
+    Vector3 min = vertices[0], max = vertices[0];
+    for (const Vector3& v : vertices) {
+        if (v.x < min.x) { min.x = v.x; }
+        if (v.y < min.y) { min.y = v.y; }
+        if (v.z < min.z) { min.z = v.z; }
+        if (v.x > max.x) { max.x = v.x; }
+        if (v.y > max.y) { max.y = v.y; }
+        if (v.z > max.z) { max.z = v.z; }
+    }
+    float maxDim = std::max(max.x - min.x, std::max(max.y - min.y, max.z - min.z));
+    for (Vector3& v : vertices) { v = v / maxDim; }
 }

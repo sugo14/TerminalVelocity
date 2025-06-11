@@ -19,4 +19,7 @@ engine/src/%.o: engine/src/%.cpp
 clean:
 	rm -f $(GAME_OBJS) $(ENGINE_OBJS) debug.log main
 
-.PHONY: clean
+d:
+	rm -f debug.log
+
+.PHONY: clean d

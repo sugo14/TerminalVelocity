@@ -45,6 +45,7 @@ int rgb(int r, int g, int b) {
 
 void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidScript started");
+    gameObject->transform.scale = {4, 4, 4};
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -54,8 +55,7 @@ void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     std::uniform_real_distribution<float> dist4(2.0f, 8.0f);
     
     rotationSpeed = {0, 0, -2};
-    // ! the above line doesn't produce the intended effect at all
-    // ! pitch roll and yaw arent constant directions here i think, not sure how to fix
+    // ! how to set constant rotational direction?
     gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
     gameObject->transform.rotation = {dist2(gen), dist2(gen), dist2(gen)};
     positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
@@ -73,10 +73,29 @@ void AsteroidScript::update(int deltaTime, GameEngine* engine, GameObject* gameO
     if (gameObject->transform.position.z > -3.0f) {
         gameObject->transform.position.z = -80.0f; // reset position
     }
+
+    SphereCollider* self = gameObject->getScriptByType<SphereCollider>();
+    if (!self) {
+        debug("AsteroidScript: SphereCollider not found!");
+        return;
+    }
+    for (GameObject& other : engine->scene.gameObjects) {
+        if (other.name == "Crystal") {
+            SphereCollider* collider = other.getScriptByType<SphereCollider>();
+            if (collider && collider->isCollidingWith(*self)) {
+                debug(std::string("Asteroid collided with Crystal!") +
+                      " Position: " + gameObject->transform.toString() +
+                      " Self radius: " + std::to_string(self->radius) +
+                      " Other position: " + other.transform.toString() +
+                      " Other radius: " + std::to_string(collider->radius));
+            }
+        }
+    }
 }
 
 void CrystalScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("CrystalScript started");
+    gameObject->transform.scale = {4, 4, 4};
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -112,7 +131,7 @@ void CrystalScript::start(GameEngine* engine, GameObject* gameObject) {
         );
         gameObject->mesh.vertexColors.push_back(color);
     }
-    gameObject->mesh.lightingMode = LightingMode::Glowing;
+    gameObject->mesh.lightingMode = LightingMode::Crystal;
 }
 
 void CrystalScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {

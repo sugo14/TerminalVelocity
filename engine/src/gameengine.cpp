@@ -15,6 +15,16 @@ void GameObject::update(int deltaTime, GameEngine* engine) {
     for (auto& script : scripts) { script->update(deltaTime, engine, this); }
 }
 
+void SphereCollider::start(GameEngine* engine, GameObject* gameObject) { }
+void SphereCollider::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    transform = &gameObject->transform;
+}
+
+bool SphereCollider::isCollidingWith(SphereCollider& other) {
+    Vector3 delta = other.transform->position - transform->position;
+    return delta.length() < (other.radius + radius);
+}
+
 void GameEngine::tick(int deltaTime) {
     input.update(deltaTime);
     for (GameObject& gameObject : scene.gameObjects) {
@@ -60,7 +70,5 @@ void GameEngine::run() {
 
 void GameEngine::addObject(GameObject object) {
     object.start(this);
-    object.transform.scale = {1, 1, 1};
-    object.transform.rotation = {0, 0, 0};
     scene.gameObjects.push_back(std::move(object));
 }

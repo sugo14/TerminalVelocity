@@ -32,11 +32,14 @@ struct Vector3 {
 
     float dot(const Vector3& other) const;
     Vector3 cross(const Vector3& other) const;
+    float length() const;
 
     Vector3 operator+(const Vector3& other) const;
     Vector3 operator-(const Vector3& other) const;
     Vector3 operator*(float scalar) const;
     Vector3 operator/(float scalar) const;
+
+    std::string toString() const;
 };
 
 struct Vector4 {
@@ -50,9 +53,7 @@ struct Vector4 {
 struct Matrix44 {
     float m[4][4];
 
-    // !!!!!! IMPLEMENT THIS!!!!
     float determinant() const;
-
     Matrix44 inverse() const;
 
     /// @brief Performs matrix multiplication with a Vector4.

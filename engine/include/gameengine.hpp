@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <typeinfo>
 
 #include "geometry.hpp"
 #include "mesh.hpp"
@@ -23,11 +24,23 @@ public:
     }
 };
 
+class SphereCollider : public Script {
+public:
+    float radius;
+    Transform* transform;
+
+    SphereCollider(float radius = 1.0f) : radius(radius), transform(nullptr) {}
+
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    
+    bool isCollidingWith(SphereCollider& other);
+};
+
 struct GameObject {
     Transform transform;
     Mesh mesh;
-    // pointers must be used to prevent object slicing
-    std::vector<std::unique_ptr<Script>> scripts;
+    std::vector<std::unique_ptr<Script>> scripts; // pointers to prevent object slicing
 
     // we'll see if we use this
     std::string name;
@@ -35,6 +48,16 @@ struct GameObject {
 
     void start(GameEngine* engine);
     void update(int deltaTime, GameEngine* engine);
+
+    template <typename T>
+    T* getScriptByType() const {
+        for (const auto& script : scripts) {
+            if (typeid(*script) == typeid(T)) {
+                return static_cast<T*>(script.get());
+            }
+        }
+        return nullptr;
+    }
 };
 
 struct Scene {

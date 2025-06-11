@@ -25,6 +25,9 @@ Vector3 Vector3::cross(const Vector3& other) const {
         x * other.y - y * other.x
     };
 }
+float Vector3::length() const {
+    return std::sqrt(x * x + y * y + z * z);
+}
 Vector3 Vector3::operator+(const Vector3& other) const {
     return {x + other.x, y + other.y, z + other.z};
 }
@@ -37,6 +40,9 @@ Vector3 Vector3::operator*(float scalar) const {
 Vector3 Vector3::operator/(float scalar) const {
     if (scalar == 0) { return {0, 0, 0}; } // avoid division by zero
     return {x / scalar, y / scalar, z / scalar};
+}
+std::string Vector3::toString() const {
+    return "Vector3(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ")";
 }
 
 Vector3 Vector4::to3() const {
