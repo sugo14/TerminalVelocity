@@ -24,7 +24,7 @@ float degToRad(float deg) {
 }
 
 Frustum::Frustum()
-    : fovY(50.0f), aspect(16.0f / 9.0f), nearZ(3.0f), farZ(80.0f)
+    : fovY(50.0f), aspect(16.0f / 9.0f), nearZ(0.01f), farZ(80.0f)
 { initProjMatrix(); }
 
 Frustum::Frustum(float fovY, float aspect, float nearZ, float farZ)
@@ -106,6 +106,11 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
             Vector3 view = (cent * -1).normalized();
             float brightness = triN.dot(view);
             if (brightness < 0) { continue; } // backface culling?
+
+            if (mesh.lightingMode == LightingMode::Glowing) {
+                float minGlow = 0.7f;
+                brightness = minGlow + (1 - minGlow - brightness * (1 - minGlow)); // glow effect
+            }
 
             // calculate triangle pixel bounds
             int minX = std::min(screen[0].x, std::min(screen[1].x, screen[2].x));

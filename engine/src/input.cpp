@@ -1,15 +1,6 @@
 #include "input.hpp"
 
 #include <unistd.h>
-
-// char Input::getch() {
-//     return '\0'; // !TEMP
-//     char c;
-//     int res = read(STDIN_FILENO, &c, 1);
-//     if (res == 1) { return c; }
-//     return '\0';
-// }
-
 #include <sys/select.h>
 
 char Input::getch() {
@@ -26,12 +17,13 @@ char Input::getch() {
         if (res == 1) return c;
     }
 
-    return '\0';  // no input available this frame
+    return '\0'; // no input available this frame
 }
 
 Input::Input() {
     for (int i = 0; i < KEY_COUNT; i++) {
         keyDown[i] = false;
+        prevKeyDown[i] = false;
         timeouts[i] = 0;
         pressCount[i] = 0;
     }
@@ -42,6 +34,11 @@ bool Input::isDown(char key) const {
     return keyDown[index];
 }
 
+bool Input::isFirstDown(char key) const {
+    int index = (int)key;
+    return keyDown[index] && !prevKeyDown[index];
+}
+
 void Input::toggleOffKey(int index) {
     keyDown[index] = false;
     timeouts[index] = 0;
@@ -49,6 +46,9 @@ void Input::toggleOffKey(int index) {
 }
 
 void Input::update(int deltaTime) {
+    for (int i = 0; i < KEY_COUNT; i++) {
+        prevKeyDown[i] = keyDown[i];
+    }
     for (int i = 0; i < KEY_COUNT; i++) {
         if (keyDown[i]) {
             timeouts[i] += deltaTime;

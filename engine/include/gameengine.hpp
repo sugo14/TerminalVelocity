@@ -65,6 +65,8 @@ struct Scene {
 };
 
 class GameEngine {
+    std::vector<GameObject> pendingObjects;
+
     void tick(int lastDt);
 
 public:

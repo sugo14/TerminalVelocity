@@ -12,7 +12,8 @@ enum class RenderMode {
 
 enum class LightingMode {
     Regular,
-    Crystal
+    Crystal,
+    Glowing
 };
 
 struct Triangle {

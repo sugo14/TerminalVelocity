@@ -8,6 +8,7 @@ class Input {
     int timeouts[KEY_COUNT];
     int pressCount[KEY_COUNT];
     bool keyDown[KEY_COUNT];
+    bool prevKeyDown[KEY_COUNT];
 
     char getch();
 
@@ -17,6 +18,7 @@ public:
     Input();
 
     bool isDown(char key) const;
+    bool isFirstDown(char key) const;
 
     void update(int deltaTime);
 };

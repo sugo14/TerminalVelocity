@@ -58,6 +58,11 @@ void GameEngine::run() {
         camera.draw(scene.gameObjects, screen.screenData);
         screen.draw();
 
+        for (GameObject& object : pendingObjects) {
+            scene.gameObjects.push_back(std::move(object));
+        }
+        pendingObjects.clear();
+
         // frame end
         std::chrono::time_point frameEnd = clock.now();
         lastDt = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
@@ -66,5 +71,5 @@ void GameEngine::run() {
 
 void GameEngine::addObject(GameObject object) {
     object.start(this);
-    scene.gameObjects.push_back(std::move(object));
+    pendingObjects.push_back(std::move(object));
 }

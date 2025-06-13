@@ -34,7 +34,14 @@ public:
 };
 
 class BulletHandlerScript : public Script {
+    void spawnBullet(GameEngine* engine, GameObject* gameObject, Vector3 delta);
 public:
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};
+
+class CylinderScript : public Script {
+    public:
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };

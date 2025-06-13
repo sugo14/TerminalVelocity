@@ -1,7 +1,7 @@
 COMP = g++
 CFLAGS = -Wall -Wextra -Iinclude -pedantic -Wconversion -Wshadow -std=c++17 -Iengine/include -Igame/include
 
-GAME_SRCS = game/src/main.cpp game/src/scripts.cpp
+GAME_SRCS = game/src/main.cpp game/src/asteroid.cpp game/src/bullet.cpp game/src/bullethandler.cpp game/src/crystal.cpp game/src/movehandler.cpp
 ENGINE_SRCS = engine/src/camera.cpp engine/src/tui.cpp engine/src/screendata.cpp engine/src/geometry.cpp engine/src/mesh.cpp engine/src/gameengine.cpp engine/src/debug.cpp engine/src/input.cpp
 
 GAME_OBJS = $(GAME_SRCS:.cpp=.o)
