@@ -13,6 +13,11 @@ void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
         gameObject->mesh.vertexColors.push_back(0xFFFFFF); // !TEMP: white
     }
     gameObject->mesh.lightingMode = LightingMode::Glowing;
+
+    Transform cameraTransform;
+    cameraTransform.rotation = engine->camera.transform.rotation;
+    Matrix44 toWorld = cameraTransform.toWorldMatrix();
+    positionSpeed = (toWorld * positionSpeed.to4()).to3();
 }
 
 void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
@@ -47,4 +52,9 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
             }
         }
     }
+
+    // elapsedTime += deltaTime;
+    // if (elapsedTime > duration) {
+    //     gameObject->deleteSelf = true;
+    // }
 }

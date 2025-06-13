@@ -46,6 +46,8 @@ struct GameObject {
     std::string name;
     std::vector<std::string> tags;
 
+    // bool deleteSelf = false;
+
     void start(GameEngine* engine);
     void update(int deltaTime, GameEngine* engine);
 

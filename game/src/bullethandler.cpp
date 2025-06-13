@@ -8,8 +8,12 @@ void BulletHandlerScript::spawnBullet(GameEngine* engine, GameObject* gameObject
     bullet.transform.scale = {0.5f, 0.5f, 0.5f};
     bullet.scripts.push_back(std::make_unique<SphereCollider>(0.5f));
     bullet.scripts.push_back(std::make_unique<BulletScript>());
-    bullet.transform.position = engine->camera.transform.position + delta;
-    bullet.transform.rotation = engine->camera.transform.rotation;
+
+    bullet.transform = engine->camera.transform;
+    Transform cameraTransform;
+    cameraTransform.rotation = engine->camera.transform.rotation;
+    Matrix44 toWorld = cameraTransform.toWorldMatrix();
+    bullet.transform.position = bullet.transform.position + (toWorld * delta.to4()).to3();
     engine->addObject(std::move(bullet));
 }
 

@@ -66,8 +66,8 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
 
     for (const GameObject& gameObject : gameObjects) {
         // skip meshes out of frustum
-        if (gameObject.transform.position.z > -frustum.nearZ) { continue; }
-        if (gameObject.transform.position.z < -frustum.farZ) { continue; }
+        // if (gameObject.transform.position.z > -frustum.nearZ) { continue; }
+        // if (gameObject.transform.position.z < -frustum.farZ) { continue; }
 
         const Mesh& mesh = gameObject.mesh;
         Matrix44 toWorld = transform.toWorldMatrix().inverse() * gameObject.transform.toWorldMatrix();

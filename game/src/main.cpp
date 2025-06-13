@@ -48,16 +48,10 @@ int main() {
     // engine.addObject(std::move(cube));
 
     // GameObject levelCylinder;
-    // levelCylinder.mesh = Mesh::loadObjFile("cylinder2");
-    // levelCylinder.mesh.lightingMode = LightingMode::Glowing;
-    // for (int j = 0; j < levelCylinder.mesh.vertices.size(); j++) {
-    //     levelCylinder.mesh.vertexColors.push_back(0xFFFFFF); // white color
-    // }
+    // levelCylinder.mesh = Mesh::loadObjFile("cylinder");
+    // levelCylinder.scripts.push_back(std::make_unique<CylinderScript>());
     // levelCylinder.name = "LevelCylinder";
     // levelCylinder.tags = {};
-    // levelCylinder.transform.position = {0, 0, -30};
-    // levelCylinder.transform.scale = {30, 100, 30};
-    // levelCylinder.transform.rotation = {3.14f / 2, 0, 0};
     // engine.addObject(std::move(levelCylinder));
 
     engine.run();

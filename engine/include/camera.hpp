@@ -7,6 +7,9 @@ struct GameObject;
 
 float degToRad(float deg);
 
+int interpolateColor(int c1, int c2, float u);
+int interpolateColor(int c1, int c2, int c3, float u, float v, float w);
+
 struct Frustum {
     float fovY, aspect;
     float nearZ, farZ;
