@@ -22,7 +22,11 @@ void CockpitScript::start(GameEngine* engine, GameObject* gameObject) {
 void CockpitScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     Transform& cameraTransform = engine->camera.transform;
     Vector3 front = cameraTransform.front();
-    Vector3 rotatedDelta = (cameraTransform.toWorldMatrix() * this->delta.to4()).to3();
+
+    Transform rotationOnly = cameraTransform;
+    rotationOnly.position = {0, 0, 0};
+    Vector3 rotatedDelta = (rotationOnly.toWorldMatrix() * this->delta.to4()).to3();
+
     gameObject->transform.position = cameraTransform.position + front * distToCamera + rotatedDelta;
     gameObject->transform.rotation = cameraTransform.rotation + this->rotation;
 }

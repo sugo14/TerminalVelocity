@@ -68,6 +68,14 @@ int main() {
     barrel2.transform.position = {0, 0, -2.5};
     engine.addObject(std::move(barrel2));
 
+    GameObject arrow;
+    arrow.name = "Arrow";
+    arrow.mesh = Mesh::loadObjFile("arrow");
+    arrow.scripts.push_back(std::make_unique<ArrowScript>(Vector3{0, 0.07, 0.3}, 0xaa2222, LightingMode::Regular, Vector3{0, 0, 0}));
+    arrow.transform.scale = {0.05f, 0.15f, 0.05f};
+    arrow.transform.position = {0, 0, -1.5f};
+    engine.addObject(std::move(arrow));
+
     // for (int i = 0; i < 100; i++) {
     //     GameObject cube;
     //     cube.mesh = Mesh::loadObjFile("sphere8");

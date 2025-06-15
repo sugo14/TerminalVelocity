@@ -29,7 +29,7 @@ public:
 class SphereCollider : public Script {
 public:
     virtual ~SphereCollider() = default;
-    
+
     float radius;
     Vector3 position;
 
@@ -78,6 +78,7 @@ class GameEngine {
     std::vector<GameObject> pendingObjects;
 
     void tick(int lastDt);
+    void drawCrosshair();
 
 public:
     Camera camera;
