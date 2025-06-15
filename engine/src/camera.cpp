@@ -111,6 +111,10 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
                 float minGlow = 0.55f;
                 brightness = minGlow + (1 - minGlow - brightness * (1 - minGlow)); // glow effect
             }
+            else {
+                float minBrightness = 0.15f;
+                brightness = minBrightness + brightness * (1 - minBrightness); // make everything kinda visible
+            }
 
             // calculate triangle pixel bounds
             int minX = std::min(screen[0].x, std::min(screen[1].x, screen[2].x));

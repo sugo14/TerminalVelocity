@@ -38,16 +38,35 @@ int main() {
     bulletHandler.scripts.push_back(std::make_unique<BulletHandlerScript>());
     engine.addObject(std::move(bulletHandler));
 
-    // GameObject cockpit;
-    // cockpit.mesh = Mesh::loadObjFile("cockpit");
-    // for (int i = 0; i < cockpit.mesh.vertices.size(); i++) {
-    //     cockpit.mesh.vertexColors.push_back(0xFFFFFF); // white color
-    // }
-    // cockpit.name = "Cockpit";
-    // cockpit.tags = {"cockpit"};
-    // cockpit.transform.position = {0, 0.025, -1.03};
-    // cockpit.transform.scale = {0.5f, 0.5f, 0.5f};
-    // engine.addObject(std::move(cockpit));
+    GameObject cockpit;
+    cockpit.mesh = Mesh::loadObjFile("cockpit");
+    cockpit.name = "Cockpit";
+    cockpit.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, 0, 0}, 0x6b4e2e, LightingMode::Crystal));
+    cockpit.transform.scale = {0.5f, 0.5f, 0.5f};
+    engine.addObject(std::move(cockpit));
+
+    GameObject computer;
+    computer.name = "Computer";
+    computer.mesh = Mesh::loadObjFile("comp");
+    computer.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, 0.1, 0.05}, 0x00c0c0, LightingMode::Regular, Vector3{0.5, 0, 0}));
+    computer.transform.scale = {0.4, 0.4, 3};
+    engine.addObject(std::move(computer));
+
+    GameObject barrel1;
+    barrel1.name = "Barrel1";
+    barrel1.mesh = Mesh::loadObjFile("cylinderW");
+    barrel1.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0.225, 0.22, -1}, 0xfcb86d, LightingMode::Regular, Vector3{1.57, 0, 0}));
+    barrel1.transform.scale = {0.11, 1.3, 0.11};
+    barrel1.transform.position = {0, 0, -2.5};
+    engine.addObject(std::move(barrel1));
+
+    GameObject barrel2;
+    barrel2.name = "Barrel2";
+    barrel2.mesh = Mesh::loadObjFile("cylinderW");
+    barrel2.scripts.push_back(std::make_unique<CockpitScript>(Vector3{-0.225, 0.22, -1}, 0xfcb86d, LightingMode::Regular, Vector3{1.57, 0, 0}));
+    barrel2.transform.scale = {0.11, 1.3, 0.11};
+    barrel2.transform.position = {0, 0, -2.5};
+    engine.addObject(std::move(barrel2));
 
     // for (int i = 0; i < 100; i++) {
     //     GameObject cube;

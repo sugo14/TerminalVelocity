@@ -60,3 +60,16 @@ public:
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
+
+class CockpitScript : public Script {
+    constexpr static float distToCamera = 1.05f;
+    Vector3 delta, rotation;
+    int color;
+    LightingMode lightingMode;
+public:
+    virtual ~CockpitScript() = default;
+    CockpitScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation = {0, 0, 0});
+
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};

@@ -13,7 +13,7 @@ void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     }
     gameObject->mesh.lightingMode = LightingMode::Glowing;
 
-    float speed = 110;
+    float speed = 160;
     positionSpeed = engine->camera.transform.front() * speed;
 }
 

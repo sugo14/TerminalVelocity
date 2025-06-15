@@ -24,7 +24,7 @@ void BulletHandlerScript::start(GameEngine* engine, GameObject* gameObject) {
 void BulletHandlerScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     if (engine->input.isFirstDown('q')) {
         Vector3 origin = engine->camera.transform.position;
-        spawnBullet(engine, gameObject, Vector3{1, 1, -3});
-        spawnBullet(engine, gameObject, Vector3{-1, 1, -3});
+        spawnBullet(engine, gameObject, Vector3{1, 1, -10});
+        spawnBullet(engine, gameObject, Vector3{-1, 1, -10});
     }
 }

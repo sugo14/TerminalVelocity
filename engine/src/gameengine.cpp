@@ -5,6 +5,7 @@
 
 #include <chrono>
 #include <algorithm>
+#include <unistd.h>
 
 GameObject::GameObject() : transform(Transform()), mesh(Mesh()), 
                            name("GameObject"), deleteSelf(false) {
@@ -85,6 +86,15 @@ void GameEngine::run() {
                            [](const GameObject& obj) { return obj.deleteSelf; }),
             scene.gameObjects.end()
         );
+
+        // sleep to maintain 30fps
+        int targetFrameTime = 1000 / 30;
+        int elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(clock.now() - frameStart).count();
+        if (elapsedTime < targetFrameTime) {
+            usleep((targetFrameTime - elapsedTime) * 1000); // convert to microseconds
+        } else {
+            debug("Frame took too long: " + std::to_string(elapsedTime) + "ms");
+        }
 
         // frame end
         std::chrono::time_point frameEnd = clock.now();
