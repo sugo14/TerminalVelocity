@@ -16,6 +16,8 @@ struct GameObject;
 
 class Script {
 public:
+    virtual ~Script() = default;
+
     virtual void start(GameEngine* engine, GameObject* gameObject) {
         debug("!ERROR! Base ObjectScript::start called.");
     }
@@ -26,10 +28,12 @@ public:
 
 class SphereCollider : public Script {
 public:
+    virtual ~SphereCollider() = default;
+    
     float radius;
-    Transform* transform;
+    Vector3 position;
 
-    SphereCollider(float radius = 1.0f) : radius(radius), transform(nullptr) {}
+    SphereCollider(float radius = 1.0f) : radius(radius), position({0, 0, 0}) {}
 
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
@@ -46,10 +50,14 @@ struct GameObject {
     std::string name;
     std::vector<std::string> tags;
 
-    // bool deleteSelf = false;
+    bool deleteSelf = false;
+
+    GameObject();
 
     void start(GameEngine* engine);
     void update(int deltaTime, GameEngine* engine);
+
+    bool hasTag(const std::string& tag) const;
 
     template <typename T>
     T* getScriptByType() const {

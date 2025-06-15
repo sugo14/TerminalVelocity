@@ -79,5 +79,7 @@ struct Transform {
     /// @return The matrix used for the transformation.
     Matrix44 toWorldMatrix() const;
 
+    Vector3 front() const;
+
     std::string toString() const;
 };

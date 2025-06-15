@@ -108,7 +108,7 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
             if (brightness < 0) { continue; } // backface culling?
 
             if (mesh.lightingMode == LightingMode::Glowing) {
-                float minGlow = 0.7f;
+                float minGlow = 0.55f;
                 brightness = minGlow + (1 - minGlow - brightness * (1 - minGlow)); // glow effect
             }
 

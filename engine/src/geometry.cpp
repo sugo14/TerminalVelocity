@@ -267,3 +267,9 @@ std::string Transform::toString() const {
           " Rotation(" + std::to_string(rotation.x) + ", " + std::to_string(rotation.y) + ", " + std::to_string(rotation.z) + ")" +
           " Scale(" + std::to_string(scale.x) + ", " + std::to_string(scale.y) + ", " + std::to_string(scale.z) + ")";
 }
+
+Vector3 Transform::front() const {
+    Transform rot;
+    rot.rotation = rotation;
+    return (rot.toWorldMatrix() * Vector3{0, 0, -1}.to4()).to3();
+}

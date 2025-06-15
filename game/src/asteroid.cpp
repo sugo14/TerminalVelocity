@@ -29,6 +29,7 @@ int randomRockColor() {
 void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidScript started");
     gameObject->transform.scale = {4, 4, 4};
+    gameObject->tags.push_back("asteroid");
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -56,23 +57,5 @@ void AsteroidScript::update(int deltaTime, GameEngine* engine, GameObject* gameO
 
     if (gameObject->transform.position.z > -3.0f) {
         gameObject->transform.position.z = -80.0f; // reset position
-    }
-
-    SphereCollider* self = gameObject->getScriptByType<SphereCollider>();
-    if (!self) {
-        debug("AsteroidScript: SphereCollider not found!");
-        return;
-    }
-    for (GameObject& other : engine->scene.gameObjects) {
-        if (other.name == "Crystal") {
-            SphereCollider* collider = other.getScriptByType<SphereCollider>();
-            if (collider && collider->isCollidingWith(*self)) {
-                debug(std::string("Asteroid collided with Crystal!") +
-                      " Position: " + gameObject->transform.toString() +
-                      " Self radius: " + std::to_string(self->radius) +
-                      " Other position: " + other.transform.toString() +
-                      " Other radius: " + std::to_string(collider->radius));
-            }
-        }
     }
 }

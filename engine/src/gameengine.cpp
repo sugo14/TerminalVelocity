@@ -4,6 +4,12 @@
 #include "scripts.hpp" // ! TEMP!!!!
 
 #include <chrono>
+#include <algorithm>
+
+GameObject::GameObject() : transform(Transform()), mesh(Mesh()), 
+                           name("GameObject"), deleteSelf(false) {
+    debug("GameObject created: " + name);
+}
 
 void GameObject::start(GameEngine* engine) {
     debug("Starting object: " + name);
@@ -14,21 +20,27 @@ void GameObject::start(GameEngine* engine) {
 }
 
 void GameObject::update(int deltaTime, GameEngine* engine) {
+    if (deleteSelf) { return; }
     for (auto& script : scripts) { script->update(deltaTime, engine, this); }
+}
+
+bool GameObject::hasTag(const std::string& tag) const {
+    if (tags.empty()) return false; // quick check
+    
+    return std::find(tags.begin(), tags.end(), tag) != tags.end();
 }
 
 void SphereCollider::start(GameEngine* engine, GameObject* gameObject) { }
 void SphereCollider::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
-    transform = &gameObject->transform;
+    position = gameObject->transform.position;
 }
 
 bool SphereCollider::isCollidingWith(SphereCollider& other) {
-    Vector3 delta = other.transform->position - transform->position;
+    Vector3 delta = other.position - position;
     return delta.length() < (other.radius + radius);
 }
 
 void GameEngine::tick(int deltaTime) {
-    input.update(deltaTime);
     for (GameObject& gameObject : scene.gameObjects) {
         gameObject.update(deltaTime, this);
     }
@@ -51,6 +63,9 @@ void GameEngine::run() {
         // frame start
         std::chrono::time_point frameStart = clock.now();
 
+        // input
+        input.update(lastDt);
+
         // game engine loop
         tick(lastDt);
 
@@ -58,10 +73,18 @@ void GameEngine::run() {
         camera.draw(scene.gameObjects, screen.screenData);
         screen.draw();
 
+        // add pending objects to the scene
         for (GameObject& object : pendingObjects) {
             scene.gameObjects.push_back(std::move(object));
         }
         pendingObjects.clear();
+
+        // delete objects marked for deletion
+        scene.gameObjects.erase(
+            std::remove_if(scene.gameObjects.begin(), scene.gameObjects.end(),
+                           [](const GameObject& obj) { return obj.deleteSelf; }),
+            scene.gameObjects.end()
+        );
 
         // frame end
         std::chrono::time_point frameEnd = clock.now();

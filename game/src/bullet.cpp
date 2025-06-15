@@ -7,17 +7,14 @@ void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     gameObject->transform.scale = {0.5, 0.5, 0.5};
 
     rotationSpeed = {10, 0, 0};
-    positionSpeed = {0, 0, -135};
     gameObject->mesh.renderMode = RenderMode::VertexColors;
     for (int i = 0; i < gameObject->mesh.vertices.size(); i++) {
-        gameObject->mesh.vertexColors.push_back(0xFFFFFF); // !TEMP: white
+        gameObject->mesh.vertexColors.push_back(0x00FFFF); // !TEMP: white
     }
     gameObject->mesh.lightingMode = LightingMode::Glowing;
 
-    Transform cameraTransform;
-    cameraTransform.rotation = engine->camera.transform.rotation;
-    Matrix44 toWorld = cameraTransform.toWorldMatrix();
-    positionSpeed = (toWorld * positionSpeed.to4()).to3();
+    float speed = 110;
+    positionSpeed = engine->camera.transform.front() * speed;
 }
 
 void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
@@ -31,26 +28,31 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
         return;
     }
     for (GameObject& other : engine->scene.gameObjects) {
-        if (other.name == "Asteroid") {
+        if (other.hasTag("asteroid")) {
             SphereCollider* collider = other.getScriptByType<SphereCollider>();
             if (collider && collider->isCollidingWith(*self)) {
-                debug(std::string("Bullet collided with Asteroid!") +
-                      " Position: " + gameObject->transform.toString() +
-                      " Self radius: " + std::to_string(self->radius) +
-                      " Other position: " + other.transform.toString() +
-                      " Other radius: " + std::to_string(collider->radius));
-            }
-            // destroy asteroid
-            if (collider && collider->isCollidingWith(*self)) {
-                // remove asteroid from scene
-                auto it = std::remove_if(engine->scene.gameObjects.begin(), engine->scene.gameObjects.end(),
-                                         [&other](const GameObject& obj) { return obj.name == "Asteroid"; });
-                if (it != engine->scene.gameObjects.end()) {
-                    engine->scene.gameObjects.erase(it, engine->scene.gameObjects.end());
-                    debug("Asteroid destroyed by bullet!");
+                gameObject->deleteSelf = true;
+                for (int i = 0; i < engine->scene.gameObjects.size(); i++) {
+                    if (engine->scene.gameObjects[i].name == other.name) {
+                        engine->scene.gameObjects[i].deleteSelf = true;
+                        break;
+                    }
                 }
             }
         }
+        else if (other.hasTag("crystal")) {
+            SphereCollider* collider = other.getScriptByType<SphereCollider>();
+            if (collider && collider->isCollidingWith(*self)) {
+                gameObject->deleteSelf = true;
+                for (int i = 0; i < engine->scene.gameObjects.size(); i++) {
+                    if (engine->scene.gameObjects[i].name == other.name) {
+                        engine->scene.gameObjects[i].deleteSelf = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (gameObject->deleteSelf) { break; } // only destroy one object
     }
 
     // elapsedTime += deltaTime;

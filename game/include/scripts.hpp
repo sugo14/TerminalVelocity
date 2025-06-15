@@ -7,6 +7,7 @@ class AsteroidScript : public Script {
     Vector3 rotationSpeed;
     Vector3 positionSpeed;
 public:
+    virtual ~AsteroidScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
@@ -15,6 +16,7 @@ class CrystalScript : public Script {
     Vector3 rotationSpeed;
     Vector3 positionSpeed;
 public:
+    virtual ~CrystalScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
@@ -25,12 +27,14 @@ class BulletScript : public Script {
     // const int duration = 5000;
     // int elapsedTime = 0;
 public:
+    virtual ~BulletScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class MoveHandlerScript : public Script {
 public:
+    virtual ~MoveHandlerScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
@@ -38,12 +42,21 @@ public:
 class BulletHandlerScript : public Script {
     void spawnBullet(GameEngine* engine, GameObject* gameObject, Vector3 delta);
 public:
+    virtual ~BulletHandlerScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class CylinderScript : public Script {
-    public:
+public:
+    virtual ~CylinderScript() = default;
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};
+
+class AsteroidManager : public Script {
+public:
+    virtual ~AsteroidManager() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
