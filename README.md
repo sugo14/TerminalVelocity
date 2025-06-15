@@ -5,10 +5,11 @@ My Computer Science 30 final project: an attempt at a terminal-based 3D game fro
 - Colors based on vertex colors and barycentric weights
     - Can make decent looking objects, like the asteroid and crystal shown
 - Has basic shading, z-buffering, etc.
-- GameEngine handles GameObjects with Scripts (structure subject to change)
 - Can move the camera around in the world from input
+- Shoot asteroids using space to destroy them
+- HUD arrow guides you by pointing forwards
 
-![Asteroid and crystal on screen](github/6-9-2025-crystal.gif)
+![Flying around and shooting in cockpit](github/6-15-2025-hud.gif)
 
 ## 🎯 Goals
 - Learn some basic linear algebra
