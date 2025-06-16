@@ -1,7 +1,7 @@
 #include "scripts.hpp"
 
-// const float CockpitScript::distToCamera = 0.255f;
-const float CockpitScript::distToCamera = 0.4f;
+// const float CockpitScript::distToCamera = 0.4f;
+const float CockpitScript::distToCamera = 0.38f;
 
 CockpitScript::CockpitScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation)
     : Script() {
@@ -30,6 +30,34 @@ void CockpitScript::update(int deltaTime, GameEngine* engine, GameObject* gameOb
     rotationOnly.position = {0, 0, 0};
     Vector3 rotatedDelta = (rotationOnly.toWorldMatrix() * this->delta.to4()).to3();
 
-    gameObject->transform.position = cameraTransform.position + front * distToCamera + rotatedDelta;
-    gameObject->transform.rotation = cameraTransform.rotation + this->rotation;
+    Vector3 currMoveSpeed = {0, 0, 0};
+    Vector3 currRotSpeed = {0, 0, 0};
+    for (GameObject& obj : engine->scene.gameObjects) {
+        if (obj.name == "MoveHandler") {
+            MoveHandlerScript* moveHandler = obj.getScriptByType<MoveHandlerScript>();
+            if (moveHandler) {
+                currMoveSpeed = moveHandler->currMoveSpeed;
+                currRotSpeed = moveHandler->currRotSpeed;
+            }
+            break;
+        }
+    }
+
+    float newDistToCamera = distToCamera;
+    if (currMoveSpeed.length() >= 0.01f) {
+        newDistToCamera += currMoveSpeed.length() / 30.0f;
+    }
+    
+    Vector3 lagOffset = {
+        currRotSpeed.y * 0.13f,
+        -currRotSpeed.x * 0.13f,
+        0
+    };
+    Vector3 laggedOffset = (rotationOnly.toWorldMatrix() * lagOffset.to4()).to3();
+
+    gameObject->transform.position = cameraTransform.position + front * newDistToCamera + rotatedDelta + laggedOffset;
+
+    gameObject->transform.rotation = cameraTransform.rotation + this->rotation - currRotSpeed * 0.3f;
 }
+
+

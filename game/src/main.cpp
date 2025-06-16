@@ -84,7 +84,7 @@ int main() {
             cube.mesh.vertexColors.push_back(0xFFFFFF); // white color
         }
         cube.name = "Cube" + std::to_string(i);
-        cube.tags = {};
+        cube.tags = {"asteroid"};
         cube.transform.position = {static_cast<float>(rand() % 20 - 10), static_cast<float>(rand() % 20 - 10), static_cast<float>(rand() % 20 - 10)};
         cube.transform.scale = {1, 1, 1};
         cube.scripts.push_back(std::make_unique<SphereCollider>(1));

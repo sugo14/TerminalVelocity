@@ -38,6 +38,28 @@ void ArrowScript::update(int deltaTime, GameEngine* engine, GameObject* gameObje
     rotationOnly.position = {0, 0, 0};
     Vector3 rotatedDelta = (rotationOnly.toWorldMatrix() * this->delta.to4()).to3();
 
-    gameObject->transform.position = cameraTransform.position + front * CockpitScript::distToCamera + rotatedDelta;
+    Vector3 currMoveSpeed = {0, 0, 0};
+    Vector3 currRotSpeed = {0, 0, 0};
+    for (GameObject& obj : engine->scene.gameObjects) {
+        if (obj.name == "MoveHandler") {
+            MoveHandlerScript* moveHandler = obj.getScriptByType<MoveHandlerScript>();
+            currMoveSpeed = moveHandler->currMoveSpeed;
+            currRotSpeed = moveHandler->currRotSpeed;
+        }
+    }
+
+    float newDistToCamera = CockpitScript::distToCamera;
+    if (currMoveSpeed.length() >= 0.01f) {
+        newDistToCamera += currMoveSpeed.length() / 30.0f;
+    }
+    
+    Vector3 lagOffset = {
+        currRotSpeed.y * 0.13f,
+        -currRotSpeed.x * 0.13f,
+        0
+    };
+    Vector3 laggedOffset = (rotationOnly.toWorldMatrix() * lagOffset.to4()).to3();
+
+    gameObject->transform.position = cameraTransform.position + front * newDistToCamera + rotatedDelta + laggedOffset;
     gameObject->transform.rotation = {0, 0, 0};
 }

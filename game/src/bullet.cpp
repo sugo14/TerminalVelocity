@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+const int BulletScript::duration = 5000;
+
 void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("BulletScript started");
     gameObject->transform.scale = {0.5, 0.5, 0.5};
@@ -13,8 +15,10 @@ void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     }
     gameObject->mesh.lightingMode = LightingMode::Glowing;
 
-    float speed = 110;
+    float speed = 60;
     positionSpeed = engine->camera.transform.front() * speed;
+
+    elapsedTime = 0;
 }
 
 void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
@@ -57,8 +61,9 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
         if (gameObject->deleteSelf) { break; } // only destroy one object
     }
 
-    // elapsedTime += deltaTime;
-    // if (elapsedTime > duration) {
-    //     gameObject->deleteSelf = true;
-    // }
+    elapsedTime += deltaTime;
+    if (elapsedTime > duration) {
+        debug("BulletScript: bullet expired after " + std::to_string(elapsedTime) + "ms, greater than " + std::to_string(duration));
+        gameObject->deleteSelf = true;
+    }
 }
