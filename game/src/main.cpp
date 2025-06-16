@@ -9,6 +9,9 @@
 
 int main() {
     GameEngine engine = GameEngine();
+    
+    int cockpitColor = 0x373b52; // 0x6b4e2e
+    int barrelColor = 0xa3b0f7; // 0xfcb86d
 
     for (int i = 0; i < 2; i++) {
         GameObject obj;
@@ -41,38 +44,36 @@ int main() {
     GameObject cockpit;
     cockpit.mesh = Mesh::loadObjFile("cockpit");
     cockpit.name = "Cockpit";
-    cockpit.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, 0, 0}, 0x6b4e2e, LightingMode::Crystal));
-    cockpit.transform.scale = {0.5f, 0.5f, 0.5f};
+    cockpit.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, 0, 0}, cockpitColor, LightingMode::Crystal));
+    cockpit.transform.scale = {0.775f, 0.775f, 0.775f};
     engine.addObject(std::move(cockpit));
 
     GameObject computer;
     computer.name = "Computer";
     computer.mesh = Mesh::loadObjFile("comp");
-    computer.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, 0.1, 0.05}, 0x00c0c0, LightingMode::Regular, Vector3{0.5, 0, 0}));
-    computer.transform.scale = {0.4, 0.4, 3};
+    computer.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, -0.27, 0.01}, 0x00c0c0, LightingMode::Regular, Vector3{-0.9, 0, 0}));
+    computer.transform.scale = {0.5, 0.5, 4};
     engine.addObject(std::move(computer));
 
     GameObject barrel1;
     barrel1.name = "Barrel1";
     barrel1.mesh = Mesh::loadObjFile("cylinderW");
-    barrel1.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0.225, 0.22, -1}, 0xfcb86d, LightingMode::Regular, Vector3{1.57, 0, 0}));
-    barrel1.transform.scale = {0.11, 1.3, 0.11};
-    barrel1.transform.position = {0, 0, -2.5};
+    barrel1.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0.225, -0.23, -0.22}, barrelColor, LightingMode::Regular, Vector3{1.57, 0, 0}));
+    barrel1.transform.scale = {0.11, 0.4, 0.11};
     engine.addObject(std::move(barrel1));
 
     GameObject barrel2;
     barrel2.name = "Barrel2";
     barrel2.mesh = Mesh::loadObjFile("cylinderW");
-    barrel2.scripts.push_back(std::make_unique<CockpitScript>(Vector3{-0.225, 0.22, -1}, 0xfcb86d, LightingMode::Regular, Vector3{1.57, 0, 0}));
-    barrel2.transform.scale = {0.11, 1.3, 0.11};
-    barrel2.transform.position = {0, 0, -2.5};
+    barrel2.scripts.push_back(std::make_unique<CockpitScript>(Vector3{-0.225, -0.23, -0.22}, barrelColor, LightingMode::Regular, Vector3{1.57, 0, 0}));
+    barrel2.transform.scale = {0.11, 0.4, 0.11};
     engine.addObject(std::move(barrel2));
 
     GameObject arrow;
     arrow.name = "Arrow";
     arrow.mesh = Mesh::loadObjFile("arrow");
-    arrow.scripts.push_back(std::make_unique<ArrowScript>(Vector3{0, 0.07, 0.3}, 0xaa2222, LightingMode::Regular, Vector3{0, 0, 0}));
-    arrow.transform.scale = {0.05f, 0.15f, 0.05f};
+    arrow.scripts.push_back(std::make_unique<ArrowScript>(Vector3{0, -0.13, 0.05}, 0xaa2222, LightingMode::Regular, Vector3{0, 0, 0}));
+    arrow.transform.scale = Vector3{0.05f, 0.15f, 0.05f} * 2.0f;
     arrow.transform.position = {0, 0, -1.5f};
     engine.addObject(std::move(arrow));
 

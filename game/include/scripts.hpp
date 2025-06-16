@@ -66,7 +66,7 @@ class CockpitScript : public Script {
     int color;
     LightingMode lightingMode;
 public:
-    constexpr static float distToCamera = 1.05f;
+    const static float distToCamera;
     
     virtual ~CockpitScript() = default;
     CockpitScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation = {0, 0, 0});
