@@ -6,6 +6,8 @@
 
 void startTerminalSession();
 
+void playAudio(const std::string& filename, int randomRange = -1);
+
 namespace TUI {
     extern const std::string ESC;
     extern const std::string UPPER_HALF_BLOCK;

@@ -13,7 +13,7 @@ void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     }
     gameObject->mesh.lightingMode = LightingMode::Glowing;
 
-    float speed = 130;
+    float speed = 110;
     positionSpeed = engine->camera.transform.front() * speed;
 }
 
@@ -31,6 +31,7 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
         if (other.hasTag("asteroid")) {
             SphereCollider* collider = other.getScriptByType<SphereCollider>();
             if (collider && collider->isCollidingWith(*self)) {
+                playAudio("boom", 5);
                 gameObject->deleteSelf = true;
                 for (int i = 0; i < engine->scene.gameObjects.size(); i++) {
                     if (engine->scene.gameObjects[i].name == other.name) {
@@ -43,6 +44,7 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
         else if (other.hasTag("crystal")) {
             SphereCollider* collider = other.getScriptByType<SphereCollider>();
             if (collider && collider->isCollidingWith(*self)) {
+                playAudio("boom", 5);
                 gameObject->deleteSelf = true;
                 for (int i = 0; i < engine->scene.gameObjects.size(); i++) {
                     if (engine->scene.gameObjects[i].name == other.name) {

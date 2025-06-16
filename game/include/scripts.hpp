@@ -34,6 +34,9 @@ public:
 
 class MoveHandlerScript : public Script {
 public:
+    Vector3 currRotSpeed;
+    Vector3 currMoveSpeed;
+    
     virtual ~MoveHandlerScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;

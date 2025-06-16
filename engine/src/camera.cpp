@@ -93,10 +93,19 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
             }
 
             // cull triangles entirely outside of frustum
-            if (world[0].z < -frustum.farZ && world[1].z < -frustum.farZ && world[2].z < -frustum.farZ) {
+            // if (world[0].z < -frustum.farZ && world[1].z < -frustum.farZ && world[2].z < -frustum.farZ) {
+            //     continue;
+            // }
+            // if (world[0].z > -frustum.nearZ && world[1].z > -frustum.nearZ && world[2].z > -frustum.nearZ) {
+            //     continue;
+            // }
+
+            // ! hack: skip triangles whatsoever outside of frustum
+            // ! this is probably fine short term but should clip later
+            if (world[0].z > -frustum.nearZ || world[1].z > -frustum.nearZ || world[2].z > -frustum.nearZ) {
                 continue;
             }
-            if (world[0].z > -frustum.nearZ && world[1].z > -frustum.nearZ && world[2].z > -frustum.nearZ) {
+            if (world[0].z < -frustum.farZ || world[1].z < -frustum.farZ || world[2].z < -frustum.farZ) {
                 continue;
             }
 

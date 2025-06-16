@@ -42,6 +42,16 @@ void startTerminalSession() {
     signal(SIGINT, endTerminalSession);
 }
 
+void playAudio(const std::string& filename, int randomRange) {
+    std::string command = "aplay -q audio/" + filename;
+    if (randomRange > 0) {
+        int randomChoice = rand() % randomRange + 1;
+        command += std::to_string(randomChoice);
+    }
+    command += ".wav &";
+    system(command.c_str());
+}
+
 namespace TUI {
     const std::string ESC = "\033";
 

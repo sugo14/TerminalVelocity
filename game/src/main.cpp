@@ -10,8 +10,8 @@
 int main() {
     GameEngine engine = GameEngine();
     
-    int cockpitColor = 0x373b52; // 0x6b4e2e
-    int barrelColor = 0xa3b0f7; // 0xfcb86d
+    int cockpitColor = 0x323542; // 0x6b4e2e
+    int barrelColor = 0x8d93b5; // 0xfcb86d
 
     for (int i = 0; i < 2; i++) {
         GameObject obj;
@@ -77,19 +77,19 @@ int main() {
     arrow.transform.position = {0, 0, -1.5f};
     engine.addObject(std::move(arrow));
 
-    // for (int i = 0; i < 100; i++) {
-    //     GameObject cube;
-    //     cube.mesh = Mesh::loadObjFile("sphere8");
-    //     for (int j = 0; j < cube.mesh.vertices.size(); j++) {
-    //         cube.mesh.vertexColors.push_back(0xFFFFFF); // white color
-    //     }
-    //     cube.name = "Cube" + std::to_string(i);
-    //     cube.tags = {};
-    //     cube.transform.position = {static_cast<float>(rand() % 20 - 10), static_cast<float>(rand() % 20 - 10), static_cast<float>(rand() % 20 - 10)};
-    //     cube.transform.scale = {1, 1, 1};
-    //     cube.scripts.push_back(std::make_unique<SphereCollider>(1));
-    //     engine.addObject(std::move(cube));
-    // }
+    for (int i = 0; i < 100; i++) {
+        GameObject cube;
+        cube.mesh = Mesh::loadObjFile("sphere8");
+        for (int j = 0; j < cube.mesh.vertices.size(); j++) {
+            cube.mesh.vertexColors.push_back(0xFFFFFF); // white color
+        }
+        cube.name = "Cube" + std::to_string(i);
+        cube.tags = {};
+        cube.transform.position = {static_cast<float>(rand() % 20 - 10), static_cast<float>(rand() % 20 - 10), static_cast<float>(rand() % 20 - 10)};
+        cube.transform.scale = {1, 1, 1};
+        cube.scripts.push_back(std::make_unique<SphereCollider>(1));
+        engine.addObject(std::move(cube));
+    }
 
     // GameObject levelCylinder;
     // levelCylinder.mesh = Mesh::loadObjFile("cylinder");
