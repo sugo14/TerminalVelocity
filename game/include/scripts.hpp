@@ -58,6 +58,12 @@ public:
 };
 
 class AsteroidManager : public Script {
+    float currAsteroidPeriod;
+    float asteroidPeriod = 1.0f;
+    float periodDecrease = 0.001;
+
+    void spawnAsteroid(GameEngine* engine);
+    void spawnCrystal(GameEngine* engine);
 public:
     virtual ~AsteroidManager() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;

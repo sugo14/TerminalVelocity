@@ -9,7 +9,7 @@ My Computer Science 30 final project: an attempt at a terminal-based 3D game fro
 - Shoot asteroids using space to destroy them
 - HUD arrow guides you by pointing forwards
 
-![Flying around and shooting in cockpit](github/6-15-2025-hud.gif)
+![Flying around and shooting in cockpit](github/6-16-2025-moving.gif)
 
 ## 🎯 Goals
 - Learn some basic linear algebra

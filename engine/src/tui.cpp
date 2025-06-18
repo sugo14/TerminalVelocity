@@ -43,6 +43,7 @@ void startTerminalSession() {
 }
 
 void playAudio(const std::string& filename, int randomRange) {
+    return;
     std::string command = "aplay -q audio/" + filename;
     if (randomRange > 0) {
         int randomChoice = rand() % randomRange + 1;

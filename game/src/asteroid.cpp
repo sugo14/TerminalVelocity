@@ -41,7 +41,7 @@ void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     rotationSpeed = {0, 0, -2};
     // ! how to set constant rotational direction?
     // gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
-    gameObject->transform.position = {0, 0, -30};
+    // gameObject->transform.position = {0, 0, -30};
     gameObject->transform.rotation = {dist2(gen), dist2(gen), dist2(gen)};
     positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
 
