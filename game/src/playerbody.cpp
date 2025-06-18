@@ -1,5 +1,7 @@
 #include "scripts.hpp"
 
+int PlayerBodyScript::score = 0;
+
 void PlayerBodyScript::start(GameEngine* engine, GameObject* gameObject) { }
 
 void PlayerBodyScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {

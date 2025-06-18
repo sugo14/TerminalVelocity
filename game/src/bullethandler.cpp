@@ -6,7 +6,7 @@ void BulletHandlerScript::spawnBullet(GameEngine* engine, GameObject* gameObject
     bullet.name = "Bullet";
     bullet.tags = {};
     bullet.transform.scale = {0.5f, 0.5f, 0.5f};
-    bullet.scripts.push_back(std::make_unique<SphereCollider>(3.0f));
+    bullet.scripts.push_back(std::make_unique<SphereCollider>(2.0f));
     bullet.scripts.push_back(std::make_unique<BulletScript>());
 
     bullet.transform = engine->camera.transform;

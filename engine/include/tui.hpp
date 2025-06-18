@@ -5,7 +5,7 @@
 #include <string>
 
 void startTerminalSession();
-void endTerminalSession(int signum = 0);
+void endTerminalSession();
 
 void playAudio(const std::string& filename, int randomRange = -1);
 

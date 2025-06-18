@@ -7,6 +7,12 @@
 #include <iostream>
 #include <unistd.h>
 
+void end() {
+    std::cout << "You died due to an asteroid collision." << std::endl;
+    std::cout << "Game over." << std::endl;
+    std::cout << "Final score: " << PlayerBodyScript::score << std::endl;
+}
+
 int main() {
     GameEngine engine = GameEngine();
     
@@ -109,5 +115,5 @@ int main() {
     // levelCylinder.tags = {};
     // engine.addObject(std::move(levelCylinder));
 
-    engine.run();
+    engine.run(&end);
 }

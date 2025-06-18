@@ -91,5 +91,5 @@ public:
     GameEngine();
 
     void addObject(GameObject object);
-    void run();
+    void run(void (*endCallback)() = nullptr);
 };

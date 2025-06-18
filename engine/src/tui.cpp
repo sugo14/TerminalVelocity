@@ -9,8 +9,7 @@
 static termios originalTermios;
 static int originalFlags;
 
-// restore terminal settings on ctrl-c
-void endTerminalSession(int signum) {
+void endTerminalSession() {
     // print ending ansi
     std::cout << TUI::SHOW_CURSOR
               << TUI::ALTERNATE_SCREEN_BUFFER_OFF;
@@ -18,8 +17,12 @@ void endTerminalSession(int signum) {
 
     tcsetattr(STDIN_FILENO, TCSANOW, &originalTermios);
     // fcntl(STDIN_FILENO, F_SETFL, originalFlags);
+}
 
-    exit(0); // exit the program
+// restore terminal settings on ctrl-c
+static void endTerminalSessionHard(int signum) {
+    endTerminalSession();
+    exit(0);
 }
 
 void startTerminalSession() {
@@ -39,11 +42,11 @@ void startTerminalSession() {
     // originalFlags = fcntl(STDIN_FILENO, F_GETFL, 0);
     // fcntl(STDIN_FILENO, F_SETFL, originalFlags | O_NONBLOCK);
 
-    signal(SIGINT, endTerminalSession);
+    signal(SIGINT, endTerminalSessionHard);
 }
 
 void playAudio(const std::string& filename, int randomRange) {
-    return;
+    return; // ! TODO: muted
     std::string command = "aplay -q audio/" + filename;
     if (randomRange > 0) {
         int randomChoice = rand() % randomRange + 1;

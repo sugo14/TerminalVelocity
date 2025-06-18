@@ -1,7 +1,7 @@
 #include "scripts.hpp"
 
 // const float CockpitScript::distToCamera = 0.4f;
-const float CockpitScript::distToCamera = 0.38f;
+const float CockpitScript::distToCamera = 0.37f;
 
 CockpitScript::CockpitScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation)
     : Script() {

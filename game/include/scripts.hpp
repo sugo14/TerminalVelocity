@@ -63,6 +63,7 @@ class AsteroidManager : public Script {
     float currAsteroidPeriod;
     float asteroidPeriod;
     float currMult;
+    int cnt;
 
     void spawnAsteroid(GameEngine* engine);
     void spawnCrystal(GameEngine* engine);
@@ -101,6 +102,8 @@ public:
 
 class PlayerBodyScript : public Script {
 public:
+    static int score;
+    
     virtual ~PlayerBodyScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;

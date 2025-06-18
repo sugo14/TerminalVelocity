@@ -49,6 +49,7 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
             SphereCollider* collider = other.getScriptByType<SphereCollider>();
             if (collider && collider->isCollidingWith(*self)) {
                 playAudio("boom", 5);
+                PlayerBodyScript::score += 10;
                 gameObject->deleteSelf = true;
                 for (int i = 0; i < engine->scene.gameObjects.size(); i++) {
                     if (engine->scene.gameObjects[i].name == other.name) {
@@ -58,7 +59,7 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
                 }
             }
         }
-        if (gameObject->deleteSelf) { break; } // only destroy one object
+        // if (gameObject->deleteSelf) { break; } // only destroy one object
     }
 
     elapsedTime += deltaTime;

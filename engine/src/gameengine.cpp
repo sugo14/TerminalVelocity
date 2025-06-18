@@ -87,7 +87,7 @@ GameEngine::GameEngine() {
     end = false;
 }
 
-void GameEngine::run() {
+void GameEngine::run(void (*endCallback)()) {
     std::chrono::high_resolution_clock clock;
     int lastDt = 10;
 
@@ -135,6 +135,7 @@ void GameEngine::run() {
         if (end) {
             debug("Game ended");
             endTerminalSession();
+            if (endCallback) { endCallback(); }
             break;
         }
     }

@@ -26,7 +26,7 @@ void MoveHandlerScript::start(GameEngine* engine, GameObject* gameObject) {
 }
 
 void MoveHandlerScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
-    float rotationSpeed = 0.0005f * deltaTime;
+    float rotationSpeed = 0.0002f * deltaTime;
     float moveSpeed = 0.005f * deltaTime;
     Transform& cameraTransform = engine->camera.transform;
     if (engine->input.isDown('a')) { currRotSpeed.y += rotationSpeed; }
@@ -36,7 +36,7 @@ void MoveHandlerScript::update(int deltaTime, GameEngine* engine, GameObject* ga
     if (engine->input.isDown(' ')) {
         currMoveSpeed = currMoveSpeed + cameraTransform.front() * moveSpeed;
     }
-    currRotSpeed = currRotSpeed / 1.3f;
+    currRotSpeed = currRotSpeed / 1.2f;
     currMoveSpeed = currMoveSpeed / 1.3f;
     cameraTransform.rotation = cameraTransform.rotation + currRotSpeed;
     cameraTransform.position = cameraTransform.position + currMoveSpeed;

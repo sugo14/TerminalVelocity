@@ -29,11 +29,20 @@ int randomRockColor() {
 AsteroidScript::AsteroidScript(float speedMult) {
     std::random_device rd;
     std::mt19937 gen(rd());
+
     std::uniform_real_distribution<float> dist2(-3.0f, 3.0f);
     std::uniform_real_distribution<float> dist4(2.0f, 8.0f);
-
     positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
     positionSpeed = positionSpeed * speedMult;
+
+    std::uniform_int_distribution<int> distRotation(-1, 1);
+    float rotSpeedScale = distRotation(gen);
+    int axis = rand() % 3;
+    rotationSpeed = {0, 0, 0};
+    if (axis == 0) { rotationSpeed.x = rotSpeedScale; }
+    else if (axis == 1) { rotationSpeed.y = rotSpeedScale; }
+    else if (axis == 2) { rotationSpeed.z = rotSpeedScale; }
+    rotationSpeed = rotationSpeed * rotSpeedScale * speedMult;
 }
 
 void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
@@ -47,9 +56,6 @@ void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     std::uniform_real_distribution<float> dist2(-3.0f, 3.0f);
     std::uniform_real_distribution<float> dist3(-80.0f, -3.0f);
     std::uniform_real_distribution<float> dist4(2.0f, 8.0f);
-    
-    rotationSpeed = {0, 0, -2};
-    // ! how to set constant rotational direction?
     // gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
     // gameObject->transform.position = {0, 0, -30};
     gameObject->transform.rotation = {dist2(gen), dist2(gen), dist2(gen)};
