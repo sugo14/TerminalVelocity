@@ -3,16 +3,25 @@
 void AsteroidManager::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidManager started");
     currAsteroidPeriod = asteroidPeriod;
+    currMult = 1;
 }
 
 void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     GameObject asteroid;
+    int range = 20;
+    asteroid.transform.position = {
+        (float)(rand() % (range * 2) - range),
+        (float)(rand() % (range * 2) - range),
+        engine->camera.transform.position.z - 80
+    };
     asteroid.mesh = Mesh::loadObjFile("rock_1");
     asteroid.name = "Asteroid";
     asteroid.tags = {"asteroid"};
-    asteroid.scripts.push_back(std::make_unique<SphereCollider>(3));
-    asteroid.scripts.push_back(std::make_unique<AsteroidScript>());
+    asteroid.scripts.push_back(std::make_unique<SphereCollider>(2));
+    asteroid.scripts.push_back(std::make_unique<AsteroidScript>(currMult));
     engine->addObject(std::move(asteroid));
+
+    asteroidPeriod = 0.1f;
 }
 
 void AsteroidManager::spawnCrystal(GameEngine* engine) {
@@ -27,13 +36,23 @@ void AsteroidManager::spawnCrystal(GameEngine* engine) {
 
 void AsteroidManager::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     float seconds = deltaTime / 1000.0f;
-    asteroidPeriod -= periodDecrease * seconds;
+    currMult += seconds * 0.05f;
 
     if (currAsteroidPeriod <= 0) {
+        debug("Spawning asteroid");
         spawnAsteroid(engine);
         currAsteroidPeriod = asteroidPeriod;
     }
     else {
-        currAsteroidPeriod -= seconds;
+        float forwardSpeed = 0;
+        for (const auto& obj : engine->scene.gameObjects) {
+            if (obj.name == "MoveHandler") {
+                MoveHandlerScript* moveHandler = obj.getScriptByType<MoveHandlerScript>();
+                forwardSpeed = std::fabs(moveHandler->currMoveSpeed.z);
+                break;
+            }
+        }
+        // simulates more asteroids appearing when player moves faster, kind of awful
+        currAsteroidPeriod -= seconds * (forwardSpeed + 1);
     }
 }

@@ -1,0 +1,28 @@
+#include "scripts.hpp"
+
+void PlayerBodyScript::start(GameEngine* engine, GameObject* gameObject) { }
+
+void PlayerBodyScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    gameObject->transform.position = engine->camera.transform.position;
+
+    SphereCollider* hitbox = gameObject->getScriptByType<SphereCollider>();
+    if (!hitbox) {
+        debug("PlayerBodyScript does not have a hitbox!");
+        return;
+    }
+    for (GameObject& obj : engine->scene.gameObjects)  {
+        if (obj.hasTag("asteroid")) {
+            SphereCollider* other = obj.getScriptByType<SphereCollider>();
+            if (other && other->isCollidingWith(*hitbox))  {
+                debug("!!! Player hit by asteroid !!! at "
+                      + std::to_string(obj.transform.position.x) + ", "
+                      + std::to_string(obj.transform.position.y) + ", "
+                      + std::to_string(obj.transform.position.z) + " from " 
+                      + std::to_string(gameObject->transform.position.x) + ", "
+                      + std::to_string(gameObject->transform.position.y) + ", "
+                      + std::to_string(gameObject->transform.position.z));
+                engine->end = true;
+            }
+        }
+    }
+}

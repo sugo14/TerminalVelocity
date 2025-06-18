@@ -85,6 +85,8 @@ public:
     ConsoleScreen screen;
     Scene scene;
     Input input;
+
+    bool end;
     
     GameEngine();
 

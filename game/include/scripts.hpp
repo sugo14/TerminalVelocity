@@ -8,6 +8,8 @@ class AsteroidScript : public Script {
     Vector3 positionSpeed;
 public:
     virtual ~AsteroidScript() = default;
+    AsteroidScript(float speedMult = 1);
+
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
@@ -59,8 +61,8 @@ public:
 
 class AsteroidManager : public Script {
     float currAsteroidPeriod;
-    float asteroidPeriod = 1.0f;
-    float periodDecrease = 0.001;
+    float asteroidPeriod;
+    float currMult;
 
     void spawnAsteroid(GameEngine* engine);
     void spawnCrystal(GameEngine* engine);
@@ -93,6 +95,13 @@ public:
     virtual ~ArrowScript() = default;
     ArrowScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation = {0, 0, 0});
 
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};
+
+class PlayerBodyScript : public Script {
+public:
+    virtual ~PlayerBodyScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };

@@ -31,12 +31,18 @@ bool GameObject::hasTag(const std::string& tag) const {
     return std::find(tags.begin(), tags.end(), tag) != tags.end();
 }
 
-void SphereCollider::start(GameEngine* engine, GameObject* gameObject) { }
+void SphereCollider::start(GameEngine* engine, GameObject* gameObject) {
+    position = gameObject->transform.position;
+}
 void SphereCollider::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     position = gameObject->transform.position;
 }
 
 bool SphereCollider::isCollidingWith(SphereCollider& other) {
+    debug("Checking collision between spheres: "
+          + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(position.z)
+          + " and " + std::to_string(other.position.x) + ", " + std::to_string(other.position.y) + ", " + std::to_string(other.position.z));
+    debug("Radii: " + std::to_string(radius) + " and " + std::to_string(other.radius));
     Vector3 delta = other.position - position;
     return delta.length() < (other.radius + radius);
 }
@@ -77,6 +83,8 @@ GameEngine::GameEngine() {
     scene = Scene();
 
     startTerminalSession();
+
+    end = false;
 }
 
 void GameEngine::run() {
@@ -123,6 +131,12 @@ void GameEngine::run() {
         // frame end
         std::chrono::time_point frameEnd = clock.now();
         lastDt = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
+
+        if (end) {
+            debug("Game ended");
+            endTerminalSession();
+            break;
+        }
     }
 }
 

@@ -10,7 +10,7 @@ static termios originalTermios;
 static int originalFlags;
 
 // restore terminal settings on ctrl-c
-static void endTerminalSession(int signum) {
+void endTerminalSession(int signum) {
     // print ending ansi
     std::cout << TUI::SHOW_CURSOR
               << TUI::ALTERNATE_SCREEN_BUFFER_OFF;

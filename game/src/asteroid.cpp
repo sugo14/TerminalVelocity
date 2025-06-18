@@ -26,6 +26,16 @@ int randomRockColor() {
     return (ri << 16) | (gi << 8) | bi;
 }
 
+AsteroidScript::AsteroidScript(float speedMult) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dist2(-3.0f, 3.0f);
+    std::uniform_real_distribution<float> dist4(2.0f, 8.0f);
+
+    positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
+    positionSpeed = positionSpeed * speedMult;
+}
+
 void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidScript started");
     gameObject->transform.scale = {4, 4, 4};
@@ -43,7 +53,6 @@ void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     // gameObject->transform.position = {dist2(gen), dist2(gen), dist3(gen)};
     // gameObject->transform.position = {0, 0, -30};
     gameObject->transform.rotation = {dist2(gen), dist2(gen), dist2(gen)};
-    positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
 
     for (int i = 0; i < gameObject->mesh.vertices.size(); i++) {
         gameObject->mesh.vertexColors.push_back(randomRockColor());
@@ -55,7 +64,9 @@ void AsteroidScript::update(int deltaTime, GameEngine* engine, GameObject* gameO
     gameObject->transform.rotation = gameObject->transform.rotation + rotationSpeed * seconds;
     gameObject->transform.position = gameObject->transform.position + positionSpeed * seconds;
 
-    if (gameObject->transform.position.z > -3.0f) {
-        gameObject->transform.position.z = -80.0f; // reset position
+    if (gameObject->transform.position.z > (
+        engine->camera.transform.position.z + 10.0f
+    )) {
+        gameObject->deleteSelf = true;
     }
 }
