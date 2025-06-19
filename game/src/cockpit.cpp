@@ -1,6 +1,5 @@
 #include "scripts.hpp"
 
-// const float CockpitScript::distToCamera = 0.4f;
 const float CockpitScript::distToCamera = 0.37f;
 
 CockpitScript::CockpitScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation)
@@ -30,18 +29,10 @@ void CockpitScript::update(int deltaTime, GameEngine* engine, GameObject* gameOb
     rotationOnly.position = {0, 0, 0};
     Vector3 rotatedDelta = (rotationOnly.toWorldMatrix() * this->delta.to4()).to3();
 
-    Vector3 currMoveSpeed = {0, 0, 0};
-    Vector3 currRotSpeed = {0, 0, 0};
-    for (GameObject& obj : engine->scene.gameObjects) {
-        if (obj.name == "MoveHandler") {
-            MoveHandlerScript* moveHandler = obj.getScriptByType<MoveHandlerScript>();
-            if (moveHandler) {
-                currMoveSpeed = moveHandler->currMoveSpeed;
-                currRotSpeed = moveHandler->currRotSpeed;
-            }
-            break;
-        }
-    }
+    GameObject* moveHandlerObj = engine->getObjectByName("MoveHandler");
+    MoveHandlerScript* moveHandler = moveHandlerObj->getScriptByType<MoveHandlerScript>();
+    Vector3 currMoveSpeed = moveHandler->currMoveSpeed;
+    Vector3 currRotSpeed = moveHandler->currRotSpeed;
 
     float newDistToCamera = distToCamera;
     if (currMoveSpeed.length() >= 0.01f) {

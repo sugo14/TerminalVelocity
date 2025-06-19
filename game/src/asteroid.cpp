@@ -70,9 +70,7 @@ void AsteroidScript::update(int deltaTime, GameEngine* engine, GameObject* gameO
     gameObject->transform.rotation = gameObject->transform.rotation + rotationSpeed * seconds;
     gameObject->transform.position = gameObject->transform.position + positionSpeed * seconds;
 
-    if (gameObject->transform.position.z > (
-        engine->camera.transform.position.z + 10.0f
-    )) {
+    if (gameObject->transform.position.z > (engine->camera.transform.position.z + 10.0f)) {
         gameObject->deleteSelf = true;
     }
 }

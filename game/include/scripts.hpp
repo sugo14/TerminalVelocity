@@ -3,6 +3,8 @@
 #include <random>
 #include "debug.hpp"
 
+int colorLerp(int c1, int c2, float u);
+
 class AsteroidScript : public Script {
     Vector3 rotationSpeed;
     Vector3 positionSpeed;
@@ -54,13 +56,6 @@ public:
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
-class CylinderScript : public Script {
-public:
-    virtual ~CylinderScript() = default;
-    void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
-};
-
 class AsteroidManager : public Script {
     float currAsteroidPeriod;
     float asteroidPeriod;
@@ -107,6 +102,22 @@ public:
     static int score;
     
     virtual ~PlayerBodyScript() = default;
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};
+
+class TitleScript : public Script {
+    Image image, shadow;
+    float currX, currY;
+    bool onTop;
+    float velX;
+    static const float accel;
+
+    void draw(GameEngine* engine);
+public:
+    virtual ~TitleScript() = default;
+    TitleScript(const std::string& filename, bool onTop);
+
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };

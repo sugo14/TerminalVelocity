@@ -91,5 +91,6 @@ public:
     GameEngine();
 
     void addObject(GameObject object);
+    GameObject* getObjectByName(const std::string& name);
     void run(void (*endCallback)() = nullptr);
 };

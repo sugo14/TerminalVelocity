@@ -24,7 +24,7 @@ float degToRad(float deg) {
 }
 
 Frustum::Frustum()
-    : fovY(degToRad(60.0f)), aspect(16.0f / 9.0f), nearZ(0.01f), farZ(80.0f)
+    : fovY(degToRad(60.0f)), aspect(16.0f / 9.0f), nearZ(0.01f), farZ(200.0f)
 { initProjMatrix(); }
 
 Frustum::Frustum(float fovY, float aspect, float nearZ, float farZ)

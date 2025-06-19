@@ -13,7 +13,7 @@ void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     asteroid.transform.position = {
         (float)(rand() % (range * 2) - range) + engine->camera.transform.position.x,
         (float)(rand() % (range * 2) - range) + engine->camera.transform.position.y,
-        engine->camera.transform.position.z - 80
+        engine->camera.transform.position.z - 120
     };
     asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
     asteroid.name = "Asteroid";
@@ -27,11 +27,11 @@ void AsteroidManager::spawnAsteroid(GameEngine* engine) {
 
 void AsteroidManager::spawnCrystal(GameEngine* engine) {
     GameObject crystal;
-    int range = 23;
+    int range = 30;
     crystal.transform.position = {
         (float)(rand() % (range * 2) - range) + engine->camera.transform.position.x,
         (float)(rand() % (range * 2) - range) + engine->camera.transform.position.y,
-        engine->camera.transform.position.z - 160
+        engine->camera.transform.position.z - 120
     };
     crystal.mesh = Mesh::loadObjFile("sharp-crystal-" + std::to_string(rand() % 3 + 1));
     crystal.name = "Crystal";
@@ -50,22 +50,17 @@ void AsteroidManager::update(int deltaTime, GameEngine* engine, GameObject* game
         spawnAsteroid(engine);
         currAsteroidPeriod = asteroidPeriod;
         cnt++;
-        if (cnt % 10 == 0) {
+        if (cnt % 15 == 0) {
             debug("Spawning crystal");
             spawnCrystal(engine);
         }
     }
     else {
         float forwardSpeed = 0;
-        for (const auto& obj : engine->scene.gameObjects) {
-            if (obj.name == "MoveHandler") {
-                MoveHandlerScript* moveHandler = obj.getScriptByType<MoveHandlerScript>();
-                forwardSpeed = std::fabs(moveHandler->currMoveSpeed.z);
-                break;
-            }
-        }
+        GameObject* moveHandlerObject = engine->getObjectByName("MoveHandler");
+        MoveHandlerScript* moveHandler = moveHandlerObject->getScriptByType<MoveHandlerScript>();
+        forwardSpeed = std::fabs(moveHandler->currMoveSpeed.z);
         // simulates more asteroids appearing when player moves faster, kind of awful
-        debug("SSspeed: " + std::to_string(forwardSpeed));
         currAsteroidPeriod -= seconds * (forwardSpeed + 0.3) * sqrt(currMult);
     }
 }

@@ -68,6 +68,7 @@ void ScreenData::drawImage(Image& image, int x, int y) {
     for (int i = 0; i < image.height; i++) {
         for (int j = 0; j < image.width; j++) {
             int pixelColor = image.getPixel(j, i);
+            if (pixelColor == 0) { continue; }
             setImagePixel(x + j, y + i, pixelColor);
         }
     }

@@ -38,15 +38,10 @@ void ArrowScript::update(int deltaTime, GameEngine* engine, GameObject* gameObje
     rotationOnly.position = {0, 0, 0};
     Vector3 rotatedDelta = (rotationOnly.toWorldMatrix() * this->delta.to4()).to3();
 
-    Vector3 currMoveSpeed = {0, 0, 0};
-    Vector3 currRotSpeed = {0, 0, 0};
-    for (GameObject& obj : engine->scene.gameObjects) {
-        if (obj.name == "MoveHandler") {
-            MoveHandlerScript* moveHandler = obj.getScriptByType<MoveHandlerScript>();
-            currMoveSpeed = moveHandler->currMoveSpeed;
-            currRotSpeed = moveHandler->currRotSpeed;
-        }
-    }
+    GameObject* moveHandlerObj = engine->getObjectByName("MoveHandler");
+    MoveHandlerScript* moveHandler = moveHandlerObj->getScriptByType<MoveHandlerScript>();
+    Vector3 currMoveSpeed = moveHandler->currMoveSpeed;
+    Vector3 currRotSpeed = moveHandler->currRotSpeed;
 
     float newDistToCamera = CockpitScript::distToCamera;
     if (currMoveSpeed.length() >= 0.01f) {

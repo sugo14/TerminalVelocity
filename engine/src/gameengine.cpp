@@ -141,6 +141,13 @@ void GameEngine::run(void (*endCallback)()) {
     }
 }
 
+GameObject* GameEngine::getObjectByName(const std::string& name) {
+    for (GameObject& obj : scene.gameObjects) {
+        if (obj.name == name) { return &obj; }
+    }
+    return nullptr;
+}
+
 void GameEngine::addObject(GameObject object) {
     object.start(this);
     pendingObjects.push_back(std::move(object));

@@ -115,8 +115,19 @@ int main() {
     // levelCylinder.tags = {};
     // engine.addObject(std::move(levelCylinder));
 
-    // Image img = Image::loadPpmFile("sugo");
+    GameObject topTitle;
+    topTitle.name = "TopTitle";
+    topTitle.scripts.push_back(std::make_unique<TitleScript>("terminal", true));
+    engine.addObject(std::move(topTitle));
+
+    GameObject bottomTitle;
+    bottomTitle.name = "BottomTitle";
+    bottomTitle.scripts.push_back(std::make_unique<TitleScript>("velocity", false));
+    engine.addObject(std::move(bottomTitle));
+    // Image img = Image::loadPpmFile("terminal");
     // engine.screen.screenData.drawImage(img);
+    // img = Image::loadPpmFile("velocity");
+    // engine.screen.screenData.drawImage(img, 0, 27);
 
     engine.run(&end);
 }

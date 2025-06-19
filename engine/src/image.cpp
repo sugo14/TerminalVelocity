@@ -11,16 +11,22 @@ int Image::getPixel(int x, int y) const {
     return pixels[y * width + x];
 }
 
+void Image::setPixel(int x, int y, int color) {
+    if (x < 0 || x >= width || y < 0 || y >= height) {
+        throw std::out_of_range("Pixel coordinates out of bounds");
+    }
+    pixels[y * width + x] = color;
+}
+
 Image Image::loadPpmFile(const std::string& filename) {
     std::string filepath = "images/" + filename + ".ppm";
     std::ifstream in(filepath);
     if (!in.is_open()) {
         throw std::runtime_error(filepath + " could not be opened successfully.");
     }
-    std::string line;
+    std::string line, header;
 
-    // skip the p3 header
-    std::getline(in, line);
+    std::getline(in, header);
 
     // skip the comment line if it exists
     // while (std::getline(in, line)) {
@@ -41,10 +47,26 @@ Image Image::loadPpmFile(const std::string& filename) {
 
     // read pixel data
     Image image(width, height);
-    int r, g, b;
-    for (int i = 0; i < width * height; i++) {
-        in >> r >> g >> b;
-        image.pixels[i] = (r << 16) | (g << 8) | b;
+    if (header == "P3") {
+        int r, g, b;
+        for (int i = 0; i < width * height; i++) {
+            in >> r >> g >> b;
+            image.pixels[i] = (r << 16) | (g << 8) | b;
+        }
+    }
+    else if (header == "P6") {
+        for (int i = 0; i < width * height; i++) {
+            char r, g, b;
+            in.read(&r, 1);
+            in.read(&g, 1);
+            in.read(&b, 1);
+            image.pixels[i] = (static_cast<unsigned char>(r) << 16) |
+                              (static_cast<unsigned char>(g) << 8) |
+                               static_cast<unsigned char>(b);
+        }
+    }
+    else {
+        throw std::runtime_error("Unsupported PPM format: " + header);
     }
 
     in.close();

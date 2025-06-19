@@ -13,4 +13,5 @@ struct Image {
     Image(int w, int h);
 
     int getPixel(int x, int y) const;
+    void setPixel(int x, int y, int color);
 };

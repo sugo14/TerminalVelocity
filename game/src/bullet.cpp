@@ -32,34 +32,28 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
         return;
     }
     for (GameObject& other : engine->scene.gameObjects) {
-        if (other.hasTag("asteroid")) {
-            SphereCollider* collider = other.getScriptByType<SphereCollider>();
-            if (collider && collider->isCollidingWith(*self)) {
-                playAudio("boom", 5);
-                gameObject->deleteSelf = true;
-                for (int i = 0; i < engine->scene.gameObjects.size(); i++) {
-                    if (engine->scene.gameObjects[i].name == other.name) {
-                        engine->scene.gameObjects[i].deleteSelf = true;
-                        break;
-                    }
-                }
-            }
-        }
-        else if (other.hasTag("crystal")) {
+        // if (other.hasTag("asteroid")) {
+        //     SphereCollider* collider = other.getScriptByType<SphereCollider>();
+        //     if (collider && collider->isCollidingWith(*self)) {
+        //         playAudio("boom", 5);
+        //         gameObject->deleteSelf = true;
+        //         for (int i = 0; i < engine->scene.gameObjects.size(); i++) {
+        //             if (engine->scene.gameObjects[i].name == other.name) {
+        //                 engine->scene.gameObjects[i].deleteSelf = true;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
+        if (other.hasTag("crystal")) {
             SphereCollider* collider = other.getScriptByType<SphereCollider>();
             if (collider && collider->isCollidingWith(*self)) {
                 playAudio("boom", 5);
                 PlayerBodyScript::score += 10;
                 gameObject->deleteSelf = true;
-                for (int i = 0; i < engine->scene.gameObjects.size(); i++) {
-                    if (engine->scene.gameObjects[i].name == other.name) {
-                        engine->scene.gameObjects[i].deleteSelf = true;
-                        break;
-                    }
-                }
+                engine->getObjectByName(other.name)->deleteSelf = true;
             }
         }
-        // if (gameObject->deleteSelf) { break; } // only destroy one object
     }
 
     elapsedTime += deltaTime;
