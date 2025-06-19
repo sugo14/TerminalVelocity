@@ -8,8 +8,7 @@
 #include <unistd.h>
 
 void end() {
-    std::cout << "You died due to an asteroid collision." << std::endl;
-    std::cout << "Game over." << std::endl;
+    std::cout << "Game over! You died due to an asteroid collision." << std::endl;
     std::cout << "Final score: " << PlayerBodyScript::score << std::endl;
 }
 

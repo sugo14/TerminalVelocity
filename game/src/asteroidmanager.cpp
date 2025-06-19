@@ -9,7 +9,7 @@ void AsteroidManager::start(GameEngine* engine, GameObject* gameObject) {
 
 void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     GameObject asteroid;
-    int range = 23;
+    int range = 30;
     asteroid.transform.position = {
         (float)(rand() % (range * 2) - range) + engine->camera.transform.position.x,
         (float)(rand() % (range * 2) - range) + engine->camera.transform.position.y,
