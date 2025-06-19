@@ -1,6 +1,9 @@
 #include "screendata.hpp"
 
-ScreenData::ScreenData() { refresh(); }
+ScreenData::ScreenData() {
+    refresh();
+    clearImages();
+}
 
 void ScreenData::refresh() {
     for (int i = 0; i < HEIGHT; i++) {
@@ -13,6 +16,7 @@ void ScreenData::refresh() {
 
 int ScreenData::getPixel(int x, int y) {
     if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) { return 0; }
+    if (imagePixels[y][x] != 0) { return imagePixels[y][x]; }
     return pixels[y][x];
 }
 
@@ -23,6 +27,19 @@ bool ScreenData::setPixel(int x, int y, float z, int color) {
     pixels[y][x] = color;
     depthBuffer[y][x] = z;
     return true;
+}
+
+void ScreenData::setImagePixel(int x, int y, int color) {
+    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) { return; }
+    imagePixels[y][x] = color;
+}
+
+void ScreenData::clearImages() {
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            imagePixels[i][j] = 0;
+        }
+    }
 }
 
 void ScreenData::drawLine(int x1, int y1, int x2, int y2, int color, float z) {
@@ -43,6 +60,15 @@ void ScreenData::drawLine(int x1, int y1, int x2, int y2, int color, float z) {
         if (err2 < dx) {
             err += dx;
             y1 += sy;
+        }
+    }
+}
+
+void ScreenData::drawImage(Image& image, int x, int y) {
+    for (int i = 0; i < image.height; i++) {
+        for (int j = 0; j < image.width; j++) {
+            int pixelColor = image.getPixel(j, i);
+            setImagePixel(x + j, y + i, pixelColor);
         }
     }
 }

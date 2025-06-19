@@ -3,6 +3,7 @@
 #include "debug.hpp"
 #include "gameengine.hpp"
 #include "scripts.hpp"
+#include "image.hpp"
 
 #include <iostream>
 #include <unistd.h>
@@ -113,6 +114,9 @@ int main() {
     // levelCylinder.name = "LevelCylinder";
     // levelCylinder.tags = {};
     // engine.addObject(std::move(levelCylinder));
+
+    // Image img = Image::loadPpmFile("sugo");
+    // engine.screen.screenData.drawImage(img);
 
     engine.run(&end);
 }

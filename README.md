@@ -1,15 +1,21 @@
-My Computer Science 30 final project: an attempt at a terminal-based 3D game from scratch in C++. This includes both the software rasterization and the game engine itself.
+# Terminal Velocity
+
+The year is 2525. You have been assigned one of the most deadliest jobs in the galaxy: crystal extraction from unstable asteroid belts deep in space. Armed with only your teleportation blasters, you'll have to harvest as many alien crystals as possible before the asteroids accelerate beyond control. One collision, and it's over...
+
+This game was my Computer Science 30 final project. It's made entirely from scratch in C++, including the software rasterizer, the game engine, and the game itself. It runs in the terminal with just about zero extra dependencies on most Linux systems.
+
+![Flying around and shooting in cockpit](github/6-18-2025-gameplay.gif)
 
 ## 🟢 Current State
 - Renders and transforms meshes loaded from OBJ files
 - Colors based on vertex colors and barycentric weights
-    - Can make decent looking objects, like the asteroid and crystal shown
+    - Can make decent looking objects, like the asteroid, crystals, and HUD shown
 - Has basic shading, z-buffering, etc.
 - Can move the camera around in the world from input
 - Shoot asteroids using space to destroy them
 - HUD arrow guides you by pointing forwards
-
-![Flying around and shooting in cockpit](github/6-16-2025-moving.gif)
+- Asteroids kill the player when they get too close
+- PPM image rendering capability
 
 ## 🎯 Goals
 - Learn some basic linear algebra

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "image.hpp"
+
 #include <cmath>
 
 struct ScreenData {
@@ -8,6 +10,7 @@ struct ScreenData {
     static const int HEIGHT = 9 * FAC;
 
     int pixels[HEIGHT][WIDTH];
+    int imagePixels[HEIGHT][WIDTH];
     float depthBuffer[HEIGHT][WIDTH];
 
     ScreenData();
@@ -29,6 +32,10 @@ struct ScreenData {
     /// @return true if the pixel color was changed, false otherwise.
     bool setPixel(int x, int y, float z, int color);
 
+    void setImagePixel(int x, int y, int color);
+
+    void clearImages();
+
     /// @brief Draws a line between two points on the screen.
     /// @param x1 The x coordinate of the first point.
     /// @param y1 The y coordinate of the first point.
@@ -37,4 +44,6 @@ struct ScreenData {
     /// @param color The color of the line, as a hex code.
     /// @param z Unimplemented.
     void drawLine(int x1, int y1, int x2, int y2, int color, float z = 1.0f);
+
+    void drawImage(Image& image, int x = 0, int y = 0);
 };
