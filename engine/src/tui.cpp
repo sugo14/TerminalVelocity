@@ -5,6 +5,7 @@
 #include <termios.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <unistd.h>
 
 static termios originalTermios;
 static int originalFlags;
