@@ -19,6 +19,8 @@ class CrystalScript : public Script {
     Vector3 positionSpeed;
 public:
     virtual ~CrystalScript() = default;
+    CrystalScript(float speedMult = 1);
+
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };

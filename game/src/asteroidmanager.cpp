@@ -37,7 +37,7 @@ void AsteroidManager::spawnCrystal(GameEngine* engine) {
     crystal.name = "Crystal";
     crystal.tags = {"crystal"};
     crystal.scripts.push_back(std::make_unique<SphereCollider>(2));
-    crystal.scripts.push_back(std::make_unique<CrystalScript>());
+    crystal.scripts.push_back(std::make_unique<CrystalScript>(currMult));
     engine->addObject(std::move(crystal));
 }
 
@@ -66,6 +66,6 @@ void AsteroidManager::update(int deltaTime, GameEngine* engine, GameObject* game
         }
         // simulates more asteroids appearing when player moves faster, kind of awful
         debug("SSspeed: " + std::to_string(forwardSpeed));
-        currAsteroidPeriod -= seconds * (forwardSpeed + 0.3);
+        currAsteroidPeriod -= seconds * (forwardSpeed + 0.3) * sqrt(currMult);
     }
 }

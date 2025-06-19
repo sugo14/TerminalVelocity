@@ -59,5 +59,3 @@ void CockpitScript::update(int deltaTime, GameEngine* engine, GameObject* gameOb
 
     gameObject->transform.rotation = cameraTransform.rotation + this->rotation - currRotSpeed * 0.3f;
 }
-
-

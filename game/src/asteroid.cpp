@@ -32,16 +32,16 @@ AsteroidScript::AsteroidScript(float speedMult) {
 
     std::uniform_real_distribution<float> dist2(-3.0f, 3.0f);
     std::uniform_real_distribution<float> dist4(2.0f, 8.0f);
-    positionSpeed = {dist2(gen) / 20.0f, dist2(gen) / 20.0f, dist4(gen)};
+    positionSpeed = {dist2(gen) / 10.0f, dist2(gen) / 10.0f, dist4(gen)};
     positionSpeed = positionSpeed * speedMult;
 
     std::uniform_int_distribution<int> distRotation(-1, 1);
     float rotSpeedScale = distRotation(gen);
     int axis = rand() % 3;
     rotationSpeed = {0, 0, 0};
-    if (axis == 0) { rotationSpeed.x = rotSpeedScale; }
-    else if (axis == 1) { rotationSpeed.y = rotSpeedScale; }
-    else if (axis == 2) { rotationSpeed.z = rotSpeedScale; }
+    if (axis == 0) { rotationSpeed.x = 1; }
+    else if (axis == 1) { rotationSpeed.y = 1; }
+    else if (axis == 2) { rotationSpeed.z = 1; }
     rotationSpeed = rotationSpeed * rotSpeedScale * speedMult;
 }
 
