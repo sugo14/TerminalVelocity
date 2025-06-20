@@ -5,10 +5,33 @@
 
 struct GameObject;
 
+/// @brief Converts degrees to radians.
+/// @param deg The angle in degrees to convert.
+/// @return The angle in radians.
 float degToRad(float deg);
 
-int interpolateColor(int c1, int c2, float u);
-int interpolateColor(int c1, int c2, int c3, float u, float v, float w);
+/// @brief Linearly interpolates between 2 colors.
+/// @param c1 The first color.
+/// @param c2 The second color.
+/// @param u The interpolation factor in the range [0, 1].
+/// @return The interpolated color.
+int colorLerp(int c1, int c2, float u);
+
+/// @brief Linearly interpolates between 3 colors.
+/// @param c1 The first color.
+/// @param c2 The second color.
+/// @param c3 The third color.
+/// @param u The interpolation factor for the first color in the range [0, 1].
+/// @param v The interpolation factor for the second color in the range [0, 1].
+/// @return The interpolated color.
+int colorLerp(int c1, int c2, int c3, float u, float v);
+
+/// @brief Combines RGB values into a hex code.
+/// @param r The red component in the range [0, 255].
+/// @param g The green component in the range [0, 255].
+/// @param b The blue component in the range [0, 255].
+/// @return The combined color as a hex code.
+int rgb(int r, int g, int b);
 
 struct Frustum {
     float fovY, aspect;

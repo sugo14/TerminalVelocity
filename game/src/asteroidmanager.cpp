@@ -61,6 +61,6 @@ void AsteroidManager::update(int deltaTime, GameEngine* engine, GameObject* game
         MoveHandlerScript* moveHandler = moveHandlerObject->getScriptByType<MoveHandlerScript>();
         forwardSpeed = std::fabs(moveHandler->currMoveSpeed.z);
         // simulates more asteroids appearing when player moves faster, kind of awful
-        currAsteroidPeriod -= seconds * (forwardSpeed + 0.3) * sqrt(currMult);
+        currAsteroidPeriod -= seconds * (forwardSpeed + 0.15) * sqrt(currMult);
     }
 }

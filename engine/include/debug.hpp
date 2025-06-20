@@ -1,10 +1,12 @@
-// from stackoverflow, for testing
-
 #pragma once
+
 #include <chrono>
 
+/// @brief Writes a debug message to debug.log.
+/// @param msg The message to log.
 void debug(std::string msg);
 
+// from stackoverflow, for testing
 template <class DT = std::chrono::milliseconds,
           class ClockT = std::chrono::steady_clock>
 class Timer

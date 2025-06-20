@@ -19,7 +19,7 @@ void ArrowScript::start(GameEngine* engine, GameObject* gameObject) {
     }
     for (int i = 0; i < gameObject->mesh.vertices.size(); i++) {
         gameObject->mesh.vertexColors.push_back(
-            interpolateColor(
+            colorLerp(
                 colorNear, colorFar,
                 (gameObject->mesh.vertices[i].z - nearZ) / (farZ - nearZ)
             )

@@ -3,19 +3,28 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <algorithm>
 
-int interpolateColor(int c1, int c2, float u) {
-    if (u < 0.0f) { u = 0.0f; } if (u > 1.0f) { u = 1.0f; }
+int colorLerp(int c1, int c2, float u) {
+    u = std::clamp(u, 0.0f, 1.0f);
     int r = (int)((1 - u) * ((c1 >> 16) & 0xFF) + u * ((c2 >> 16) & 0xFF));
     int g = (int)((1 - u) * ((c1 >> 8) & 0xFF) + u * ((c2 >> 8) & 0xFF));
     int b = (int)((1 - u) * (c1 & 0xFF) + u * (c2 & 0xFF));
     return (r << 16) | (g << 8) | b;
 }
 
-int interpolateColor(int c1, int c2, int c3, float u, float v, float w) {
+int colorLerp(int c1, int c2, int c3, float u, float v) {
+    float w = 1.0f - u - v;
     int r = (u * ((c1 >> 16) & 0xFF) + v * ((c2 >> 16) & 0xFF) + w * ((c3 >> 16) & 0xFF));
     int g = (u * ((c1 >> 8) & 0xFF) + v * ((c2 >> 8) & 0xFF) + w * ((c3 >> 8) & 0xFF));
     int b = (u * (c1 & 0xFF) + v * (c2 & 0xFF) + w * (c3 & 0xFF));
+    return (r << 16) | (g << 8) | b;
+}
+
+int rgb(int r, int g, int b) {
+    r = std::clamp(r, 0, 255);
+    g = std::clamp(g, 0, 255);
+    b = std::clamp(b, 0, 255);
     return (r << 16) | (g << 8) | b;
 }
 
@@ -162,11 +171,11 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
 
                     int color;
                     if (mesh.renderMode == RenderMode::VertexColors) {
-                        color = interpolateColor(
+                        color = colorLerp(
                             mesh.vertexColors[triangle.vertexIndices[0]],
                             mesh.vertexColors[triangle.vertexIndices[1]],
                             mesh.vertexColors[triangle.vertexIndices[2]],
-                            u, v, w
+                            u, v
                         );
                     }
                     else if (mesh.renderMode == RenderMode::TriangleColors) {
@@ -180,9 +189,9 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
                     if (mesh.lightingMode == LightingMode::Crystal) {
                         float edgeDistance = 1 - std::min(u, std::min(v, w));
                         float whitenessIntensity = 0.03f;
-                        int edgeColor = interpolateColor(color, 0xFFFFFF, whitenessIntensity);
+                        int edgeColor = colorLerp(color, 0xFFFFFF, whitenessIntensity);
                         float sharpeningFactor = 11;
-                        color = interpolateColor(
+                        color = colorLerp(
                             color, edgeColor, pow(edgeDistance, sharpeningFactor)
                         );
                     }

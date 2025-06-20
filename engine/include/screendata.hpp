@@ -32,8 +32,14 @@ struct ScreenData {
     /// @return true if the pixel color was changed, false otherwise.
     bool setPixel(int x, int y, float z, int color);
 
+    /// @brief Sets the pixel color of the image buffer at specified coordinates.
+    /// Note that 0x000000 is considered transparent and will not overwrite existing pixels.
+    /// @param x The x coordinate of the pixel in the image buffer.
+    /// @param y The y coordinate of the pixel in the image buffer.
+    /// @param color The color to set the pixel to.
     void setImagePixel(int x, int y, int color);
 
+    /// @brief Clears the image buffer, resetting all pixel values to 0.
     void clearImages();
 
     /// @brief Draws a line between two points on the screen.
@@ -45,5 +51,9 @@ struct ScreenData {
     /// @param z Unimplemented.
     void drawLine(int x1, int y1, int x2, int y2, int color, float z = 1.0f);
 
+    /// @brief Draws an image to the image buffer at specified coordinates.
+    /// @param image The image to draw onto the screen.
+    /// @param x The leftmost x coordinate of the image position on the screen.
+    /// @param y The topmost y coordinate of the image position on the screen.
     void drawImage(Image& image, int x = 0, int y = 0);
 };

@@ -95,13 +95,13 @@ namespace TUI {
         write(STDOUT_FILENO, str.c_str(), str.size());
     }
 
-    std::pair<int, int> getTerminalSize() {
-        struct winsize w;
-        if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) != 0) {
-            return {80, 24}; // on failure, return a default size
-        }
-        return {w.ws_col, w.ws_row};
-    }
+    // std::pair<int, int> getTerminalSize() {
+    //     struct winsize w;
+    //     if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) != 0) {
+    //         return {80, 24}; // on failure, return a default size
+    //     }
+    //     return {w.ws_col, w.ws_row};
+    // }
 }
 
 ConsoleScreen::ConsoleScreen() {

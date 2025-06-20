@@ -8,21 +8,6 @@ int colorPairs[3][2] = {
     {0xdbba00, 0x83db00}
 };
 
-int colorLerp(int c1, int c2, float u) {
-    u = std::clamp(u, 0.0f, 1.0f);
-    int r = (int)((1 - u) * ((c1 >> 16) & 0xFF) + u * ((c2 >> 16) & 0xFF));
-    int g = (int)((1 - u) * ((c1 >> 8) & 0xFF) + u * ((c2 >> 8) & 0xFF));
-    int b = (int)((1 - u) * (c1 & 0xFF) + u * (c2 & 0xFF));
-    return (r << 16) | (g << 8) | b;
-}
-
-int rgb(int r, int g, int b) {
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
-    return (r << 16) | (g << 8) | b;
-}
-
 int hslToRgb(float h, float s, float l) {
     float c = (1.0f - std::fabs(2.0f * l - 1.0f)) * s;
     float x = c * (1.0f - std::fabs(fmod(h / 60.0f, 2.0f) - 1.0f));
