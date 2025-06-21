@@ -4,7 +4,7 @@ The year is 2525. You're yet another expendable contractor, assigned to one of t
 
 This game was my Computer Science 30 final project. It's made entirely from scratch in C++, including the software rasterizer, the game engine, and the game itself. It runs in the terminal with just about zero extra dependencies on most Linux systems.
 
-![Flying around and shooting in cockpit](github/6-18-2025-gameplay.gif)
+![Flying around and shooting in cockpit](github/6-19-2025-gameplay.gif)
 
 ## 🟢 Current State
 - Renders and transforms meshes loaded from OBJ files
