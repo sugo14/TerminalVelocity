@@ -8,6 +8,7 @@ int colorLerp(int c1, int c2, float u);
 class AsteroidScript : public Script {
     Vector3 rotationSpeed;
     Vector3 positionSpeed;
+    float speedMult;
 public:
     virtual ~AsteroidScript() = default;
     AsteroidScript(float speedMult = 1);
@@ -19,6 +20,7 @@ public:
 class CrystalScript : public Script {
     Vector3 rotationSpeed;
     Vector3 positionSpeed;
+    float speedMult;
 public:
     virtual ~CrystalScript() = default;
     CrystalScript(float speedMult = 1);
@@ -61,6 +63,7 @@ class AsteroidManager : public Script {
     float asteroidPeriod;
     float currMult;
     int cnt;
+    static const float centerAsteroidPerSecond;
 
     void spawnAsteroid(GameEngine* engine);
     void spawnCrystal(GameEngine* engine);

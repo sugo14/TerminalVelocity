@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <typeinfo>
+#include <random>
 
 #include "geometry.hpp"
 #include "mesh.hpp"
@@ -86,6 +87,7 @@ public:
     Scene scene;
     Input input;
 
+    std::mt19937 gen;
     bool end;
     
     GameEngine();

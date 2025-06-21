@@ -45,7 +45,7 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
         //         }
         //     }
         // }
-        if (other.hasTag("crystal")) {
+        if (other.hasTag("crystal") && !other.deleteSelf) {
             SphereCollider* collider = other.getScriptByType<SphereCollider>();
             if (collider && collider->isCollidingWith(*self)) {
                 playAudio("boom", 5);

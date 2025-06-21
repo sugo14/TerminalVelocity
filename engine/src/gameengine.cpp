@@ -39,12 +39,28 @@ void SphereCollider::update(int deltaTime, GameEngine* engine, GameObject* gameO
 }
 
 bool SphereCollider::isCollidingWith(SphereCollider& other) {
-    debug("Checking collision between spheres: "
-          + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(position.z)
-          + " and " + std::to_string(other.position.x) + ", " + std::to_string(other.position.y) + ", " + std::to_string(other.position.z));
-    debug("Radii: " + std::to_string(radius) + " and " + std::to_string(other.radius));
+    // debug("Checking collision between spheres: "
+    //       + std::to_string(position.x) + ", " + std::to_string(position.y) + ", " + std::to_string(position.z)
+    //       + " and " + std::to_string(other.position.x) + ", " + std::to_string(other.position.y) + ", " + std::to_string(other.position.z));
+    // debug("Radii: " + std::to_string(radius) + " and " + std::to_string(other.radius));
     Vector3 delta = other.position - position;
     return delta.length() < (other.radius + radius);
+}
+
+GameEngine::GameEngine() {
+    camera = Camera();
+    screen = ConsoleScreen();
+    input = Input();
+    scene = Scene();
+
+    std::random_device rd;
+    int seed = rd();
+    gen.seed(seed);
+    debug("GameEngine created with seed: " + std::to_string(seed));
+
+    startTerminalSession();
+
+    end = false;
 }
 
 void GameEngine::tick(int deltaTime) {
@@ -74,17 +90,6 @@ void GameEngine::drawCrosshair() {
     screen.screenData.setPixel(cx + offset, cy + offset + 1, 0.0f, color);
     screen.screenData.setPixel(cx + offset + 1, cy + offset + 1, 0.0f, color);
     screen.screenData.setPixel(cx + offset + 1, cy + offset, 0.0f, color);
-}
-
-GameEngine::GameEngine() {
-    camera = Camera();
-    screen = ConsoleScreen();
-    input = Input();
-    scene = Scene();
-
-    startTerminalSession();
-
-    end = false;
 }
 
 void GameEngine::run(void (*endCallback)()) {

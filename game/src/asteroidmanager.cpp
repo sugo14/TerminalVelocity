@@ -1,7 +1,10 @@
 #include "scripts.hpp"
 
+const float AsteroidManager::centerAsteroidPerSecond = 0.2f;
+
 void AsteroidManager::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidManager started");
+    asteroidPeriod = 0.04f;
     currAsteroidPeriod = asteroidPeriod;
     currMult = 1;
     cnt = 0;
@@ -10,13 +13,11 @@ void AsteroidManager::start(GameEngine* engine, GameObject* gameObject) {
 void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     GameObject asteroid;
     int range = 30;
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::uniform_real_distribution<float> pos(-range, range);
 
     asteroid.transform.position = {
-        pos(gen) + engine->camera.transform.position.x,
-        pos(gen) + engine->camera.transform.position.y,
+        pos(engine->gen) + engine->camera.transform.position.x,
+        pos(engine->gen) + engine->camera.transform.position.y,
         engine->camera.transform.position.z - 120
     };
     asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
@@ -25,20 +26,16 @@ void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     asteroid.scripts.push_back(std::make_unique<SphereCollider>(2));
     asteroid.scripts.push_back(std::make_unique<AsteroidScript>(currMult));
     engine->addObject(std::move(asteroid));
-
-    asteroidPeriod = 0.04f;
 }
 
 void AsteroidManager::spawnCrystal(GameEngine* engine) {
     GameObject crystal;
     int range = 30;
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::uniform_real_distribution<float> pos(-range, range);
 
     crystal.transform.position = {
-        pos(gen) + engine->camera.transform.position.x,
-        pos(gen) + engine->camera.transform.position.y,
+        pos(engine->gen) + engine->camera.transform.position.x,
+        pos(engine->gen) + engine->camera.transform.position.y,
         engine->camera.transform.position.z - 120
     };
     crystal.mesh = Mesh::loadObjFile("sharp-crystal-" + std::to_string(rand() % 3 + 1));
@@ -53,7 +50,7 @@ void AsteroidManager::update(int deltaTime, GameEngine* engine, GameObject* game
     float seconds = deltaTime / 1000.0f;
     currMult += seconds * 0.05f;
 
-    if (currAsteroidPeriod <= 0) {
+    while (currAsteroidPeriod <= 0) {
         debug("Spawning asteroid");
         spawnAsteroid(engine);
         currAsteroidPeriod = asteroidPeriod;
@@ -63,12 +60,27 @@ void AsteroidManager::update(int deltaTime, GameEngine* engine, GameObject* game
             spawnCrystal(engine);
         }
     }
-    else {
-        float forwardSpeed = 0;
-        GameObject* moveHandlerObject = engine->getObjectByName("MoveHandler");
-        MoveHandlerScript* moveHandler = moveHandlerObject->getScriptByType<MoveHandlerScript>();
-        forwardSpeed = std::fabs(moveHandler->currMoveSpeed.z);
-        // simulates more asteroids appearing when player moves faster, kind of awful
-        currAsteroidPeriod -= seconds * (forwardSpeed + 0.15) * sqrt(currMult);
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+    if (dist(engine->gen) < centerAsteroidPerSecond * seconds * currMult) {
+        GameObject asteroid;
+        asteroid.transform.position = {
+            engine->camera.transform.position.x,
+            engine->camera.transform.position.y,
+            engine->camera.transform.position.z - 120
+        };
+        asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
+        asteroid.name = "Asteroid";
+        asteroid.tags = {"asteroid"};
+        asteroid.scripts.push_back(std::make_unique<SphereCollider>(2));
+        asteroid.scripts.push_back(std::make_unique<AsteroidScript>(currMult));
+        engine->addObject(std::move(asteroid));
     }
+
+    float forwardSpeed = 0;
+    GameObject* moveHandlerObject = engine->getObjectByName("MoveHandler");
+    MoveHandlerScript* moveHandler = moveHandlerObject->getScriptByType<MoveHandlerScript>();
+    forwardSpeed = std::fabs(moveHandler->currMoveSpeed.z);
+    std::uniform_real_distribution<float> speed(0.5, 1.5);
+    // simulates more asteroids appearing when player moves faster, kind of awful
+    currAsteroidPeriod -= seconds * (forwardSpeed + 0.15) * pow(currMult, 0.75) * speed(engine->gen);
 }
