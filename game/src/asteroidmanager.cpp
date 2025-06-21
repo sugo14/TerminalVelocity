@@ -10,9 +10,13 @@ void AsteroidManager::start(GameEngine* engine, GameObject* gameObject) {
 void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     GameObject asteroid;
     int range = 30;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> pos(-range, range);
+
     asteroid.transform.position = {
-        (float)(rand() % (range * 2) - range) + engine->camera.transform.position.x,
-        (float)(rand() % (range * 2) - range) + engine->camera.transform.position.y,
+        pos(gen) + engine->camera.transform.position.x,
+        pos(gen) + engine->camera.transform.position.y,
         engine->camera.transform.position.z - 120
     };
     asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
@@ -28,9 +32,13 @@ void AsteroidManager::spawnAsteroid(GameEngine* engine) {
 void AsteroidManager::spawnCrystal(GameEngine* engine) {
     GameObject crystal;
     int range = 30;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> pos(-range, range);
+
     crystal.transform.position = {
-        (float)(rand() % (range * 2) - range) + engine->camera.transform.position.x,
-        (float)(rand() % (range * 2) - range) + engine->camera.transform.position.y,
+        pos(gen) + engine->camera.transform.position.x,
+        pos(gen) + engine->camera.transform.position.y,
         engine->camera.transform.position.z - 120
     };
     crystal.mesh = Mesh::loadObjFile("sharp-crystal-" + std::to_string(rand() % 3 + 1));

@@ -51,7 +51,7 @@ void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObj
                 playAudio("boom", 5);
                 PlayerBodyScript::score += 10;
                 gameObject->deleteSelf = true;
-                engine->getObjectByName(other.name)->deleteSelf = true;
+                other.deleteSelf = true;
             }
         }
     }
