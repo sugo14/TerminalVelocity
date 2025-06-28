@@ -1,3 +1,5 @@
+#pragma once
+
 class Input {
     // TODO: with terminal input, only one key is pressed, arrays are overkill
     // artifact of the old direct input system

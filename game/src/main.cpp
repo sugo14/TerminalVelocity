@@ -13,6 +13,23 @@ void end() {
     std::cout << "Final score: " << PlayerBodyScript::score << std::endl;
 }
 
+// int main() {
+//     AsciiNumericFont anf = AsciiNumericFont("3-4");
+//     for (int i = 0; i < 10; i++) {
+//         GridString digit = anf.digits[i];
+//         digit.print(0, i * 6);
+//     }
+//     // GridString test = GridString({
+//     //     "1234567890",
+//     //     "ABCDEFGHIJ",
+//     //     "KLMNOPQRST",
+//     //     "UVWXYZabcd",
+//     //     "efghijklmn",
+//     // });
+//     // GridString sliced = test.slice(2, 3, 5, 2);
+//     // sliced.print(3, 0);
+// }
+
 int main() {
     GameEngine engine = GameEngine();
     
@@ -128,6 +145,11 @@ int main() {
     // engine.screen.screenData.drawImage(img);
     // img = Image::loadPpmFile("velocity");
     // engine.screen.screenData.drawImage(img, 0, 27);
+
+    GameObject scoreText;
+    scoreText.name = "ScoreText";
+    scoreText.scripts.push_back(std::make_unique<ScoreText>());
+    engine.addObject(std::move(scoreText));
 
     engine.run(&end);
 }

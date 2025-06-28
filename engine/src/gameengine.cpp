@@ -1,8 +1,6 @@
 #include "gameengine.hpp"
 #include "debug.hpp"
 
-#include "scripts.hpp" // ! TEMP!!!!
-
 #include <chrono>
 #include <algorithm>
 #include <unistd.h>

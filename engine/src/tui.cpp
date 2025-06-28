@@ -95,6 +95,10 @@ namespace TUI {
         write(STDOUT_FILENO, str.c_str(), str.size());
     }
 
+    std::string moveCursor(int x, int y) {
+        return ESC + "[" + std::to_string(y + 1) + ";" + std::to_string(x + 1) + "H";
+    }
+
     // std::pair<int, int> getTerminalSize() {
     //     struct winsize w;
     //     if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) != 0) {

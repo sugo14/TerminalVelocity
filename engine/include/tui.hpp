@@ -30,6 +30,8 @@ namespace TUI {
     /// @return The ANSI escape code for setting the background color.
     std::string backgroundColor(int color);
 
+    std::string moveCursor(int x, int y);
+
     /// @brief Prints a string to the console, bypassing standard output and buffering
     /// in exchange for performance.
     /// @param str The string to print.

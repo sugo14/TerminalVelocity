@@ -1,7 +1,10 @@
+#pragma once
+
 #include "gameengine.hpp"
+#include "debug.hpp"
+#include "gridstring.hpp"
 
 #include <random>
-#include "debug.hpp"
 
 int colorLerp(int c1, int c2, float u);
 
@@ -121,6 +124,16 @@ public:
     virtual ~TitleScript() = default;
     TitleScript(const std::string& filename, bool onTop);
 
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};
+
+class ScoreText : public Script {
+    int score;
+    AsciiNumericFont font;
+public:
+    virtual ~ScoreText() = default;
+    ScoreText();
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };

@@ -1,15 +1,15 @@
 #pragma once
 
-#include <memory>
-#include <typeinfo>
-#include <random>
-
 #include "geometry.hpp"
 #include "mesh.hpp"
 #include "camera.hpp"
 #include "tui.hpp"
 #include "debug.hpp"
 #include "input.hpp"
+
+#include <memory>
+#include <typeinfo>
+#include <random>
 
 // forward declarations :(
 class GameEngine;
