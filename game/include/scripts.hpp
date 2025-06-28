@@ -108,6 +108,7 @@ public:
     static int score;
     
     virtual ~PlayerBodyScript() = default;
+
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
@@ -130,10 +131,19 @@ public:
 
 class ScoreText : public Script {
     int score;
-    AsciiNumericFont font;
+    NumericFont font;
 public:
     virtual ~ScoreText() = default;
     ScoreText();
+
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};
+
+class CrosshairScript : public Script {
+public:
+    virtual ~CrosshairScript() = default;
+
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };

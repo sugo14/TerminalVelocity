@@ -1,6 +1,6 @@
 #include <fstream>
 
-const bool DEBUG_MODE = false;
+const bool DEBUG_MODE = true;
 
 void debug(std::string msg) {
     if (!DEBUG_MODE) { return; }

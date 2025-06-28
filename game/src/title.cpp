@@ -38,7 +38,7 @@ void TitleScript::start(GameEngine* engine, GameObject* gameObject) {
 void TitleScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     velX += accel * deltaTime / 1000.0f;
     currX += pow(velX, 2.3) * deltaTime / 1000.0f * (onTop ? -1 : 1);
-    if (onTop) { engine->screen.screenData.clearImages(); }
+    // if (onTop) { engine->screen.screenData.clearImages(); }
     draw(engine);
     if (currX + image.width < 0 || currX > engine->screen.screenData.WIDTH) {
         debug("TitleScript finished, deleting object");

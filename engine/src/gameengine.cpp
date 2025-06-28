@@ -67,29 +67,6 @@ void GameEngine::tick(int deltaTime) {
     }
 }
 
-void GameEngine::drawCrosshair() {
-    int cx = ScreenData::WIDTH / 2;
-    int cy = ScreenData::HEIGHT / 2;
-    int color = 0xFFFFFF;
-    int offset = 2;
-
-    screen.screenData.setPixel(cx - offset, cy - offset, 0.0f, color);
-    screen.screenData.setPixel(cx - offset + 1, cy - offset, 0.0f, color);
-    screen.screenData.setPixel(cx - offset, cy - offset + 1, 0.0f, color);
-
-    screen.screenData.setPixel(cx + offset, cy - offset, 0.0f, color);
-    screen.screenData.setPixel(cx + offset + 1, cy - offset, 0.0f, color);
-    screen.screenData.setPixel(cx + offset + 1, cy - offset + 1, 0.0f, color);
-
-    screen.screenData.setPixel(cx - offset, cy + offset, 0.0f, color);
-    screen.screenData.setPixel(cx - offset + 1, cy + offset + 1, 0.0f, color);
-    screen.screenData.setPixel(cx - offset, cy + offset + 1, 0.0f, color);
-
-    screen.screenData.setPixel(cx + offset, cy + offset + 1, 0.0f, color);
-    screen.screenData.setPixel(cx + offset + 1, cy + offset + 1, 0.0f, color);
-    screen.screenData.setPixel(cx + offset + 1, cy + offset, 0.0f, color);
-}
-
 void GameEngine::run(void (*endCallback)()) {
     std::chrono::high_resolution_clock clock;
     int lastDt = 10;
@@ -106,7 +83,6 @@ void GameEngine::run(void (*endCallback)()) {
 
         // screen loop
         camera.draw(scene.gameObjects, screen.screenData);
-        drawCrosshair();
         screen.draw();
 
         // add pending objects to the scene
@@ -134,6 +110,8 @@ void GameEngine::run(void (*endCallback)()) {
         // frame end
         std::chrono::time_point frameEnd = clock.now();
         lastDt = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
+
+        screen.screenData.clearImages();
 
         if (end) {
             debug("Game ended");

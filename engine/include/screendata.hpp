@@ -5,7 +5,7 @@
 #include <cmath>
 
 struct ScreenData {
-    static const int FAC = 14;
+    static const int FAC = 16;
     static const int WIDTH = 16 * FAC;
     static const int HEIGHT = 9 * FAC;
 
