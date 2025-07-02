@@ -141,7 +141,7 @@ NumericFont::NumericFont(std::string filename) {
     }
 }
 
-Image NumericFont::numberToImage(int number) const {
+Image NumericFont::numberToImage(int number, int spacing) const {
     std::string numberStr = std::to_string(number);
     Image result(0, 0);
     int currX = 0;
@@ -149,7 +149,7 @@ Image NumericFont::numberToImage(int number) const {
         if (c < '0' || c > '9') { continue; }
         const Image& digit = digits[c - '0'];
         result.insert(currX, 0, digit);
-        currX += digit.width + 1;
+        currX += digit.width + spacing;
     }
     return result;
 }

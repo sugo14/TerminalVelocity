@@ -81,10 +81,6 @@ void GameEngine::run(void (*endCallback)()) {
         // game engine loop
         tick(lastDt);
 
-        // screen loop
-        camera.draw(scene.gameObjects, screen.screenData);
-        screen.draw();
-
         // add pending objects to the scene
         for (GameObject& object : pendingObjects) {
             scene.gameObjects.push_back(std::move(object));
@@ -97,6 +93,20 @@ void GameEngine::run(void (*endCallback)()) {
                            [](const GameObject& obj) { return obj.deleteSelf; }),
             scene.gameObjects.end()
         );
+
+        // screen loop
+        camera.draw(scene.gameObjects, screen.screenData);
+
+        // std::chrono::time_point mainEnd = clock.now(); // ! TEST
+        
+        screen.draw();
+
+        // std::chrono::time_point renderEnd = clock.now(); // ! TEST
+
+        // log main time and render time
+        // int mainTime = std::chrono::duration_cast<std::chrono::milliseconds>(mainEnd - frameStart).count();
+        // int renderTime = std::chrono::duration_cast<std::chrono::milliseconds>(renderEnd - mainEnd).count();
+        // debug("Main loop time: " + std::to_string(mainTime) + "ms, Render time: " + std::to_string(renderTime) + "ms");
 
         // sleep to maintain 30fps
         int targetFrameTime = 1000 / 30;

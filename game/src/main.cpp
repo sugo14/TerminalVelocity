@@ -117,17 +117,13 @@ int main() {
 
     GameObject topTitle;
     topTitle.name = "TopTitle";
-    topTitle.scripts.push_back(std::make_unique<TitleScript>("terminal", true));
+    topTitle.scripts.push_back(std::make_unique<TitleScript>("terminal2", true));
     engine.addObject(std::move(topTitle));
 
     GameObject bottomTitle;
     bottomTitle.name = "BottomTitle";
-    bottomTitle.scripts.push_back(std::make_unique<TitleScript>("velocity", false));
+    bottomTitle.scripts.push_back(std::make_unique<TitleScript>("velocity2", false));
     engine.addObject(std::move(bottomTitle));
-    // Image img = Image::loadPpmFile("terminal");
-    // engine.screen.screenData.drawImage(img);
-    // img = Image::loadPpmFile("velocity");
-    // engine.screen.screenData.drawImage(img, 0, 27);
 
     GameObject scoreText;
     scoreText.name = "ScoreText";

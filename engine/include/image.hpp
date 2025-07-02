@@ -37,5 +37,5 @@ struct NumericFont {
 
     NumericFont(std::string filename);
 
-    Image numberToImage(int number) const;
+    Image numberToImage(int number, int spacing = 1) const;
 };

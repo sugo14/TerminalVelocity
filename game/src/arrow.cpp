@@ -40,8 +40,8 @@ void ArrowScript::update(int deltaTime, GameEngine* engine, GameObject* gameObje
 
     GameObject* moveHandlerObj = engine->getObjectByName("MoveHandler");
     MoveHandlerScript* moveHandler = moveHandlerObj->getScriptByType<MoveHandlerScript>();
-    Vector3 currMoveSpeed = moveHandler->currMoveSpeed;
-    Vector3 currRotSpeed = moveHandler->currRotSpeed;
+    Vector3 currMoveSpeed = moveHandler->currMoveSpeed / (deltaTime / 30.0f);
+    Vector3 currRotSpeed = moveHandler->currRotSpeed / (deltaTime / 30.0f);
 
     float newDistToCamera = CockpitScript::distToCamera;
     if (currMoveSpeed.length() >= 0.01f) {

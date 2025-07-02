@@ -119,6 +119,8 @@ class TitleScript : public Script {
     bool onTop;
     float velX;
     static const float accel;
+    int elapsedTime;
+    float currTransparency;
 
     void draw(GameEngine* engine);
 public:

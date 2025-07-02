@@ -11,7 +11,7 @@ void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     rotationSpeed = {10, 0, 0};
     gameObject->mesh.renderMode = RenderMode::VertexColors;
     for (int i = 0; i < gameObject->mesh.vertices.size(); i++) {
-        gameObject->mesh.vertexColors.push_back(0x00FFFF); // !TEMP: white
+        gameObject->mesh.vertexColors.push_back(0x00FFFF);
     }
     gameObject->mesh.lightingMode = LightingMode::Glowing;
 

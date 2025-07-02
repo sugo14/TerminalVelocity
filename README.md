@@ -37,4 +37,3 @@ make
 
 ## 💬 Comments
 - Consider using a particularly fast terminal like kitty
-- Speed limitations are almost definitely a result of terminal throughput

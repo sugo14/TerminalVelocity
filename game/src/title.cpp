@@ -2,16 +2,32 @@
 
 #include <algorithm>
 
-const float TitleScript::accel = 10.0f;
+const float TitleScript::accel = 12.0f;
 
 void TitleScript::draw(GameEngine* engine) {
-    engine->screen.screenData.drawImage(shadow, currX + 1, currY);
-    engine->screen.screenData.drawImage(shadow, currX + 2, currY);
-    engine->screen.screenData.drawImage(image, currX, currY);
+    Image tempImage = image;
+    Image tempShadow = shadow;
+
+    int titleColor = colorLerp(0xFFFFFF, 0x000000, currTransparency);
+    int shadowColor = colorLerp(0x666666, 0x000000, currTransparency);
+
+    for (int x = 0; x < tempShadow.width; x++) {
+        for (int y = 0; y < tempShadow.height; y++) {
+            int pixel = tempImage.getPixel(x, y);
+            if (pixel != 0x000000) {
+                tempImage.setPixel(x, y, titleColor);
+                tempShadow.setPixel(x, y, shadowColor);
+            }
+        }
+    }
+
+    engine->screen.screenData.drawImage(tempShadow, currX + 1, currY);
+    engine->screen.screenData.drawImage(tempShadow, currX + 2, currY);
+    engine->screen.screenData.drawImage(tempImage, currX, currY);
 }
 
 TitleScript::TitleScript(const std::string& filename, bool onTop)
-    : image(Image::loadPpmFile(filename)), shadow(Image::loadPpmFile(filename)), onTop(onTop), velX(0)
+    : image(Image::loadPpmFile(filename)), shadow(Image::loadPpmFile(filename)), onTop(onTop), velX(12.5)
 {
     for (int x = 0; x < shadow.width; x++) {
         for (int y = 0; y < shadow.height; y++) {
@@ -22,6 +38,8 @@ TitleScript::TitleScript(const std::string& filename, bool onTop)
 }
 
 void TitleScript::start(GameEngine* engine, GameObject* gameObject) {
+    currTransparency = 1.0f;
+    elapsedTime = 0.0f;
     int dist = 3;
     currX = engine->screen.screenData.WIDTH / 2 - image.width / 2;
     if (onTop) {
@@ -36,13 +54,20 @@ void TitleScript::start(GameEngine* engine, GameObject* gameObject) {
 }
 
 void TitleScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
-    velX += accel * deltaTime / 1000.0f;
+    int fadeTime = 850;
+    elapsedTime += deltaTime;
+    if (elapsedTime < fadeTime) {
+        currTransparency = 1.0f - elapsedTime / (float)fadeTime;
+        currTransparency *= currTransparency;
+        draw(engine);
+        return;
+    }
+    currTransparency = 0;
+    // velX += accel * deltaTime / 1000.0f;
     currX += pow(velX, 2.3) * deltaTime / 1000.0f * (onTop ? -1 : 1);
-    // if (onTop) { engine->screen.screenData.clearImages(); }
-    draw(engine);
     if (currX + image.width < 0 || currX > engine->screen.screenData.WIDTH) {
         debug("TitleScript finished, deleting object");
-        engine->screen.screenData.clearImages();
         gameObject->deleteSelf = true;
     }
+    draw(engine);
 }

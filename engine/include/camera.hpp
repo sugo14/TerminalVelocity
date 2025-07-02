@@ -33,6 +33,8 @@ int colorLerp(int c1, int c2, int c3, float u, float v);
 /// @return The combined color as a hex code.
 int rgb(int r, int g, int b);
 
+int changeBrightness(int color, float brightness);
+
 struct Frustum {
     float fovY, aspect;
     float nearZ, farZ;

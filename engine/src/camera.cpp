@@ -28,6 +28,12 @@ int rgb(int r, int g, int b) {
     return (r << 16) | (g << 8) | b;
 }
 
+int changeBrightness(int color, float brightness) {
+    int r = color >> 16, g = (color >> 8) & 0xFF, b = color & 0xFF;
+    r *= brightness; g *= brightness; b *= brightness;
+    return rgb(r, g, b);
+}
+
 float degToRad(float deg) {
     return deg * M_PI / 180.0f;
 }
@@ -182,9 +188,7 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
                         color = triangle.color;
                     }
 
-                    int r = color >> 16, g = (color >> 8) & 0xFF, b = color & 0xFF;
-                    r *= brightness; g *= brightness; b *= brightness;
-                    color = (r << 16) | (g << 8) | b;
+                    color = changeBrightness(color, brightness);
 
                     if (mesh.lightingMode == LightingMode::Crystal) {
                         float edgeDistance = 1 - std::min(u, std::min(v, w));
