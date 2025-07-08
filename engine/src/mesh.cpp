@@ -5,7 +5,7 @@
 #include <random>
 
 Mesh Mesh::loadObjFile(const std::string& objName, RenderMode renderMode, LightingMode lightingMode) {
-    std::string filepath = "models/" + objName + ".obj";
+    std::string filepath = "resources/models/" + objName + ".obj";
     std::ifstream in(filepath);
     if (!in.is_open()) {
         throw std::runtime_error(filepath + " could not be opened successfully.");

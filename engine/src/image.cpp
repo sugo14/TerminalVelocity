@@ -21,7 +21,7 @@ void Image::setPixel(int x, int y, int color) {
 }
 
 Image Image::loadPpmFile(const std::string& filename) {
-    std::string filepath = "images/" + filename + ".ppm";
+    std::string filepath = "resources/images/" + filename + ".ppm";
     std::ifstream in(filepath, std::ios::binary);
     if (!in.is_open()) {
         throw std::runtime_error(filepath + " could not be opened successfully.");

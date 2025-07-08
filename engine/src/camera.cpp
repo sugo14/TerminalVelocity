@@ -163,7 +163,7 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
 
             for (int y = minY; y <= maxY; y++) {
                 for (int x = minX; x <= maxX; x++) {
-                    Vector2 p = {x, y};
+                    Vector2 p = {(float)x, (float)y};
                     Vector2 v2 = p - a;
                     float d20 = v2.dot(v0);
                     float d21 = v2.dot(v1);

@@ -4,6 +4,8 @@
 #include <chrono>
 #include <algorithm>
 #include <unistd.h>
+// #include <thread>
+// #include <condition_variable>
 
 GameObject::GameObject() : transform(Transform()), mesh(Mesh()), 
                            name("GameObject"), deleteSelf(false) {
@@ -67,6 +69,57 @@ void GameEngine::tick(int deltaTime) {
     }
 }
 
+// std::mutex mtx;
+// std::condition_variable cv;
+// bool frameReady = false;
+
+// void GameEngine::renderThread() {
+//     std::chrono::high_resolution_clock clock;
+//     int targetFps = 30;
+//     int targetFrameTime = 1000 / targetFps;
+
+//     while (true) {
+//         // frame start
+//         std::chrono::time_point frameStart = clock.now();
+
+//         // do stuff
+
+//         // sleep to maintain 30fps
+//         std::chrono::time_point frameEnd = clock.now();
+//         int elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
+//         if (elapsedTime < targetFrameTime) {
+//             std::this_thread::sleep_for(std::chrono::milliseconds(targetFrameTime - elapsedTime));
+//         }
+//     }
+// }
+
+// void GameEngine::printThread() {
+//     std::chrono::high_resolution_clock clock;
+//     int targetFps = 30;
+//     int targetFrameTime = 1000 / targetFps;
+
+//     while (true) {
+//         // frame start
+//         std::chrono::time_point frameStart = clock.now();
+
+//         // do stuff
+
+//         // sleep to maintain 30fps
+//         int elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(clock.now() - frameStart).count();
+//         if (elapsedTime < targetFrameTime) {
+//             std::this_thread::sleep_for(std::chrono::milliseconds(targetFrameTime - elapsedTime));
+//         }
+
+//         // frame end
+//         std::chrono::time_point frameEnd = clock.now();
+//         // lastDt = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
+//     }
+// }
+
+// void GameEngine::updateThread() {
+
+// }
+
 void GameEngine::run(void (*endCallback)()) {
     std::chrono::high_resolution_clock clock;
     int lastDt = 10;
@@ -96,17 +149,8 @@ void GameEngine::run(void (*endCallback)()) {
 
         // screen loop
         camera.draw(scene.gameObjects, screen.screenData);
-
-        // std::chrono::time_point mainEnd = clock.now(); // ! TEST
         
         screen.draw();
-
-        // std::chrono::time_point renderEnd = clock.now(); // ! TEST
-
-        // log main time and render time
-        // int mainTime = std::chrono::duration_cast<std::chrono::milliseconds>(mainEnd - frameStart).count();
-        // int renderTime = std::chrono::duration_cast<std::chrono::milliseconds>(renderEnd - mainEnd).count();
-        // debug("Main loop time: " + std::to_string(mainTime) + "ms, Render time: " + std::to_string(renderTime) + "ms");
 
         // sleep to maintain 30fps
         int targetFrameTime = 1000 / 30;

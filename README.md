@@ -2,19 +2,21 @@
 
 The year is 2525. You're yet another expendable contractor, assigned to one of the deadliest jobs in the galaxy: crystal extraction from unstable asteroid belts deep in space. Armed with only your teleportation blasters, you'll have to harvest as many alien crystals as possible before the asteroids accelerate faster than you can react. One collision, and it's over...
 
-This game was my Computer Science 30 final project. It's made entirely from scratch in C++, including the software rasterizer, the game engine, and the game itself. It runs in the terminal with just about zero extra dependencies on most Linux systems.
+---
+
+This game was originally my Computer Science 30 final project, and I later submitted it to [Summer of Making](https://summer.hackclub.com/projects/521). The code is made entirely from scratch in C++, including the software rasterizer, the game engine, and the game itself. It runs in the terminal with just about zero extra dependencies on most Linux systems.
 
 ![Flying around and shooting in cockpit](github/6-19-2025-gameplay.gif)
 
 ## 🟢 Current State
 - Renders and transforms meshes loaded from OBJ files
-- Colors based on vertex colors and barycentric weights
-    - Can make decent looking objects, like the asteroid, crystals, and HUD shown
-- Has basic shading, z-buffering, etc.
-- Can move the camera around in the world from input
-- Shoot asteroids using space to destroy them
+- Colors everything based on rules using barycentric weights
+    - Made surprisingly decent-looking objects
+- Camera has basic shading, z-buffering, etc.
+- Camera, hitbox, and HUD move around the world from input
 - HUD arrow guides you by pointing forwards
-- Asteroids kill the player when they get too close
+- Circle colliders are colliding
+    - Player-asteroid and bullet-asteroid/crystal collisions
 - PPM image rendering capability
 
 ## 🎯 Goals
@@ -37,3 +39,6 @@ make
 
 ## 💬 Comments
 - Consider using a particularly fast terminal like kitty
+- This game is surprisingly computationally expensive to run
+    - I attribute it to the high number of relatively high-poly asteroids
+    - Isn't a major failure of the engine itself in my opinion

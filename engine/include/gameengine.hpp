@@ -79,7 +79,10 @@ class GameEngine {
     std::vector<GameObject> pendingObjects;
 
     void tick(int lastDt);
-    void drawCrosshair();
+
+    // void renderThread();
+    // void printThread();
+    // void updateThread();
 
 public:
     Camera camera;

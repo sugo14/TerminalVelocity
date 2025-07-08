@@ -48,7 +48,7 @@ void startTerminalSession() {
 
 void playAudio(const std::string& filename, int randomRange) {
     return; // ! TODO: muted
-    std::string command = "aplay -q audio/" + filename;
+    std::string command = "aplay -q resources/audio/" + filename;
     if (randomRange > 0) {
         int randomChoice = rand() % randomRange + 1;
         command += std::to_string(randomChoice);
