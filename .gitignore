@@ -13,7 +13,7 @@ debug.log
 *.obj
 
 # Include wavefront obj files
-!models/*.obj
+!resources/models/*.obj
 
 # Precompiled Headers
 *.gch
