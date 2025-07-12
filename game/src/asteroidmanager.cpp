@@ -4,7 +4,7 @@ const float AsteroidManager::centerAsteroidPerSecond = 0.2f;
 
 void AsteroidManager::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidManager started");
-    asteroidPeriod = 0.04f;
+    asteroidPeriod = 0.065f;
     currAsteroidPeriod = asteroidPeriod;
     currMult = 1;
     cnt = 0;

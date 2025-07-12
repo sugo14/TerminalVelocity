@@ -1,12 +1,14 @@
 #include "scripts.hpp"
 
 ScoreText::ScoreText()
-    : font("numerals")
+    : font("numerals"), enabled(true)
 { }
 
 void ScoreText::start(GameEngine* engine, GameObject* gameObject) { }
 
 void ScoreText::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    if (!enabled) { return; }
+    
     Image img = font.numberToImage(PlayerBodyScript::score, 2);
     int x = (ScreenData::WIDTH - img.width) / 2, y = 6;
     Image shadow = img;

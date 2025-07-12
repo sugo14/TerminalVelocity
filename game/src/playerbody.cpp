@@ -23,7 +23,8 @@ void PlayerBodyScript::update(int deltaTime, GameEngine* engine, GameObject* gam
                       + std::to_string(gameObject->transform.position.x) + ", "
                       + std::to_string(gameObject->transform.position.y) + ", "
                       + std::to_string(gameObject->transform.position.z));
-                engine->end = true;
+                isAlive = false;
+                engine->getObjectByName("GameOverText")->getScriptByType<GameOverTextScript>()->activate(engine);
             }
         }
     }

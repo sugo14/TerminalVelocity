@@ -106,6 +106,7 @@ public:
 class PlayerBodyScript : public Script {
 public:
     static int score;
+    bool isAlive;
     
     virtual ~PlayerBodyScript() = default;
 
@@ -121,6 +122,7 @@ class TitleScript : public Script {
     static const float accel;
     int elapsedTime;
     float currTransparency;
+    bool firstFrame;
 
     void draw(GameEngine* engine);
 public:
@@ -135,6 +137,7 @@ class ScoreText : public Script {
     int score;
     NumericFont font;
 public:
+    bool enabled;
     virtual ~ScoreText() = default;
     ScoreText();
 
@@ -144,7 +147,25 @@ public:
 
 class CrosshairScript : public Script {
 public:
+    bool enabled;
     virtual ~CrosshairScript() = default;
+    CrosshairScript();
+
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};
+
+class GameOverTextScript : public Script {
+    bool currentlyActive;
+    float topPos, bottomPos, topDest, bottomDest;
+    Image topImage, topShadow, bottomImage, bottomShadow;
+    int timePassed;
+    int xTop, xBottom;
+public:
+    virtual ~GameOverTextScript() = default;
+    GameOverTextScript();
+
+    void activate(GameEngine* engine);
 
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;

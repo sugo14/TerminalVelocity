@@ -7,6 +7,10 @@
 // #include <thread>
 // #include <condition_variable>
 
+float lerp(float a, float b, float u) {
+    return a + (b - a) * u;
+}
+
 GameObject::GameObject() : transform(Transform()), mesh(Mesh()), 
                            name("GameObject"), deleteSelf(false) {
     debug("GameObject created: " + name);
@@ -128,17 +132,18 @@ void GameEngine::run(void (*endCallback)()) {
         // frame start
         std::chrono::time_point frameStart = clock.now();
 
+        // add pending objects to the scene
+        for (GameObject& object : pendingObjects) {
+            scene.gameObjects.push_back(std::move(object));
+            scene.gameObjects.back().start(this);
+        }
+        pendingObjects.clear();
+
         // input
         input.update(lastDt);
 
         // game engine loop
         tick(lastDt);
-
-        // add pending objects to the scene
-        for (GameObject& object : pendingObjects) {
-            scene.gameObjects.push_back(std::move(object));
-        }
-        pendingObjects.clear();
 
         // delete objects marked for deletion
         scene.gameObjects.erase(
@@ -184,6 +189,5 @@ GameObject* GameEngine::getObjectByName(const std::string& name) {
 }
 
 void GameEngine::addObject(GameObject object) {
-    object.start(this);
     pendingObjects.push_back(std::move(object));
 }

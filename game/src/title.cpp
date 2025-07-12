@@ -51,9 +51,26 @@ void TitleScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("TitleScript started at " + std::to_string(currX) + ", " + std::to_string(currY));
 
     draw(engine);
+
+    // firstFrame = true;
+    GameObject* crosshair = engine->getObjectByName("Crosshair");
+    // if (!crosshair) {
+    //     debug("TitleScript: Crosshair object not found!");
+    //     return;
+    // }
+    crosshair->getScriptByType<CrosshairScript>()->enabled = false;
 }
 
 void TitleScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    // if (firstFrame) {
+    //     firstFrame = false;
+    //     GameObject* crosshair = engine->getObjectByName("Crosshair");
+    //     // if (!crosshair) {
+    //     //     debug("TitleScript: Crosshair object not found!");
+    //     //     return;
+    //     // }
+    //     crosshair->getScriptByType<CrosshairScript>()->enabled = false;
+    // }
     int fadeTime = 850;
     elapsedTime += deltaTime;
     if (elapsedTime < fadeTime) {
@@ -67,6 +84,7 @@ void TitleScript::update(int deltaTime, GameEngine* engine, GameObject* gameObje
     currX += pow(velX, 2.3) * deltaTime / 1000.0f * (onTop ? -1 : 1);
     if (currX + image.width < 0 || currX > engine->screen.screenData.WIDTH) {
         debug("TitleScript finished, deleting object");
+        engine->getObjectByName("Crosshair")->getScriptByType<CrosshairScript>()->enabled = true;
         gameObject->deleteSelf = true;
     }
     draw(engine);

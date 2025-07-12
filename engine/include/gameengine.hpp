@@ -11,6 +11,8 @@
 #include <typeinfo>
 #include <random>
 
+float lerp(float a, float b, float u);
+
 // forward declarations :(
 class GameEngine;
 struct GameObject;

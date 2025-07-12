@@ -18,6 +18,7 @@ This game was originally my Computer Science 30 final project, and I later submi
 - Circle colliders are colliding
     - Player-asteroid and bullet-asteroid/crystal collisions
 - PPM image rendering capability
+- Terrible numeric font rendering
 
 ## 🎯 Goals
 - Learn some basic linear algebra

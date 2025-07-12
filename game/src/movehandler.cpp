@@ -26,6 +26,10 @@ void MoveHandlerScript::start(GameEngine* engine, GameObject* gameObject) {
 }
 
 void MoveHandlerScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    if (!engine->getObjectByName("PlayerBody")->getScriptByType<PlayerBodyScript>()->isAlive) {
+        return;
+    }
+    
     float rotationSpeed = 0.0002f * deltaTime;
     float moveSpeed = 0.007f * deltaTime;
     Transform& cameraTransform = engine->camera.transform;

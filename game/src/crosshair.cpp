@@ -1,10 +1,16 @@
 #include "scripts.hpp"
 
+CrosshairScript::CrosshairScript() : enabled(true) {
+    debug("CrosshairScript created with enabled = true");
+}
+
 void CrosshairScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("CrosshairScript started");
 }
 
 void CrosshairScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+    if (!enabled) { return; }
+    
     int cx = ScreenData::WIDTH / 2;
     int cy = ScreenData::HEIGHT / 2;
     int color = 0xFFFFFF;

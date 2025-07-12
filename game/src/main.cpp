@@ -9,6 +9,7 @@
 #include <unistd.h>
 
 void end() {
+    return;
     std::cout << "Game over! You died due to an asteroid collision." << std::endl;
     std::cout << "Final score: " << PlayerBodyScript::score << std::endl;
 }
@@ -115,6 +116,11 @@ int main() {
     // levelCylinder.tags = {};
     // engine.addObject(std::move(levelCylinder));
 
+    GameObject crosshair;
+    crosshair.name = "Crosshair";
+    crosshair.scripts.push_back(std::make_unique<CrosshairScript>());
+    engine.addObject(std::move(crosshair));
+
     GameObject topTitle;
     topTitle.name = "TopTitle";
     topTitle.scripts.push_back(std::make_unique<TitleScript>("terminal2", true));
@@ -130,10 +136,10 @@ int main() {
     scoreText.scripts.push_back(std::make_unique<ScoreText>());
     engine.addObject(std::move(scoreText));
 
-    GameObject crosshair;
-    crosshair.name = "Crosshair";
-    crosshair.scripts.push_back(std::make_unique<CrosshairScript>());
-    engine.addObject(std::move(crosshair));
+    GameObject gameOverText;
+    gameOverText.name = "GameOverText";
+    gameOverText.scripts.push_back(std::make_unique<GameOverTextScript>());
+    engine.addObject(std::move(gameOverText));
 
     engine.run(&end);
 }
