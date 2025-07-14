@@ -44,11 +44,11 @@ void GameOverTextScript::update(int deltaTime, GameEngine* engine, GameObject* g
     if (!currentlyActive) { return; }
 
     timePassed += deltaTime;
-    int calcTimePassed = std::min(timePassed, 1000);
-    int currTopPos = lerp(topPos, topDest, calcTimePassed / 1000.0f);
-    int currBottomPos = lerp(bottomPos, bottomDest, calcTimePassed / 1000.0f);
+    int calcTimePassed = std::min(timePassed, 600);
+    int currTopPos = lerp(topPos, topDest, calcTimePassed / 600.0f);
+    int currBottomPos = lerp(bottomPos, bottomDest, calcTimePassed / 600.0f);
 
-    if (timePassed > 2000) {
+    if (timePassed > 2400) {
         engine->end = true;
     }
 
