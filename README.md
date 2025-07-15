@@ -4,9 +4,9 @@ The year is 2525. You're yet another expendable contractor, assigned to one of t
 
 ---
 
-This game was originally my Computer Science 30 final project, and I later submitted it to [Summer of Making](https://summer.hackclub.com/projects/521). The code is made entirely from scratch in C++, including the software rasterizer, the game engine, and the game itself. It runs in the terminal with just about zero extra dependencies on most Linux systems.
+This game was originally my Computer Science 30 final project, and I later submitted it to [Summer of Making](https://summer.hackclub.com/projects/521). The code is made from scratch in C++, including the software rasterizer, the game engine, and the game itself. It runs in the terminal with just about zero extra dependencies on most Linux systems.
 
-![Flying around and shooting in cockpit](github/6-19-2025-gameplay.gif)
+![Showcase of the game](github/7-14-2025-showcase.gif)
 
 ## 🟢 Current State
 - Renders and transforms meshes loaded from OBJ files
@@ -27,19 +27,19 @@ This game was originally my Computer Science 30 final project, and I later submi
     - I now realize that this was quite ambitious
 - Avoid requiring non-standard libraries
 
-## ⚙️ How to run
-- **Linux Only!**
+## ⚙️ How to run on Linux
+
+Consider running a version of the project from [GitHub releases](https://github.com/sugo14/TerminalVelocity/releases) if you aren't already. The following shows how to build the potentially buggy current source code:
+
+- Navigate to the project directory
+- Run `make` to compile the project
+    - Requires g++ and Make to be installed
 - Modify your keyboard settings: increase repeat rate and decrease repeat delay as much as possible
-    - This is the only way to semi-accurately handle real-time input in the terminal
-- Decrease your terminal text size to fit the engine's resolution
-- In the project directory, run:
-```bash
-make
-./main
-```
+    - You can skip this, but input will be much less responsive
+- Decrease your terminal text size (`Ctrl` + `-`) to fit the engine's resolution
+- Run `./main` to run the project
 
 ## 💬 Comments
 - Consider using a particularly fast terminal like kitty
 - This game is surprisingly computationally expensive to run
     - I attribute it to the high number of relatively high-poly asteroids
-    - Isn't a major failure of the engine itself in my opinion
