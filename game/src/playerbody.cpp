@@ -2,7 +2,9 @@
 
 int PlayerBodyScript::score = 0;
 
-void PlayerBodyScript::start(GameEngine* engine, GameObject* gameObject) { }
+void PlayerBodyScript::start(GameEngine* engine, GameObject* gameObject) {
+    isAlive = true;
+}
 
 void PlayerBodyScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     gameObject->transform.position = engine->camera.transform.position;
