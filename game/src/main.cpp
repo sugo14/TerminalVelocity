@@ -8,35 +8,15 @@
 #include <iostream>
 #include <unistd.h>
 
-void end() {
-    return;
-    std::cout << "Game over! You died due to an asteroid collision." << std::endl;
-    std::cout << "Final score: " << PlayerBodyScript::score << std::endl;
-}
+void end() { return; }
 
 int main() {
     GameEngine engine = GameEngine();
     
-    int cockpitColor = 0x323542; // 0x6b4e2e
-    int barrelColor = 0x8d93b5; // 0xfcb86d
-
-    // for (int i = 0; i < 2; i++) {
-    //     GameObject obj;
-    //     obj.mesh = Mesh::loadObjFile("sharp-crystal-m");
-    //     obj.name = "Crystal" + std::to_string(i);
-    //     obj.tags = {"crystal"};
-    //     obj.scripts.push_back(std::make_unique<SphereCollider>(3));
-    //     obj.scripts.push_back(std::make_unique<CrystalScript>());
-    //     engine.addObject(std::move(obj));
-
-    //     GameObject obj2;
-    //     obj2.mesh = Mesh::loadObjFile("rock_1");
-    //     obj2.name = "Asteroid" + std::to_string(i);
-    //     obj2.tags = {"asteroid"};
-    //     obj2.scripts.push_back(std::make_unique<SphereCollider>(3));
-    //     obj2.scripts.push_back(std::make_unique<AsteroidScript>());
-    //     engine.addObject(std::move(obj2));
-    // }
+    // the barrel has to be much lighter because
+    // my rendering engine is dogwater
+    int cockpitColor = 0x323542; // 0x6b4e2e // copper
+    int barrelColor = 0x8d93b5; // 0xfcb86d // copper
 
     GameObject moveHandler;
     moveHandler.name = "MoveHandler";
@@ -50,36 +30,41 @@ int main() {
 
     GameObject cockpit;
     cockpit.mesh = Mesh::loadObjFile("cockpit");
+    cockpit.mesh.lightingMode = LightingMode::Crystal;
     cockpit.name = "Cockpit";
-    cockpit.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, 0, 0}, cockpitColor, LightingMode::Crystal));
+    cockpit.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, 0, 0}, cockpitColor));
     cockpit.transform.scale = {0.775f, 0.775f, 0.775f};
     engine.addObject(std::move(cockpit));
 
     GameObject computer;
     computer.name = "Computer";
     computer.mesh = Mesh::loadObjFile("comp");
-    computer.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, -0.27, 0.01}, 0x00c0c0, LightingMode::Regular, Vector3{-0.9, 0, 0}));
+    computer.mesh.lightingMode = LightingMode::Regular;
+    computer.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0, -0.27, 0.01}, 0x00c0c0, Vector3{-0.9, 0, 0}));
     computer.transform.scale = {0.5, 0.5, 4};
     engine.addObject(std::move(computer));
 
     GameObject barrel1;
     barrel1.name = "Barrel1";
     barrel1.mesh = Mesh::loadObjFile("cylinderW");
-    barrel1.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0.225, -0.23, -0.22}, barrelColor, LightingMode::Regular, Vector3{1.57, 0, 0}));
+    barrel1.mesh.lightingMode = LightingMode::Regular;
+    barrel1.scripts.push_back(std::make_unique<CockpitScript>(Vector3{0.225, -0.23, -0.22}, barrelColor, Vector3{1.57, 0, 0}));
     barrel1.transform.scale = {0.11, 0.4, 0.11};
     engine.addObject(std::move(barrel1));
 
     GameObject barrel2;
     barrel2.name = "Barrel2";
     barrel2.mesh = Mesh::loadObjFile("cylinderW");
-    barrel2.scripts.push_back(std::make_unique<CockpitScript>(Vector3{-0.225, -0.23, -0.22}, barrelColor, LightingMode::Regular, Vector3{1.57, 0, 0}));
+    barrel2.mesh.lightingMode = LightingMode::Regular;
+    barrel2.scripts.push_back(std::make_unique<CockpitScript>(Vector3{-0.225, -0.23, -0.22}, barrelColor, Vector3{1.57, 0, 0}));
     barrel2.transform.scale = {0.11, 0.4, 0.11};
     engine.addObject(std::move(barrel2));
 
     GameObject arrow;
     arrow.name = "Arrow";
     arrow.mesh = Mesh::loadObjFile("arrow");
-    arrow.scripts.push_back(std::make_unique<ArrowScript>(Vector3{0, -0.13, 0.05}, 0xaa2222, LightingMode::Regular, Vector3{0, 0, 0}));
+    arrow.mesh.lightingMode = LightingMode::Regular;
+    arrow.scripts.push_back(std::make_unique<ArrowScript>(Vector3{0, -0.13, 0.05}, 0xaa2222, Vector3{0, 0, 0}));
     arrow.transform.scale = Vector3{0.05f, 0.15f, 0.05f} * 2.0f;
     arrow.transform.position = {0, 0, -1.5f};
     engine.addObject(std::move(arrow));

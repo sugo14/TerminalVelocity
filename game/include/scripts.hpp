@@ -79,12 +79,11 @@ public:
 class CockpitScript : public Script {
     Vector3 delta, rotation;
     int color;
-    LightingMode lightingMode;
 public:
     const static float distToCamera;
     
     virtual ~CockpitScript() = default;
-    CockpitScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation = {0, 0, 0});
+    CockpitScript(Vector3 delta, int color, Vector3 rotation = {0, 0, 0});
 
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
@@ -93,11 +92,10 @@ public:
 class ArrowScript : public Script {
     Vector3 delta;
     int color;
-    LightingMode lightingMode;
     Vector3 rotation;
 public:
     virtual ~ArrowScript() = default;
-    ArrowScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation = {0, 0, 0});
+    ArrowScript(Vector3 delta, int color, Vector3 rotation = {0, 0, 0});
 
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;

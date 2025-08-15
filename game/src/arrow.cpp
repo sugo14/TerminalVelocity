@@ -1,11 +1,10 @@
 #include "scripts.hpp"
 
-ArrowScript::ArrowScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation)
+ArrowScript::ArrowScript(Vector3 delta, int color, Vector3 rotation)
     : Script() {
     debug("ArrowScript created");
     this->delta = delta;
     this->color = color;
-    this->lightingMode = lightingMode;
     this->rotation = rotation;
 }
 
@@ -25,7 +24,6 @@ void ArrowScript::start(GameEngine* engine, GameObject* gameObject) {
             )
         );
     }
-    gameObject->mesh.lightingMode = lightingMode;
     gameObject->tags = {"cockpit"};
     gameObject->transform.position = Vector3{0, 0.0, -CockpitScript::distToCamera} + this->delta;
 }

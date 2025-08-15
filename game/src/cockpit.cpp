@@ -2,12 +2,11 @@
 
 const float CockpitScript::distToCamera = 0.37f;
 
-CockpitScript::CockpitScript(Vector3 delta, int color, LightingMode lightingMode, Vector3 rotation)
+CockpitScript::CockpitScript(Vector3 delta, int color, Vector3 rotation)
     : Script() {
     debug("CockpitScript created");
     this->delta = delta;
     this->color = color;
-    this->lightingMode = lightingMode;
     this->rotation = rotation;
 }
 
@@ -16,7 +15,6 @@ void CockpitScript::start(GameEngine* engine, GameObject* gameObject) {
     for (int i = 0; i < gameObject->mesh.vertices.size(); i++) {
         gameObject->mesh.vertexColors.push_back(color);
     }
-    gameObject->mesh.lightingMode = lightingMode;
     gameObject->tags = {"cockpit"};
     gameObject->transform.position = Vector3{0, 0.0, -distToCamera} + this->delta;
 }
