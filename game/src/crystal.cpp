@@ -92,7 +92,7 @@ void CrystalScript::start(GameEngine* engine, GameObject* gameObject) {
     gameObject->mesh.lightingMode = LightingMode::Crystal;
 }
 
-void CrystalScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void CrystalScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     float seconds = deltaTime / 1000.0f;
     gameObject->transform.rotation = gameObject->transform.rotation + rotationSpeed * seconds;
     gameObject->transform.position = gameObject->transform.position + positionSpeed * seconds;

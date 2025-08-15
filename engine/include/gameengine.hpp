@@ -27,8 +27,12 @@ public:
     virtual void update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
         debug("!ERROR! Base ObjectScript::update called.");
     }
+    virtual void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+        debug("!ERROR! Base ObjectScript::fixedUpdate called.");
+    }
 };
 
+// this is the only engine provided script lol
 class SphereCollider : public Script {
 public:
     virtual ~SphereCollider() = default;
@@ -59,6 +63,7 @@ struct GameObject {
 
     void start(GameEngine* engine);
     void update(int deltaTime, GameEngine* engine);
+    void fixedUpdate(int deltaTime, GameEngine* engine);
 
     bool hasTag(const std::string& tag) const;
 
@@ -81,6 +86,7 @@ class GameEngine {
     std::vector<GameObject> pendingObjects;
 
     void tick(int lastDt);
+    void fixedTick(int lastDt);
 
     // void renderThread();
     // void printThread();
@@ -94,6 +100,8 @@ public:
 
     std::mt19937 gen;
     bool end;
+
+    const int fixedStep = 1000 / 60;
     
     GameEngine();
 

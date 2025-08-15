@@ -19,7 +19,7 @@ void CockpitScript::start(GameEngine* engine, GameObject* gameObject) {
     gameObject->transform.position = Vector3{0, 0.0, -distToCamera} + this->delta;
 }
 
-void CockpitScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void CockpitScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     Transform& cameraTransform = engine->camera.transform;
     Vector3 front = cameraTransform.front();
 

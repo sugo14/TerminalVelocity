@@ -6,8 +6,6 @@
 
 #include <random>
 
-int colorLerp(int c1, int c2, float u);
-
 class AsteroidScript : public Script {
     Vector3 rotationSpeed;
     Vector3 positionSpeed;
@@ -17,7 +15,7 @@ public:
     AsteroidScript(float speedMult = 1);
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class CrystalScript : public Script {
@@ -29,7 +27,7 @@ public:
     CrystalScript(float speedMult = 1);
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class BulletScript : public Script {
@@ -40,7 +38,7 @@ class BulletScript : public Script {
 public:
     virtual ~BulletScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class MoveHandlerScript : public Script {
@@ -50,7 +48,7 @@ public:
 
     virtual ~MoveHandlerScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class BulletHandlerScript : public Script {
@@ -58,7 +56,7 @@ class BulletHandlerScript : public Script {
 public:
     virtual ~BulletHandlerScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class AsteroidManager : public Script {
@@ -73,7 +71,7 @@ class AsteroidManager : public Script {
 public:
     virtual ~AsteroidManager() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class CockpitScript : public Script {
@@ -86,7 +84,7 @@ public:
     CockpitScript(Vector3 delta, int color, Vector3 rotation = {0, 0, 0});
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class ArrowScript : public Script {
@@ -98,7 +96,7 @@ public:
     ArrowScript(Vector3 delta, int color, Vector3 rotation = {0, 0, 0});
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class PlayerBodyScript : public Script {
@@ -109,7 +107,7 @@ public:
     virtual ~PlayerBodyScript() = default;
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class TitleScript : public Script {
@@ -128,7 +126,7 @@ public:
     TitleScript(const std::string& filename, bool onTop);
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class ScoreText : public Script {
@@ -140,7 +138,7 @@ public:
     ScoreText();
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class CrosshairScript : public Script {
@@ -150,7 +148,7 @@ public:
     CrosshairScript();
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class GameOverTextScript : public Script {
@@ -166,5 +164,5 @@ public:
     void activate(GameEngine* engine);
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };

@@ -21,7 +21,7 @@ void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     elapsedTime = 0;
 }
 
-void BulletScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void BulletScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     float seconds = deltaTime / 1000.0f;
     gameObject->transform.rotation = gameObject->transform.rotation + rotationSpeed * seconds;
     gameObject->transform.position = gameObject->transform.position + positionSpeed * seconds;

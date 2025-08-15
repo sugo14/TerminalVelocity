@@ -25,7 +25,7 @@ void MoveHandlerScript::start(GameEngine* engine, GameObject* gameObject) {
     currRotSpeed = {0, 0, 0};
 }
 
-void MoveHandlerScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void MoveHandlerScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     if (!engine->getObjectByName("PlayerBody")->getScriptByType<PlayerBodyScript>()->isAlive) {
         return;
     }

@@ -28,7 +28,7 @@ void ArrowScript::start(GameEngine* engine, GameObject* gameObject) {
     gameObject->transform.position = Vector3{0, 0.0, -CockpitScript::distToCamera} + this->delta;
 }
 
-void ArrowScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void ArrowScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     Transform& cameraTransform = engine->camera.transform;
     Vector3 front = cameraTransform.front();
 

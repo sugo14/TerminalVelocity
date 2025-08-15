@@ -21,7 +21,7 @@ void BulletHandlerScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("BulletHandlerScript started");
 }
 
-void BulletHandlerScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void BulletHandlerScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     if (!engine->getObjectByName("PlayerBody")->getScriptByType<PlayerBodyScript>()->isAlive) {
         return;
     }

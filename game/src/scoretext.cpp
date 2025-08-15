@@ -6,7 +6,7 @@ ScoreText::ScoreText()
 
 void ScoreText::start(GameEngine* engine, GameObject* gameObject) { }
 
-void ScoreText::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void ScoreText::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     if (!enabled) { return; }
     
     Image img = font.numberToImage(PlayerBodyScript::score, 2);

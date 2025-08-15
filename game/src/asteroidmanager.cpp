@@ -46,7 +46,7 @@ void AsteroidManager::spawnCrystal(GameEngine* engine) {
     engine->addObject(std::move(crystal));
 }
 
-void AsteroidManager::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void AsteroidManager::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     float seconds = deltaTime / 1000.0f;
     currMult += seconds * 0.05f;
 

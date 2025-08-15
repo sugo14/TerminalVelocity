@@ -28,6 +28,10 @@ void GameObject::update(int deltaTime, GameEngine* engine) {
     if (deleteSelf) { return; }
     for (auto& script : scripts) { script->update(deltaTime, engine, this); }
 }
+void GameObject::fixedUpdate(int deltaTime, GameEngine* engine) {
+    if (deleteSelf) { return; }
+    for (auto& script : scripts) { script->fixedUpdate(deltaTime, engine, this); }
+}
 
 bool GameObject::hasTag(const std::string& tag) const {
     if (tags.empty()) return false; // quick check
@@ -70,6 +74,11 @@ GameEngine::GameEngine() {
 void GameEngine::tick(int deltaTime) {
     for (GameObject& gameObject : scene.gameObjects) {
         gameObject.update(deltaTime, this);
+    }
+}
+void GameEngine::fixedTick(int deltaTime) {
+    for (GameObject& gameObject : scene.gameObjects) {
+        gameObject.fixedUpdate(deltaTime, this);
     }
 }
 
@@ -127,6 +136,7 @@ void GameEngine::tick(int deltaTime) {
 void GameEngine::run(void (*endCallback)()) {
     std::chrono::high_resolution_clock clock;
     int lastDt = 10;
+    int accumulatedTime = 0;
 
     while (true) {
         // frame start
@@ -144,6 +154,12 @@ void GameEngine::run(void (*endCallback)()) {
 
         // game engine loop
         tick(lastDt);
+        // fixed game engine loop
+        accumulatedTime += lastDt;
+        while (accumulatedTime > fixedStep) {
+            fixedTick(fixedStep);
+            accumulatedTime -= fixedStep;
+        }
 
         // delete objects marked for deletion
         scene.gameObjects.erase(

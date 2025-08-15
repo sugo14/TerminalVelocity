@@ -6,7 +6,7 @@ void PlayerBodyScript::start(GameEngine* engine, GameObject* gameObject) {
     isAlive = true;
 }
 
-void PlayerBodyScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void PlayerBodyScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     gameObject->transform.position = engine->camera.transform.position;
 
     SphereCollider* hitbox = gameObject->getScriptByType<SphereCollider>();

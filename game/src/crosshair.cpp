@@ -8,7 +8,7 @@ void CrosshairScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("CrosshairScript started");
 }
 
-void CrosshairScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void CrosshairScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     if (!enabled) { return; }
     
     int cx = ScreenData::WIDTH / 2;
