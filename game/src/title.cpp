@@ -61,7 +61,7 @@ void TitleScript::start(GameEngine* engine, GameObject* gameObject) {
     crosshair->getScriptByType<CrosshairScript>()->enabled = false;
 }
 
-void TitleScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void TitleScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     // if (firstFrame) {
     //     firstFrame = false;
     //     GameObject* crosshair = engine->getObjectByName("Crosshair");

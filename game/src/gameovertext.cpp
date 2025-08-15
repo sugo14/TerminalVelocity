@@ -40,7 +40,7 @@ void GameOverTextScript::start(GameEngine* engine, GameObject* gameObject) {
     xBottom = (ScreenData::WIDTH - bottomImage.width) / 2;
 }
 
-void GameOverTextScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
+void GameOverTextScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     if (!currentlyActive) { return; }
 
     timePassed += deltaTime;

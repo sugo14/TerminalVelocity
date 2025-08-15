@@ -125,7 +125,7 @@ public:
     TitleScript(const std::string& filename, bool onTop);
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class ScoreText : public Script {
@@ -137,7 +137,7 @@ public:
     ScoreText();
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
 
 class CrosshairScript : public Script {
@@ -163,5 +163,5 @@ public:
     void activate(GameEngine* engine);
 
     void start(GameEngine* engine, GameObject* gameObject) override;
-    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+    void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
