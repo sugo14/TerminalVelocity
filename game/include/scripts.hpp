@@ -2,7 +2,6 @@
 
 #include "gameengine.hpp"
 #include "debug.hpp"
-#include "gridstring.hpp"
 
 #include <random>
 
