@@ -3,6 +3,7 @@
 #include <algorithm>
 
 const int BulletScript::duration = 5000;
+const int BulletScript::particleClock = 200;
 
 void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("BulletScript started");
@@ -19,12 +20,24 @@ void BulletScript::start(GameEngine* engine, GameObject* gameObject) {
     positionSpeed = engine->camera.transform.front() * speed;
 
     elapsedTime = 0;
+    particleTimer = particleClock;
 }
 
 void BulletScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) {
     float seconds = deltaTime / 1000.0f;
     gameObject->transform.rotation = gameObject->transform.rotation + rotationSpeed * seconds;
     gameObject->transform.position = gameObject->transform.position + positionSpeed * seconds;
+
+    particleTimer -= deltaTime;
+    if (particleTimer <= 0) {
+        ParticleScript::spawnParticle(
+            engine, gameObject->transform.position, 0x00FFFF,
+            0.2f, 0.4f,
+            0.4f, 0.5f,
+            0.2f, 0.3f
+        );
+        particleTimer = particleClock;
+    }
 
     SphereCollider* self = gameObject->getScriptByType<SphereCollider>();
     if (!self) {
@@ -53,16 +66,8 @@ void BulletScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* ga
                 gameObject->deleteSelf = true;
                 other.deleteSelf = true;
                 // spawn particles
-                for (int i = 0; i < 20; i++) {
-                    GameObject particle;
-                    particle.name = "AsteroidParticle"; // pray i dont need unique names lol
-                    particle.mesh = Mesh::loadObjFile("tri-pyramid");
-                    particle.mesh.lightingMode = LightingMode::Regular;
-                    for (int j = 0; j < particle.mesh.vertices.size(); j++) {
-                        particle.mesh.vertexColors.push_back(0x00FFFF);
-                    }
-                    particle.scripts.push_back(std::make_unique<ParticleScript>(other.transform.position));
-                    engine->addObject(std::move(particle));
+                for (int i = 0; i < 15; i++) {
+                    ParticleScript::spawnParticle(engine, other.transform.position, 0x00FFFF);
                 }
             }
         }

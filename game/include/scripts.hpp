@@ -33,7 +33,8 @@ class BulletScript : public Script {
     Vector3 rotationSpeed;
     Vector3 positionSpeed;
     static const int duration;
-    int elapsedTime = 0;
+    static const int particleClock;
+    int elapsedTime = 0, particleTimer = 0;
 public:
     virtual ~BulletScript() = default;
     void start(GameEngine* engine, GameObject* gameObject) override;
@@ -171,13 +172,16 @@ class ParticleScript : public Script {
     Vector3 vel;
     Vector3 rotVel;
     float lifetime;
-
-    static constexpr float minLife = 0.3, maxLife = 0.6;
-    static constexpr float minScale = 0.6, maxScale = 0.9;
-    static constexpr float minSpeed = 15, maxSpeed = 40;
 public:
+    static void spawnParticle(
+        GameEngine* engine, Vector3 originalPos, int color,
+        float minLife = 0.3f, float maxLife = 0.6f,
+        float minScale = 0.8f, float maxScale = 1.1f,
+        float minSpeed = 8.0f, float maxSpeed = 12.0f
+    );
+
     virtual ~ParticleScript() = default;
-    ParticleScript(Vector3 originalPos);
+    ParticleScript(Vector3 originalPos, Vector3 vel, Vector3 rotVel, float lifetime);
 
     void start(GameEngine* engine, GameObject* gameObject) override;
     void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
