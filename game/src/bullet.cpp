@@ -52,6 +52,18 @@ void BulletScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* ga
                 PlayerBodyScript::score += 10;
                 gameObject->deleteSelf = true;
                 other.deleteSelf = true;
+                // spawn particles
+                for (int i = 0; i < 20; i++) {
+                    GameObject particle;
+                    particle.name = "AsteroidParticle"; // pray i dont need unique names lol
+                    particle.mesh = Mesh::loadObjFile("tri-pyramid");
+                    particle.mesh.lightingMode = LightingMode::Regular;
+                    for (int j = 0; j < particle.mesh.vertices.size(); j++) {
+                        particle.mesh.vertexColors.push_back(0x00FFFF);
+                    }
+                    particle.scripts.push_back(std::make_unique<ParticleScript>(other.transform.position));
+                    engine->addObject(std::move(particle));
+                }
             }
         }
     }

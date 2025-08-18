@@ -165,3 +165,20 @@ public:
     void start(GameEngine* engine, GameObject* gameObject) override;
     void update(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
 };
+
+class ParticleScript : public Script {
+    Vector3 originalPos;
+    Vector3 vel;
+    Vector3 rotVel;
+    float lifetime;
+
+    static constexpr float minLife = 0.3, maxLife = 0.6;
+    static constexpr float minScale = 0.6, maxScale = 0.9;
+    static constexpr float minSpeed = 15, maxSpeed = 40;
+public:
+    virtual ~ParticleScript() = default;
+    ParticleScript(Vector3 originalPos);
+
+    void start(GameEngine* engine, GameObject* gameObject) override;
+    void fixedUpdate(int deltaTime, GameEngine* engine, GameObject* gameObject) override;
+};
