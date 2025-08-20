@@ -140,6 +140,13 @@ void GameEngine::run(void (*endCallback)()) {
     int lastDt = 10;
     int accumulatedTime = 0;
 
+    // fixed update once before displaying
+    for (GameObject& object : pendingObjects) {
+        scene.gameObjects.push_back(std::move(object));
+        scene.gameObjects.back().start(this);
+    }
+    fixedTick(fixedStep);
+
     while (true) {
         // frame start
         std::chrono::time_point frameStart = clock.now();
