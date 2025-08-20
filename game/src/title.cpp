@@ -59,6 +59,8 @@ void TitleScript::start(GameEngine* engine, GameObject* gameObject) {
     //     return;
     // }
     crosshair->getScriptByType<CrosshairScript>()->enabled = false;
+
+    engine->audioEngine.playSound("startup");
 }
 
 void TitleScript::update(int deltaTime, GameEngine* engine, GameObject* gameObject) {
@@ -78,6 +80,9 @@ void TitleScript::update(int deltaTime, GameEngine* engine, GameObject* gameObje
         currTransparency *= currTransparency;
         draw(engine);
         return;
+    }
+    if (currX == engine->screen.screenData.WIDTH / 2 - image.width / 2) {
+        engine->audioEngine.playSound("beep");
     }
     currTransparency = 0;
     // velX += accel * deltaTime / 1000.0f;

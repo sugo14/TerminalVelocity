@@ -6,6 +6,7 @@
 #include "tui.hpp"
 #include "debug.hpp"
 #include "input.hpp"
+#include "audio.hpp"
 
 #include <memory>
 #include <typeinfo>
@@ -97,6 +98,7 @@ public:
     ConsoleScreen screen;
     Scene scene;
     Input input;
+    AudioEngine audioEngine;
 
     std::mt19937 gen;
     bool end;

@@ -29,6 +29,6 @@ void BulletHandlerScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObj
         Vector3 origin = engine->camera.transform.position;
         spawnBullet(engine, gameObject, Vector3{1, -1, -2});
         spawnBullet(engine, gameObject, Vector3{-1, -1, -2});
-        playAudio("lazer", 2);
+        engine->audioEngine.playRandomSound("lazer", 2);
     }
 }

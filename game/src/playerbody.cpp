@@ -27,6 +27,7 @@ void PlayerBodyScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject
                       + std::to_string(gameObject->transform.position.z));
                 isAlive = false;
                 engine->getObjectByName("GameOverText")->getScriptByType<GameOverTextScript>()->activate(engine);
+                engine->audioEngine.playSound("gameend");
             }
         }
     }

@@ -61,7 +61,7 @@ void BulletScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject* ga
         if (other.hasTag("crystal") && !other.deleteSelf) {
             SphereCollider* collider = other.getScriptByType<SphereCollider>();
             if (collider && collider->isCollidingWith(*self)) {
-                playAudio("boom", 5);
+                engine->audioEngine.playRandomSound("boom", 2);
                 PlayerBodyScript::score += 10;
                 gameObject->deleteSelf = true;
                 other.deleteSelf = true;

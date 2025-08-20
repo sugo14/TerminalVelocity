@@ -11,8 +11,9 @@ float lerp(float a, float b, float u) {
     return a + (b - a) * u;
 }
 
-GameObject::GameObject() : transform(Transform()), mesh(Mesh()), 
-                           name("GameObject"), deleteSelf(false) {
+GameObject::GameObject()
+    : transform(Transform()), mesh(Mesh()), name("GameObject"), deleteSelf(false)
+{
     debug("GameObject created: " + name);
 }
 
@@ -60,6 +61,7 @@ GameEngine::GameEngine() {
     screen = ConsoleScreen();
     input = Input();
     scene = Scene();
+    audioEngine = AudioEngine();
 
     std::random_device rd;
     int seed = rd();
