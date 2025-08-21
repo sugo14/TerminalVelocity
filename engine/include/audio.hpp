@@ -2,13 +2,13 @@
 
 #include "miniaudio.h"
 #include <string>
+#include <list>
 
 class AudioEngine {
-    ma_engine engine;
+    ma_engine* engine;
 public:
-    char currPath[256];
-
     AudioEngine();
+    ~AudioEngine();
 
     void playSound(const std::string& filename);
     void playRandomSound(const std::string& fileName, int randomRange);
