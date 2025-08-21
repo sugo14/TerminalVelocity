@@ -30,7 +30,6 @@ AsteroidScript::AsteroidScript(float speedMult) {
 
 void AsteroidScript::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidScript started");
-    gameObject->transform.scale = {4, 4, 4};
     gameObject->tags.push_back("asteroid");
 
     std::uniform_real_distribution<float> distSpeedXY(-3.0f, 3.0f);

@@ -23,7 +23,11 @@ void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
     asteroid.name = "Asteroid";
     asteroid.tags = {"asteroid"};
-    asteroid.scripts.push_back(std::make_unique<SphereCollider>(2));
+    std::uniform_real_distribution<float> distScale(1.4f, 3.0f);
+    float scale = distScale(engine->gen);
+    scale *= scale;
+    asteroid.transform.scale = {scale, scale, scale};
+    asteroid.scripts.push_back(std::make_unique<SphereCollider>(scale / 2.2f));
     asteroid.scripts.push_back(std::make_unique<AsteroidScript>(currMult));
     engine->addObject(std::move(asteroid));
 }
@@ -71,6 +75,7 @@ void AsteroidManager::fixedUpdate(int deltaTime, GameEngine* engine, GameObject*
         asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
         asteroid.name = "Asteroid";
         asteroid.tags = {"asteroid"};
+        asteroid.transform.scale = {4, 4, 4};
         asteroid.scripts.push_back(std::make_unique<SphereCollider>(2));
         asteroid.scripts.push_back(std::make_unique<AsteroidScript>(currMult));
         engine->addObject(std::move(asteroid));
