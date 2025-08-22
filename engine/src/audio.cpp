@@ -1,30 +1,24 @@
 #include "audio.hpp"
 #include "debug.hpp"
 
-#include <cstring>
-#include <filesystem>
-#include <iostream>
+// #include <iostream>
 
 AudioEngine::AudioEngine() {
-    engine = new ma_engine;
+    // std::cerr << "Creating engine" << std::endl;
+    engine = (ma_engine*)malloc(sizeof(*engine));
     ma_result result = ma_engine_init(NULL, engine);
     if (result != MA_SUCCESS) {
-        delete engine;
+        free(engine);
         engine = nullptr;
         debug("Failed to init audio engine, error code: " + std::to_string(result));
     }
 }
 
-AudioEngine::~AudioEngine() { end(); }
-
 void AudioEngine::playSound(const std::string& filename) {
+    debug("Playing sound: " + filename);
     if (!engine) { return; }
     std::string filepath = "./resources/audio/" + filename + ".wav";
     ma_engine_play_sound(engine, filepath.c_str(), NULL);
-    // ma_sound sound = {};
-    // ma_result result = ma_sound_init_from_file(&engine, filepath.c_str(), 0, NULL, NULL, &sound);
-    // ma_sound_set_volume(&sound, volume);
-    // ma_sound_start(&sound);
 }
 
 void AudioEngine::playRandomSound(const std::string& filename, int randomRange) {
@@ -34,7 +28,15 @@ void AudioEngine::playRandomSound(const std::string& filename, int randomRange) 
 }
 
 void AudioEngine::end() {
-    ma_engine_uninit(engine);
-    delete engine;
-    engine = nullptr;
+    debug("Ending audio engine");
+    if (engine) {
+        ma_engine_uninit(engine);
+        free(engine);
+        engine = nullptr;
+    }
+}
+
+AudioEngine::~AudioEngine() {
+    debug("Destroying audio engine");
+    end();
 }

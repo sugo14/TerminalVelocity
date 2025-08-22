@@ -56,13 +56,9 @@ bool SphereCollider::isCollidingWith(SphereCollider& other) {
     return delta.length() < (other.radius + radius);
 }
 
-GameEngine::GameEngine() {
-    camera = Camera();
-    screen = ConsoleScreen();
-    input = Input();
-    scene = Scene();
-    audioEngine = AudioEngine();
-
+GameEngine::GameEngine()
+    : camera(), screen(), input(), scene(), audioEngine()
+{
     std::random_device rd;
     int seed = rd();
     gen.seed(seed);
