@@ -126,5 +126,12 @@ int main() {
     gameOverText.scripts.push_back(std::make_unique<GameOverTextScript>());
     engine.addObject(std::move(gameOverText));
 
+    engine.screen.screenData.postProcessLayers.push_back(
+        std::make_unique<DistanceFog>(-10.0f, -130.0f, 0x000000)
+    );
+    engine.screen.screenData.postProcessLayers.push_back(
+        std::make_unique<Vignette>(0x000000, 0.3f, 0.0f)
+    );
+
     engine.run(&end);
 }

@@ -11,6 +11,8 @@
 /// @return The angle in radians.
 float degToRad(float deg);
 
+float smoothStep(float u);
+
 /// @brief Linearly interpolates between 2 colors.
 /// @param c1 The first color.
 /// @param c2 The second color.
@@ -108,6 +110,15 @@ struct DistanceFog : public PostProcessLayer {
     int fogColor;
 
     DistanceFog(float start, float end, int fogColor);
+
+    void apply(ScreenData& screenData) override;
+};
+
+struct Vignette : public PostProcessLayer {
+    int vignetteColor;
+    float maxIntensity, minIntensity;
+
+    Vignette(int vignetteColor, float maxIntensity, float minIntensity);;
 
     void apply(ScreenData& screenData) override;
 };

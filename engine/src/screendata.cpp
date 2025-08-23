@@ -11,6 +11,11 @@ int colorLerp(int c1, int c2, float u) {
     return (r << 16) | (g << 8) | b;
 }
 
+float smoothStep(float u) {
+    u = std::clamp(u, 0.0f, 1.0f);
+    return u * u * (3 - 2 * u);
+}
+
 int colorLerp(int c1, int c2, int c3, float u, float v) {
     float w = 1.0f - u - v;
     int r = (u * ((c1 >> 16) & 0xFF) + v * ((c2 >> 16) & 0xFF) + w * ((c3 >> 16) & 0xFF));
@@ -128,9 +133,29 @@ void DistanceFog::apply(ScreenData& screenData) {
             int originalColor = screenData.getPixel(j, i);
 
             float lerpValue = (depth - start) / (end - start);
-            lerpValue *= lerpValue;
             int resultColor = colorLerp(originalColor, fogColor, lerpValue);
             screenData.pixels[i][j] = resultColor;
+        }
+    }
+}
+
+Vignette::Vignette(int vignetteColor, float maxIntensity, float minIntensity)
+    : vignetteColor(vignetteColor), maxIntensity(maxIntensity), minIntensity(minIntensity)
+{ }
+
+void Vignette::apply(ScreenData& screenData) {
+    float centerX = ScreenData::WIDTH / 2.0f;
+    float centerY = ScreenData::HEIGHT / 2.0f;
+    for (int i = 0; i < ScreenData::HEIGHT; i++) {
+        for (int j = 0; j < ScreenData::WIDTH; j++) {
+            float dx = std::fabs(j - centerX);
+            float dy = std::fabs(i - centerY);
+            float dist = sqrt(dx * dx + dy * dy);
+            float vignetteAmount = smoothStep(dist / sqrt(centerX * centerX + centerY * centerY));
+            vignetteAmount *= (maxIntensity - minIntensity);
+            vignetteAmount += minIntensity;
+            int originalColor = screenData.getPixel(j, i);
+            screenData.pixels[i][j] = colorLerp(originalColor, vignetteColor, vignetteAmount);
         }
     }
 }
