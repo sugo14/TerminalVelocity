@@ -29,10 +29,14 @@ This game was originally my Computer Science 30 final project, and I later submi
 
 ## ⚙️ How to run on Linux
 
-Consider running a version of the project from [GitHub releases](https://github.com/sugo14/TerminalVelocity/releases) if you aren't already. The following shows how to build the potentially buggy current source code:
+Heavily consider running a version of the project from [GitHub releases](https://github.com/sugo14/TerminalVelocity/releases) if you aren't already. This stops you from having to build the project and download libraries yourself, and also guarantees a stable version of the game.
+
+The following shows how to build the current source code:
 
 - Navigate to the project directory
-- Run `make` to compile the project
+- Create a directory `lib` and subdirectories `src` and `include` within the project
+- Download miniaudio [here](https://github.com/mackron/miniaudio/releases/tag/0.11.22), find `miniaudio.c` and `miniaudio.h`, and move them to `lib/src` and `lib/include` respectively
+- Run `make` to compile
     - Requires g++ and Make to be installed
 - Modify your keyboard settings: increase repeat rate and decrease repeat delay as much as possible
     - You can skip this, but input will be much less responsive

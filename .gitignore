@@ -1,5 +1,6 @@
 .old
 .vscode
+lib
 /main
 debug.log
 
