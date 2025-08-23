@@ -3,6 +3,47 @@
 #include "image.hpp"
 
 #include <cmath>
+#include <vector>
+#include <memory>
+
+/// @brief Converts degrees to radians.
+/// @param deg The angle in degrees to convert.
+/// @return The angle in radians.
+float degToRad(float deg);
+
+/// @brief Linearly interpolates between 2 colors.
+/// @param c1 The first color.
+/// @param c2 The second color.
+/// @param u The interpolation factor in the range [0, 1].
+/// @return The interpolated color.
+int colorLerp(int c1, int c2, float u);
+
+/// @brief Linearly interpolates between 3 colors.
+/// @param c1 The first color.
+/// @param c2 The second color.
+/// @param c3 The third color.
+/// @param u The interpolation factor for the first color in the range [0, 1].
+/// @param v The interpolation factor for the second color in the range [0, 1].
+/// @return The interpolated color.
+int colorLerp(int c1, int c2, int c3, float u, float v);
+
+/// @brief Combines RGB values into a hex code.
+/// @param r The red component in the range [0, 255].
+/// @param g The green component in the range [0, 255].
+/// @param b The blue component in the range [0, 255].
+/// @return The combined color as a hex code.
+int rgb(int r, int g, int b);
+
+int changeBrightness(int color, float brightness);
+
+// :frowning2:
+struct ScreenData;
+
+struct PostProcessLayer {
+    PostProcessLayer() = default;
+
+    virtual void apply(ScreenData& screenData) { }
+};
 
 struct ScreenData {
     static const int FAC = 16;
@@ -12,6 +53,8 @@ struct ScreenData {
     int pixels[HEIGHT][WIDTH];
     int imagePixels[HEIGHT][WIDTH];
     float depthBuffer[HEIGHT][WIDTH];
+
+    std::vector<std::unique_ptr<PostProcessLayer>> postProcessLayers;
 
     ScreenData();
 
@@ -56,4 +99,15 @@ struct ScreenData {
     /// @param x The leftmost x coordinate of the image position on the screen.
     /// @param y The topmost y coordinate of the image position on the screen.
     void drawImage(Image& image, int x = 0, int y = 0);
+
+    void applyPostProcess();
+};
+
+struct DistanceFog : public PostProcessLayer {
+    float start, end;
+    int fogColor;
+
+    DistanceFog(float start, float end, int fogColor);
+
+    void apply(ScreenData& screenData) override;
 };

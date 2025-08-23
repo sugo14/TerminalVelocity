@@ -18,7 +18,7 @@ void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     asteroid.transform.position = {
         pos(engine->gen) + engine->camera.transform.position.x,
         pos(engine->gen) + engine->camera.transform.position.y,
-        engine->camera.transform.position.z - 120
+        engine->camera.transform.position.z - 150
     };
     asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
     asteroid.name = "Asteroid";
@@ -40,7 +40,7 @@ void AsteroidManager::spawnCrystal(GameEngine* engine) {
     crystal.transform.position = {
         pos(engine->gen) + engine->camera.transform.position.x,
         pos(engine->gen) + engine->camera.transform.position.y,
-        engine->camera.transform.position.z - 120
+        engine->camera.transform.position.z - 150
     };
     crystal.mesh = Mesh::loadObjFile("sharp-crystal-" + std::to_string(rand() % 3 + 1));
     crystal.name = "Crystal";
@@ -70,7 +70,7 @@ void AsteroidManager::fixedUpdate(int deltaTime, GameEngine* engine, GameObject*
         asteroid.transform.position = {
             engine->camera.transform.position.x,
             engine->camera.transform.position.y,
-            engine->camera.transform.position.z - 120
+            engine->camera.transform.position.z - 150
         };
         asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
         asteroid.name = "Asteroid";

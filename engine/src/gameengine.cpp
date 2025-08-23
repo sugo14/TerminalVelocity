@@ -136,6 +136,11 @@ void GameEngine::run(void (*endCallback)()) {
     int lastDt = 10;
     int accumulatedTime = 0;
 
+    // !!! TEMP: add distance fog
+    screen.screenData.postProcessLayers.push_back(
+        std::make_unique<DistanceFog>(-10.0f, -130.0f, 0x000000)
+    );
+
     // fixed update once before displaying
     for (GameObject& object : pendingObjects) {
         scene.gameObjects.push_back(std::move(object));
@@ -175,7 +180,7 @@ void GameEngine::run(void (*endCallback)()) {
 
         // screen loop
         camera.draw(scene.gameObjects, screen.screenData);
-        
+        screen.screenData.applyPostProcess();
         screen.draw();
 
         // sleep to maintain 30fps

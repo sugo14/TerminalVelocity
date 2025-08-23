@@ -3,36 +3,6 @@
 
 #include <iostream>
 #include <unistd.h>
-#include <algorithm>
-
-int colorLerp(int c1, int c2, float u) {
-    u = std::clamp(u, 0.0f, 1.0f);
-    int r = (int)((1 - u) * ((c1 >> 16) & 0xFF) + u * ((c2 >> 16) & 0xFF));
-    int g = (int)((1 - u) * ((c1 >> 8) & 0xFF) + u * ((c2 >> 8) & 0xFF));
-    int b = (int)((1 - u) * (c1 & 0xFF) + u * (c2 & 0xFF));
-    return (r << 16) | (g << 8) | b;
-}
-
-int colorLerp(int c1, int c2, int c3, float u, float v) {
-    float w = 1.0f - u - v;
-    int r = (u * ((c1 >> 16) & 0xFF) + v * ((c2 >> 16) & 0xFF) + w * ((c3 >> 16) & 0xFF));
-    int g = (u * ((c1 >> 8) & 0xFF) + v * ((c2 >> 8) & 0xFF) + w * ((c3 >> 8) & 0xFF));
-    int b = (u * (c1 & 0xFF) + v * (c2 & 0xFF) + w * (c3 & 0xFF));
-    return (r << 16) | (g << 8) | b;
-}
-
-int rgb(int r, int g, int b) {
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
-    return (r << 16) | (g << 8) | b;
-}
-
-int changeBrightness(int color, float brightness) {
-    int r = color >> 16, g = (color >> 8) & 0xFF, b = color & 0xFF;
-    r *= brightness; g *= brightness; b *= brightness;
-    return rgb(r, g, b);
-}
 
 float degToRad(float deg) {
     return deg * M_PI / 180.0f;
