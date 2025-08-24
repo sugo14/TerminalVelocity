@@ -130,7 +130,10 @@ int main() {
         std::make_unique<DistanceFog>(-10.0f, -130.0f, 0x000000)
     );
     engine.screen.screenData.postProcessLayers.push_back(
-        std::make_unique<Vignette>(0x000000, 0.3f, 0.0f)
+        std::make_unique<Starfield>()
+    );
+    engine.screen.screenData.postProcessLayers.push_back(
+        std::make_unique<Vignette>(0x000000, 0.35f, 0.0f)
     );
 
     engine.run(&end);

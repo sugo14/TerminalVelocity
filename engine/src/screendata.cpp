@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include "debug.hpp"
+#include "postprocess.hpp"
 
 int colorLerp(int c1, int c2, float u) {
     u = std::clamp(u, 0.0f, 1.0f);
@@ -111,51 +112,8 @@ void ScreenData::drawImage(Image& image, int x, int y) {
     }
 }
 
-void ScreenData::applyPostProcess() {
+void ScreenData::applyPostProcess(GameEngine& gameEngine) {
     for (const auto& layer : postProcessLayers) {
-        layer->apply(*this);
-    }
-}
-
-DistanceFog::DistanceFog(float start, float end, int fogColor)
-    : start(start), end(end), fogColor(fogColor)
-{ }
-
-void DistanceFog::apply(ScreenData& screenData) {
-    for (int i = 0; i < ScreenData::HEIGHT; i++) {
-        for (int j = 0; j < ScreenData::WIDTH; j++) {
-            float depth = screenData.depthBuffer[i][j];
-            if (depth > start) { continue; }
-            if (depth < end) {
-                screenData.pixels[i][j] = fogColor;
-                continue;
-            }
-            int originalColor = screenData.getPixel(j, i);
-
-            float lerpValue = (depth - start) / (end - start);
-            int resultColor = colorLerp(originalColor, fogColor, lerpValue);
-            screenData.pixels[i][j] = resultColor;
-        }
-    }
-}
-
-Vignette::Vignette(int vignetteColor, float maxIntensity, float minIntensity)
-    : vignetteColor(vignetteColor), maxIntensity(maxIntensity), minIntensity(minIntensity)
-{ }
-
-void Vignette::apply(ScreenData& screenData) {
-    float centerX = ScreenData::WIDTH / 2.0f;
-    float centerY = ScreenData::HEIGHT / 2.0f;
-    for (int i = 0; i < ScreenData::HEIGHT; i++) {
-        for (int j = 0; j < ScreenData::WIDTH; j++) {
-            float dx = std::fabs(j - centerX);
-            float dy = std::fabs(i - centerY);
-            float dist = sqrt(dx * dx + dy * dy);
-            float vignetteAmount = smoothStep(dist / sqrt(centerX * centerX + centerY * centerY));
-            vignetteAmount *= (maxIntensity - minIntensity);
-            vignetteAmount += minIntensity;
-            int originalColor = screenData.getPixel(j, i);
-            screenData.pixels[i][j] = colorLerp(originalColor, vignetteColor, vignetteAmount);
-        }
+        layer->apply(*this, gameEngine);
     }
 }

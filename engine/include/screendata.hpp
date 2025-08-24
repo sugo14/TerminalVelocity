@@ -1,6 +1,7 @@
 #pragma once
 
 #include "image.hpp"
+#include "postprocess.hpp"
 
 #include <cmath>
 #include <vector>
@@ -38,14 +39,7 @@ int rgb(int r, int g, int b);
 
 int changeBrightness(int color, float brightness);
 
-// :frowning2:
-struct ScreenData;
-
-struct PostProcessLayer {
-    PostProcessLayer() = default;
-
-    virtual void apply(ScreenData& screenData) { }
-};
+class GameEngine;
 
 struct ScreenData {
     static const int FAC = 16;
@@ -102,23 +96,5 @@ struct ScreenData {
     /// @param y The topmost y coordinate of the image position on the screen.
     void drawImage(Image& image, int x = 0, int y = 0);
 
-    void applyPostProcess();
-};
-
-struct DistanceFog : public PostProcessLayer {
-    float start, end;
-    int fogColor;
-
-    DistanceFog(float start, float end, int fogColor);
-
-    void apply(ScreenData& screenData) override;
-};
-
-struct Vignette : public PostProcessLayer {
-    int vignetteColor;
-    float maxIntensity, minIntensity;
-
-    Vignette(int vignetteColor, float maxIntensity, float minIntensity);;
-
-    void apply(ScreenData& screenData) override;
+    void applyPostProcess(GameEngine& gameEngine);
 };

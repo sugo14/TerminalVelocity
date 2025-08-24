@@ -175,7 +175,7 @@ void GameEngine::run(void (*endCallback)()) {
 
         // screen loop
         camera.draw(scene.gameObjects, screen.screenData);
-        screen.screenData.applyPostProcess();
+        screen.screenData.applyPostProcess(*this);
         screen.draw();
 
         // sleep to maintain 30fps

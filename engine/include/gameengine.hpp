@@ -7,6 +7,7 @@
 #include "debug.hpp"
 #include "input.hpp"
 #include "audio.hpp"
+#include "postprocess.hpp"
 
 #include <memory>
 #include <typeinfo>
