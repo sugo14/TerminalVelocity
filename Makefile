@@ -55,7 +55,7 @@ gen-release-builds:
 
 	echo "Creating source bundled with lib..." && \
 	mkdir -p ./release-builds/TerminalVelocity-Source-With-Lib && \
-	cp -r engine game lib resources Dockerfile LICENSE Makefile README.md ./release-builds/TerminalVelocity-Source-With-Lib/ && \
+	cp -r engine game lib resources Dockerfile LICENSE Makefile precompiled.md README.md ./release-builds/TerminalVelocity-Source-With-Lib/ && \
 	echo "Source files and lib copied to ./release-builds/TerminalVelocity-Source-With-Lib" && \
 	cd ./release-builds && \
 	zip -r TerminalVelocity-Source-With-Lib.zip TerminalVelocity-Source-With-Lib && \
