@@ -17,7 +17,7 @@ void PlayerBodyScript::fixedUpdate(int deltaTime, GameEngine* engine, GameObject
     for (GameObject& obj : engine->scene.gameObjects)  {
         if (obj.hasTag("asteroid")) {
             SphereCollider* other = obj.getScriptByType<SphereCollider>();
-            if (other && other->isCollidingWith(*hitbox))  {
+            if (other && other->isCollidingWith(*hitbox) && isAlive)  {
                 debug("!!! Player hit by asteroid !!! at "
                       + std::to_string(obj.transform.position.x) + ", "
                       + std::to_string(obj.transform.position.y) + ", "
