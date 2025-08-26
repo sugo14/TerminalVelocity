@@ -71,7 +71,10 @@ int DistanceFog::apply(
     const Vector3& normal,
     const Vector2& uv
 ) const {
-    float depth = worldPos.length();
+    Vector3 modifiedWorldPos = worldPos;
+    modifiedWorldPos.x *= 2;
+    modifiedWorldPos.y *= 2;
+    float depth = modifiedWorldPos.length();
     if (depth < start) { return originalColor; }
     if (depth > end) { return fogColor; }
 
