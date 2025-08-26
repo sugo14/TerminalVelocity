@@ -86,5 +86,5 @@ void AsteroidManager::fixedUpdate(int deltaTime, GameEngine* engine, GameObject*
     float forwardSpeed = std::fabs(moveHandler->currMoveSpeed.z);
     std::uniform_real_distribution<float> speed(0.5, 1.5);
     // simulates more asteroids appearing when player moves faster, kind of awful
-    currAsteroidPeriod -= seconds * (forwardSpeed + 0.05) * pow(currMult, 0.75) * speed(engine->gen);
+    currAsteroidPeriod -= seconds * (forwardSpeed + 0.10) * pow(currMult, 0.75) * speed(engine->gen);
 }
