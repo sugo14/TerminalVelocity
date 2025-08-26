@@ -1,10 +1,11 @@
 #pragma once
 
 #include <chrono>
+#include <string>
 
 /// @brief Writes a debug message to debug.log.
 /// @param msg The message to log.
-void debug(std::string msg);
+void debug(const std::string& msg);
 
 // from stackoverflow, for testing
 template <class DT = std::chrono::milliseconds,

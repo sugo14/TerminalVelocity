@@ -3,6 +3,7 @@
 lib
 /main
 debug.log
+release-builds
 
 # Prerequisites
 *.d
