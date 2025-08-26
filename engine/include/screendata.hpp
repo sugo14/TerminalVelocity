@@ -1,7 +1,7 @@
 #pragma once
 
 #include "image.hpp"
-#include "postprocess.hpp"
+#include "effects.hpp"
 
 #include <cmath>
 #include <vector>

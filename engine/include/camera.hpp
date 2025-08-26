@@ -3,6 +3,9 @@
 #include "mesh.hpp"
 #include "screendata.hpp"
 
+#include <vector>
+#include <memory>
+
 // skullemoji
 struct GameObject;
 
@@ -28,6 +31,8 @@ struct Frustum {
 struct Camera {
     Frustum frustum;
     Transform transform;
+
+    std::vector<std::unique_ptr<FragmentShader>> fragmentShaders;
 
     Camera();
 

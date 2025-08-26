@@ -1,10 +1,12 @@
 #include "scripts.hpp"
 
-const float AsteroidManager::centerAsteroidPerSecond = 0.2f;
+const float AsteroidManager::centerAsteroidPerSecond = 0.3f;
+const float AsteroidManager::range = 60.0f;
+const float AsteroidManager::spawnZ = -130.0f;
 
 void AsteroidManager::start(GameEngine* engine, GameObject* gameObject) {
     debug("AsteroidManager started");
-    asteroidPeriod = 0.065f;
+    asteroidPeriod = 0.015f;
     currAsteroidPeriod = asteroidPeriod;
     currMult = 1;
     cnt = 0;
@@ -12,13 +14,12 @@ void AsteroidManager::start(GameEngine* engine, GameObject* gameObject) {
 
 void AsteroidManager::spawnAsteroid(GameEngine* engine) {
     GameObject asteroid;
-    int range = 30;
-    std::uniform_real_distribution<float> pos(-range, range);
+    std::uniform_real_distribution<float> pos(-AsteroidManager::range, AsteroidManager::range);
 
     asteroid.transform.position = {
         pos(engine->gen) + engine->camera.transform.position.x,
         pos(engine->gen) + engine->camera.transform.position.y,
-        engine->camera.transform.position.z - 150
+        engine->camera.transform.position.z + AsteroidManager::spawnZ
     };
     asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
     asteroid.name = "Asteroid";
@@ -34,13 +35,12 @@ void AsteroidManager::spawnAsteroid(GameEngine* engine) {
 
 void AsteroidManager::spawnCrystal(GameEngine* engine) {
     GameObject crystal;
-    int range = 30;
-    std::uniform_real_distribution<float> pos(-range, range);
+    std::uniform_real_distribution<float> pos(-AsteroidManager::range, AsteroidManager::range);
 
     crystal.transform.position = {
         pos(engine->gen) + engine->camera.transform.position.x,
         pos(engine->gen) + engine->camera.transform.position.y,
-        engine->camera.transform.position.z - 150
+        engine->camera.transform.position.z + AsteroidManager::spawnZ
     };
     crystal.mesh = Mesh::loadObjFile("sharp-crystal-" + std::to_string(rand() % 3 + 1));
     crystal.name = "Crystal";
@@ -70,7 +70,7 @@ void AsteroidManager::fixedUpdate(int deltaTime, GameEngine* engine, GameObject*
         asteroid.transform.position = {
             engine->camera.transform.position.x,
             engine->camera.transform.position.y,
-            engine->camera.transform.position.z - 150
+            engine->camera.transform.position.z + AsteroidManager::spawnZ
         };
         asteroid.mesh = Mesh::loadObjFile("rock_" + std::to_string(rand() % 8 + 1));
         asteroid.name = "Asteroid";

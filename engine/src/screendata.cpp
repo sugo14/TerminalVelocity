@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include "debug.hpp"
-#include "postprocess.hpp"
+#include "effects.hpp"
 
 int colorLerp(int c1, int c2, float u) {
     u = std::clamp(u, 0.0f, 1.0f);

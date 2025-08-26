@@ -60,11 +60,14 @@ public:
 };
 
 class AsteroidManager : public Script {
+    static const float centerAsteroidPerSecond;
+    static const float range;
+    static const float spawnZ;
+
     float currAsteroidPeriod;
     float asteroidPeriod;
     float currMult;
     int cnt;
-    static const float centerAsteroidPerSecond;
 
     void spawnAsteroid(GameEngine* engine);
     void spawnCrystal(GameEngine* engine);

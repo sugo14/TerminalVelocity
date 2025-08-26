@@ -170,6 +170,11 @@ void Camera::draw(std::vector<GameObject>& gameObjects, ScreenData& screenData) 
                         );
                     }
 
+                    Vector3 worldPos = world[0] * u + world[1] * v + world[2] * w;
+                    for (const auto& shader : fragmentShaders) {
+                        color = shader->apply(color, worldPos, triN, Vector2{u, v});
+                    }
+
                     if (z < -frustum.farZ || z > -frustum.nearZ) { continue; }
                     screenData.setPixel(x, y, z, color);
                 }

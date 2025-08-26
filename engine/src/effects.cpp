@@ -1,4 +1,4 @@
-#include "postprocess.hpp"
+#include "effects.hpp"
 
 #include <algorithm>
 #include <random>
@@ -6,34 +6,11 @@
 #include "screendata.hpp"
 #include "gameengine.hpp"
 
-DistanceFog::DistanceFog(float start, float end, int fogColor)
-    : start(start), end(end), fogColor(fogColor)
-{ }
-
-void DistanceFog::apply(ScreenData& screenData, GameEngine& gameEngine) {
-    for (int i = 0; i < ScreenData::HEIGHT; i++) {
-        for (int j = 0; j < ScreenData::WIDTH; j++) {
-            float depth = screenData.depthBuffer[i][j];
-            if (depth > start) { continue; }
-            if (depth < end) {
-                screenData.pixels[i][j] = fogColor;
-                continue;
-            }
-            int originalColor = screenData.getPixel(j, i);
-
-            float lerpValue = (depth - start) / (end - start);
-            lerpValue = smoothStep(lerpValue);
-            int resultColor = colorLerp(originalColor, fogColor, lerpValue);
-            screenData.pixels[i][j] = resultColor;
-        }
-    }
-}
-
 Vignette::Vignette(int vignetteColor, float maxIntensity, float minIntensity)
     : vignetteColor(vignetteColor), maxIntensity(maxIntensity), minIntensity(minIntensity)
 { }
 
-void Vignette::apply(ScreenData& screenData, GameEngine& gameEngine) {
+void Vignette::apply(ScreenData& screenData, GameEngine& gameEngine) const {
     float centerX = ScreenData::WIDTH / 2.0f;
     float centerY = ScreenData::HEIGHT / 2.0f;
     for (int i = 0; i < ScreenData::HEIGHT; i++) {
@@ -64,7 +41,7 @@ Starfield::Starfield() {
     }
 }
 
-void Starfield::apply(ScreenData& screenData, GameEngine& gameEngine) {
+void Starfield::apply(ScreenData& screenData, GameEngine& gameEngine) const {
     Matrix44 toWorldInv = gameEngine.camera.transform.toWorldMatrix().inverse();
     for (int i = 0; i < stars.size(); i++) {
         const Vector3& star = stars[i];
@@ -82,4 +59,24 @@ void Starfield::apply(ScreenData& screenData, GameEngine& gameEngine) {
         };
         screenData.setPixel(screenPos.x, screenPos.y, -10000, color); // draw a single one pixel star
     }
+}
+
+DistanceFog::DistanceFog(float start, float end, int fogColor)
+    : start(start), end(end), fogColor(fogColor)
+{ }
+
+int DistanceFog::apply(
+    int originalColor,
+    const Vector3& worldPos,
+    const Vector3& normal,
+    const Vector2& uv
+) const {
+    float depth = worldPos.length();
+    if (depth < start) { return originalColor; }
+    if (depth > end) { return fogColor; }
+
+    float lerpValue = (depth - start) / (end - start);
+    lerpValue = smoothStep(lerpValue);
+    int resultColor = colorLerp(originalColor, fogColor, lerpValue);
+    return resultColor;
 }
